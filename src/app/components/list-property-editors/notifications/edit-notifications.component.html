@@ -1,0 +1,57 @@
+<div class="editor-header"></div>
+<div class="setting-section">
+    <div class="row">
+        <label>Tasks</label>
+        <div class="option">
+            <div *ngIf="updatingTaskNotificationsError" class="has-error">Something went wrong. Please try again later.</div>
+            <div *ngIf="updatingTaskNotifications" class="preloader-sm"></div>
+            <i (click)="toggleTaskNotifications()"
+                *ngIf="!updatingTaskNotifications"
+                class="fa fa-fw"
+                [ngClass]="{'fa-square-o':!notificationModel.taskNotifications, 'fa-check-square-o':notificationModel.taskNotifications}"></i>
+        </div>
+    </div>
+    <div class="help-info">Receive an email when someone adds, deletes, or changes a task</div>
+</div>
+<div class="setting-section">
+    <div class="row">
+        <label>Comments</label>
+        <div class="option">
+            <div *ngIf="updatingCommentNotificationsError" class="has-error">Something went wrong. Please try again later.</div>
+            <div *ngIf="updatingCommentNotifications" class="preloader-sm"></div>
+            <i (click)="toggleCommentNotifications()"
+                *ngIf="!updatingCommentNotifications"
+                class="fa fa-fw"
+                [ngClass]="{'fa-square-o':!notificationModel.commentNotifications, 'fa-check-square-o':notificationModel.commentNotifications}"></i>
+        </div>
+    </div>
+    <div class="help-info">Receive an email when someone adds or removes a comment on a task</div>
+</div>
+<div class="setting-section">
+    <div class="row">
+        <label>Members</label>
+        <div class="option">
+            <div *ngIf="updatingMemberNotificationsError" class="has-error">Something went wrong. Please try again later.</div>
+            <div *ngIf="updatingMemberNotifications" class="preloader-sm"></div>
+            <i (click)="toggleMemberNotifications()"
+                *ngIf="!updatingMemberNotifications"
+                class="fa fa-fw"
+                [ngClass]="{'fa-square-o':!notificationModel.userNotifications, 'fa-check-square-o':notificationModel.userNotifications}"></i>
+        </div>
+    </div>
+    <div class="help-info">Receive an email when someone is added removed from a list</div>
+</div>
+<div class="setting-section">
+    <div class="row">
+        <label>Assigned Only</label>
+        <div class="option">
+            <div *ngIf="updatingAssignedOnlyError" class="has-error">Something went wrong. Please try again later.</div>
+            <div *ngIf="updatingAssignedOnly" class="preloader-sm"></div>
+            <i (click)="toggleAssignedOnly()"
+                *ngIf="!updatingAssignedOnly"
+                class="fa fa-fw"
+                [ngClass]="{'fa-square-o':!notificationModel.notifyAssignedOnly, 'fa-check-square-o':notificationModel.notifyAssignedOnly}"></i>
+        </div>
+    </div>
+    <div class="help-info">Only send email notifications for tasks that are assigned to me</div>
+</div>

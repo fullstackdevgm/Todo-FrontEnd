@@ -1,0 +1,28 @@
+:host {
+    position: relative!important;
+    top: 0!important;
+}
+
+.users li {
+    display: flex;
+    align-items: center;
+    align-content: center;
+}
+.userpic {
+    height: 14px;
+    width: 14px;
+    font-size: 0.5rem;
+    display: flex;
+    border-radius: 10px;
+    border: 1px solid #adadad;
+    color: #adadad;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+}
+.users .userpic{
+    margin-right: 15px;
+    margin-left: 4px;
+}

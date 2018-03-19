@@ -1,0 +1,7 @@
+.left-label > * {
+    display: block;
+}
+.decorator-text {
+    font-size: 0.66rem;
+    color : gray
+}

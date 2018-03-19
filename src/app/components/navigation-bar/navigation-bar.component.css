@@ -1,0 +1,247 @@
+.navbar {
+    background-color: rgba(33, 150, 243, 1);
+    z-index: 1000;
+    color: #fff;
+}
+
+.btn-outline-primary {
+    color: #fff;
+    border: 0;
+    padding: 8px 15px;
+    margin-left: -15px;
+    padding-left: 40px;
+}
+
+.btn-outline-primary img {
+    position: absolute;
+    left: -9.5px;
+    top: 3px;
+}
+
+.btn-outline-primary.active,
+.btn-outline-primary:active,
+.show > .btn-outline-primary.dropdown-toggle,
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.show .btn-outline-primary {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.light-color .btn-outline-primary,
+.light-color .btn-outline-primary i {
+    color: #3c3c3c;
+}
+
+.collapse {
+    display: block;
+    height: 0;
+    min-height: 0;
+    overflow: hidden;
+    transition: min-height 0.2s ease-in-out;
+}
+
+.collapse.in {
+    min-height: 50px;
+    height: 100%;
+}
+
+.navbar-dark .navbar-toggler {
+    height: 36px;
+    width: 46px;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.dropdown-item {
+    font-weight: 300;
+}
+.dropdown-item.no-hover:hover {
+    background-color: inherit;
+}
+
+a.dropdown-item:active {
+    color: #fff;
+}
+
+.dropdown-item .app-link {
+    display: inline-block;
+}
+
+.dropdown-item .app-link img {
+    width: 32px;
+}
+.nav-bar-item span{
+    display: block;
+    margin:10px 1rem;
+}
+.nav-bar-item .fa{
+    color: #fff;
+}
+.nav-bar-item .fa.btn-close-popover {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: #3c3c3c;
+    font-size: 0.7rem;
+    padding: 2px;
+}
+
+.emailResendPopoverButtons{
+    display: flex;
+    justify-content: flex-end;
+}
+.emailResendPopoverButtons a:last-child{
+    margin-left: 5px;
+}
+
+.twf {
+    color: #fff;
+}
+
+.twf-2x {
+    font-size: 2em;
+}
+
+.download-header {
+    font-size: .8em;
+    color: #555555;
+}
+
+.download-icon {
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-bottom: 4px;
+    font-size: 1.1em;
+    color: #555555;
+}
+
+.download-icon:hover,
+.download-icon:focus {
+    color: rgba(33, 150, 243, 1);
+}
+
+.download-items {
+    display: flex;
+}
+.download-items.space-between {  
+    justify-content: space-between;
+}
+
+.tooltip-wrap {
+    position: relative;
+}
+.tooltip-wrap .tooltip-content {
+    top: 135%;
+    visibility: hidden;
+    background-color: #303030;
+    color: #ffffff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    margin-left: -20px;
+    opacity: 0;
+    transition: opacity 1s;
+    display: inline-block;
+    white-space: nowrap;
+}
+.tooltip-wrap .tooltip-content::after {    
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: calc(15px - 50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #303030 transparent;
+}
+.tooltip-wrap:hover .tooltip-content {
+    visibility: visible;
+    opacity: 1;
+}
+
+.popover-content-inner{
+    color: #3c3c3c;
+    margin-top: 1rem;
+}
+
+.dev-notice {
+    margin-top: 6px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.legacy-information {
+    border-bottom: 1px solid grey;
+}
+
+.one-message {
+    border-bottom: 1px solid grey;
+}
+
+.invited-message {
+    padding-bottom: 10px;
+}
+
+.one-message:last-of-type {
+    border: none !important;
+}
+
+.search-wrapper::after{
+    content: '\F1A0';
+    font-family: "todo-webfont";
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+    font-weight: normal;
+    font-style: normal;
+    speak: none;
+    text-decoration: inherit;
+    text-transform: none;
+    text-rendering: auto;
+    position: absolute;
+    top: 17px;
+    right: 22px;
+    color: #2196f3;
+}
+.search {
+    border: none;
+    width: 130px;
+    margin: 5px 0;
+    padding: 4px 20px 4px 6px;
+    height: 24px;
+    font-size: 0.8rem;
+}
+.sync-overlay {
+    padding: 8px 15px;
+    margin-left: -15px;
+    padding-left: 40px;
+}
+.sync-overlay img {
+    position: absolute;
+    left: -9.5px;
+    top: 3px;
+}
+.sync-message {
+    font-weight: 200;
+    line-height: 20px;
+}
+
+@media (max-width: 767px) {
+    .dev-notice {
+        margin-top: 0;
+        display: inline;
+        font-size: 0.8rem;
+    }
+}
+@media (max-width: 400px) {
+    .dev-notice {
+        font-size: 0.7rem;
+        position: absolute;
+        top: 0;
+        right: 15px;
+        text-align: right;
+    }
+}

@@ -1,0 +1,40 @@
+<div *ngIf="currentScreen == FilterScreens.Main">
+    <div class="modal-header">
+        <h4 class="modal-title mx-auto">Filter</h4>
+        <button type="button" class="close" aria-label="Done" (click)="done.emit()">Done</button>
+    </div>
+    <div class="modal-body no-footer settings">
+        <div class="editor-header"></div>
+        <div class="setting-section">
+            <div *ngFor="let filterRow of filterRows" 
+                class="row hover"
+                (click)="selectSmartListFilter(filterRow)">
+                <label [ngClass]="{'active': !filterGroupHasKey(filterRow.key)}">{{SmartListFilterLabels[filterRow.key]}}</label>
+            </div>
+        </div>
+    </div>
+</div>
+<smart-list-property-type-filter *ngIf="currentScreen == FilterScreens.TaskType || currentScreen == FilterScreens.TaskAction"
+    [filterGroup]="filterGroup"
+    [screen]="currentScreen"
+    (done)="done.emit()"
+></smart-list-property-type-filter>
+<smart-list-tags-filter *ngIf="currentScreen == FilterScreens.Tags"
+    [filterGroup]="filterGroup"
+    (done)="done.emit()"
+></smart-list-tags-filter>
+<smart-list-assignment-filter *ngIf="currentScreen == FilterScreens.AssignedTo"
+    [filterGroup]="filterGroup"
+    (done)="done.emit()"
+></smart-list-assignment-filter>
+<smart-list-search-term-filter *ngIf="currentScreen == FilterScreens.Note || currentScreen ==FilterScreens.TaskName"
+    [filterGroup]="filterGroup"
+    [screen]="currentScreen"
+    (done)="done.emit()"
+></smart-list-search-term-filter>
+<smart-list-date-filter *ngIf="showDateFilterScreen"
+    [filterGroup]="filterGroup"
+    [screen]="currentScreen"
+    (done)="done.emit()"
+>
+</smart-list-date-filter>

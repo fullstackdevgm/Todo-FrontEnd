@@ -1,0 +1,10 @@
+<ul class="recurrence-wrapper mb-2">
+    <li class="recurrence-item" *ngFor="let day of days" (click)="daySelected(day)">
+        Every {{day}}
+        <i *ngIf="recurrenceContainsDay(day)" class="fa fa-check"></i>
+    </li>
+</ul>
+<div class="btn-group-right mb-2">
+    <button class="btn-default btn-info btn-size-xs" type="button" (click)="removePressed()">Remove</button>
+    <button class="btn-default btn-info btn-size-xs" type="button" (click)="savePressed()">Save</button>
+</div>

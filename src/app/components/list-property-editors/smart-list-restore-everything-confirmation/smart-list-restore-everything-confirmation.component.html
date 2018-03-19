@@ -1,0 +1,15 @@
+<div class="modal-header">
+    <div class="col-2 text-left"></div>
+    <div class="col-8 text-center">
+        <h4 class="modal-title">Restore the default filters?</h4>
+    </div>
+    <div class="col-2 text-right"></div>
+</div>
+<div class="header-body-spacer"></div>
+<div class="modal-body">
+    <div>Restore the default filters on the Everything smart list to reset the filters back to their original values.</div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn-default btn-info btn-size-xs" (click)="done.emit()">Cancel</button>
+    <button type="button" class="btn-default btn-warning btn-size-xs" (click)="restore.emit()">Restore</button>
+</div>

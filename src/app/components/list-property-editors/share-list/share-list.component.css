@@ -1,0 +1,56 @@
+.userpic {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(162, 162, 162, 0.8);
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.userpic .name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(162, 162, 162, 0.8);
+}
+
+.username {
+    font-weight: 400;
+    font-size: 0.9rem;
+    width: calc(100% - 30px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.text {
+    font-size: 0.8rem;
+}
+
+.content {
+    flex-grow: 1;
+    width: 80%;
+}
+
+.actions {
+    display: none;
+    padding-right: 6px;
+    align-self: flex-end;
+    font-size: 0.8rem;
+}
+
+.row:hover .actions {
+    display: block;
+}
+
+.only-owner {
+    color: #888!important;
+}
+
+.setting-section i {
+    cursor: default;
+}
+.setting-section .row {
+    min-height: 75px;
+}

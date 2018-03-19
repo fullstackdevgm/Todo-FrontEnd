@@ -1,0 +1,49 @@
+<form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
+        <label>
+            Email
+            <input type="text" class="form-control" name="username" [(ngModel)]="model.username" #username="ngModel" #focusLogin placeholder="Your email address" required />
+        </label>
+        <div *ngIf="f.submitted && !username.valid" class="help-block error">Username is required</div>
+    </div>
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+        <label>
+            Password
+            <input type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel" placeholder="Your password" required />
+        </label>
+        <div *ngIf="f.submitted && !password.valid" class="help-block error">Password is required</div>
+    </div>
+    <button [disabled]="loading" class="btn-default btn-green btn-submit btn-preloader" [ngClass]="{loading : loading}">
+        <span>Sign in</span>
+        <span class="preloader-xs"></span>
+    </button>
+    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+    <p class="forgot-password-link"><small (click)="openForgotPasswordModal(content)" class="link">Forgot your password?</small></p>
+</form>
+
+
+<template #content let-c="close" let-d="dismiss">
+    <form name="form" (ngSubmit)="resetForm.form.valid && requestResetPasswordForUser()" #resetForm="ngForm" novalidate>
+        <div class="modal-header">
+            <h4 class="modal-title">Reset Password</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p *ngIf="!resetPasswordResultMessage">Enter your Email below and we’ll send you a link to reset your password.</p>
+            <div class="form-group no-margin" *ngIf="!resetPasswordResultMessage" [ngClass]="{ 'has-error': resetForm.submitted && !resetEmail.valid }">
+                <input type="text" class="form-control no-margin" name="resetEmail" [(ngModel)]="model.resetEmail" #resetEmail="ngModel" placeholder="Email" required  autofocus/>
+                <div *ngIf="resetForm.submitted && !resetEmail.valid" class="help-block error">Email is required</div>
+            </div>
+            <p *ngIf="resetPasswordResultMessage" [ngClass]="{'has-error' : resetPasswordError}">{{resetPasswordResultMessage}}</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-default btn-info" (click)="modalClose(content)">Close</button>
+            <button *ngIf="!resetPasswordResultMessage" [disabled]="loading" class="btn-default btn-green">Reset Password</button>
+        </div>
+    </form>
+</template>
+
+
+<template ngbModalContainer></template>

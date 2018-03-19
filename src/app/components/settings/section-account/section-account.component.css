@@ -1,0 +1,223 @@
+header {
+    padding: 15px;
+    border-bottom: 1px solid #adadad;
+}
+
+header h2 {
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin: 0;
+}
+
+footer {
+    padding: 15px;
+    border-top: 1px solid #adadad;
+}
+
+footer p {
+    font-size: 0.9rem;
+    color: #939393;
+    margin: 0 0 10px 0;
+}
+
+footer p.hint {
+    font-size: 0.75rem;
+    color: #939393;
+}
+
+footer h4 {
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin: 6px;
+}
+
+section {
+    display: flex;
+    padding: 15px;
+}
+
+.userpic-wrapper {
+    margin-right: 10px;
+}
+
+.userpic-wrapper .userpic {
+    height: 50px;
+    width: 50px;
+    display: flex;
+    border-radius: 25px;
+    border: 1px solid #adadad;
+    color: #adadad;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+}
+.userpic-wrapper .userpic:hover {
+    color: #515151;
+}
+
+.userpic-wrapper .edit-button {
+    margin-top: 4px;
+    font-size: 0.9rem;
+}
+
+form,
+form .form-group,
+form .form-group label,
+form .form-control {
+    margin: 0;
+}
+
+form {
+    width: 100%;
+}
+
+form .form-group input {
+    border-color: #adadad;
+    width: 180px;
+    margin-left: 10px;
+    height: 30px;
+    font-size: 0.9rem;
+    padding: 4px 12px;
+}
+
+form .form-group label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+form .form-group:last-child label {
+    margin-bottom: 0;
+}
+.croppie-container{
+    height: inherit;
+}
+
+.croppie-wrapper {
+    padding: 15px;
+}
+
+.croppie-wrapper .btn-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.picture-form {
+    width: 50px;
+}
+
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: #fff;
+}
+
+/* style the profile image button */
+
+.inputfile-profile + label {
+    color: #fff; /* make it not appear by default */
+    text-align: center;
+}
+
+.inputfile-profile:focus + label,
+.inputfile-profile.has-focus + label,
+.inputfile-profile + label:hover {
+    color: #444;
+}
+
+.inputfile-profile + label figure {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    
+    background-color: #fff;
+    display: block;
+    position: relative;
+}
+
+.inputfile-profile:focus + label figure,
+.inputfile-profile.has-focus + label figure,
+.inputfile-profile + label:hover figure {
+    background-color: #fff;
+}
+
+.save-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.save-wrapper .btn-default {
+    max-width: 180px;
+    width: 100%;
+    margin: 0;
+    text-align: center;
+    line-height: 35px;
+    padding: 0 20px;
+    position: relative;
+}
+
+.save-wrapper .btn-default span:not(.preloader-xs) {
+    position: static;
+}
+
+.save-wrapper .btn-preloader.loading span.preloader-xs {
+    position: static;
+}
+
+.save-wrapper .btn-preloader.loading span:not(.preloader-xs) {
+    display: none;
+}
+
+.save-error {
+    color: #F44336;
+    text-align: center;
+}
+
+.task-email > span {
+    font-size: 12px;
+    padding: 15px 10px;
+    border-top: 1px solid #bbb;
+    display: block;
+    text-align: center;
+}
+
+.ae-label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.ae-label input {
+    width: 205px;
+}
+
+.save-names .has-error, .update-error.has-error {
+    font-size: 12px;
+    font-weight: bold;
+    text-align: right;
+}
+
+.save-names .save-wrapper .btn-default {
+    width: auto;
+    height: 35px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+input.changed {
+    font-weight: normal;
+}

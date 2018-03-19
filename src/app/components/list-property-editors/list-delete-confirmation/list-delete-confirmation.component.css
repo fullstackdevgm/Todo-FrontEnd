@@ -1,0 +1,17 @@
+/**
+ * smart-list-delete-confirmation.component
+ */
+
+.modal-body {
+    padding: 15px;
+}
+
+.modal-footer {
+    border-top:1px solid #eaeaea;
+    justify-content: flex-end;
+}
+
+.error-message {
+    color: #F44336;
+}
+

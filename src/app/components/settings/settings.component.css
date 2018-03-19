@@ -1,0 +1,44 @@
+.modal-body {
+    min-height: 300px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+aside {
+    width: 130px;
+    background-color: #f5f5f5;
+    min-height: inherit;
+    box-shadow: inset -6px 0 7px -9px rgba(0, 0, 0, 0.4);
+}
+
+aside ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+aside ul li {
+    margin: 0;
+    padding: 6px 15px;
+    font-size: 0.9rem;
+    cursor: default;
+    -webkit-transition: background-color 0.2s;
+    -moz-transition: background-color 0.2s;
+    -ms-transition: background-color 0.2s;
+    -o-transition: background-color 0.2s;
+    transition: background-color 0.2s;
+}
+
+aside ul li.active {
+    font-weight: 400;
+}
+
+aside ul li.active,
+aside ul li:hover {
+    background-color: #bbdefb;
+}
+
+.modal-body .section,
+.modal-body section {
+    width: calc(100% - 130px);
+}

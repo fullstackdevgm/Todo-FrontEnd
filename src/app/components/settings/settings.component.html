@@ -1,0 +1,33 @@
+<div>
+    <div class="modal-header">
+        <div class="col-6 text-left">
+            <h4 class="modal-title">Todo Cloud Settings</h4>
+        </div>
+        <div class="col-4 text-center">
+        </div>
+        <div class="col-2 text-right">
+            <i class="fa fa-times text-white" (click)="done()"></i>
+        </div>
+    </div>
+    <div class="header-body-spacer"></div>
+    <div class="modal-body no-footer settings-container">
+        <aside>
+            <ul>
+                <li [ngClass]="{active : activeSection == SettingsSection.Account }" (click)="activeSection = SettingsSection.Account ">Account</li>
+                <li [ngClass]="{active : activeSection == SettingsSection.Premium }" (click)="activeSection = SettingsSection.Premium ">Premium</li>
+                <li [ngClass]="{active : activeSection == SettingsSection.General }" (click)="activeSection = SettingsSection.General ">General</li>
+                <li [ngClass]="{active : activeSection == SettingsSection.TaskCreation }" (click)="activeSection = SettingsSection.TaskCreation ">Task Creation</li>
+                <li [ngClass]="{active : activeSection == SettingsSection.Notification }" (click)="activeSection = SettingsSection.Notification ">Notification</li>
+                <li [ngClass]="{active : activeSection == SettingsSection.About }" (click)="activeSection = SettingsSection.About ">About</li>
+                <li [ngClass]="{active : activeSection == SettingsSection.Teaming }" (click)="activeSection = SettingsSection.Teaming ">Teaming</li>
+            </ul>
+        </aside>
+        <section-account class="section" *ngIf="activeSection == SettingsSection.Account" (showPremiumSelected)="_activeSection = SettingsSection.Premium"></section-account>
+        <section-premium class="section" *ngIf="activeSection == SettingsSection.Premium" (showTeamingSelected)="_activeSection = SettingsSection.Teaming"></section-premium>
+        <section-general class="section" *ngIf="activeSection == SettingsSection.General"></section-general>
+        <section-task-creation class="section" *ngIf="activeSection == SettingsSection.TaskCreation"></section-task-creation>
+        <section-notification class="section" *ngIf="activeSection == SettingsSection.Notification"></section-notification>
+        <section-about class="section" *ngIf="activeSection == SettingsSection.About"></section-about>
+        <section-teaming class="section" *ngIf="activeSection == SettingsSection.Teaming"></section-teaming>
+    </div>
+</div>

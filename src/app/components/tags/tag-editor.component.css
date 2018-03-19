@@ -1,0 +1,32 @@
+.available-tags {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.available-tags > i {
+    margin-right: 10px;
+}
+
+.available-tags .tag-name {
+    flex-grow: 2;
+}
+
+.tag-sort-toggle .btn {
+    border-color: rgb(33, 150, 243);
+    outline: 0 !important;
+    transition: color 0.1s ease-out, background-color 0.1s ease-out, border-color 0.1s ease-out;
+}
+
+.tag-sort-toggle .btn.active {
+    color: #fff !important;
+    border-color: rgb(93, 162, 227);
+    background-color: rgb(93, 162, 227);
+}
+
+.tag-sort-toggle:focus,
+.tag-sort-toggle .btn.focus,
+.tag-sort-toggle .btn:focus {
+    outline: 0 !important;
+    box-shadow: none !important;
+}

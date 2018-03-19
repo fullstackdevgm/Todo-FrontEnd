@@ -1,0 +1,242 @@
+<div *ngIf="currentScreen == SmartListEditScreen.Main">
+    <div class="modal-header">
+        <div class="col-2 text-left">
+            <button type="button" class="close" aria-label="Close" (click)="cancel()">Cancel</button>
+        </div>
+        <div class="col-8 text-center">
+        <h4 class="modal-title">Edit Smart List</h4>
+        </div>
+        <div class="col-2 text-right">
+            <button type="button" class="close" aria-label="Save" (click)="saveSmartList()">Save</button>
+        </div>
+    </div>
+    <div class="header-body-spacer"></div>
+    <div class="modal-body">
+        <div class="row">
+            <label class="col-5 text-right" for="listName" (angular-ready)="angularReady()">Name</label>
+            <div class="col-7 edit-property">
+                <input *ngIf="!_smartList.isEverythingSmartList"
+                       class="form-control"
+                       type="text"
+                       id="listName"
+                       name="listName"
+                       [ngModel]="_smartList.name"
+                       (ngModelChange)="updateSmartListName(listName.value);"
+                       (keydown.enter)="updateSmartListName(listName.value);"
+                       #listName placeholder="New Smart List"
+                       tabindex="1"
+                       autofocus
+                />
+                <span *ngIf="_smartList.isEverythingSmartList">{{_smartList.name}}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-5 text-right">Color</label>
+            <div class="colors colors-all col-7 no-padding">
+                <ul>
+                    <li *ngFor="let color of mainColors"
+                        class="item-color"
+                        [ngClass]="{selected: color===_smartList.color}"
+                        [style.backgroundColor]="color"
+                        (click)="updateColor(color)"
+                    >
+                        <i *ngIf="color===_smartList.color" class="fa fa-check"></i>
+                    </li>
+                    <li class="item-color"
+                        [ngClass]="{selected: mainColors.indexOf(_smartList.color) === -1}"
+                        [style.backgroundColor]="bgColorMore" (click)="show(SmartListEditScreen.AdditionalColors)"
+                    >
+                        <i class="fa fa-ellipsis-h"></i>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <label class="col-5 text-right">Lists</label>
+            <div class="col-7 edit-property text-left">
+                {{includedListsMessage}}
+                <button type="button" 
+                    class="modify-value-button" 
+                    aria-label="select list"
+                    (click)="show(SmartListEditScreen.SourceLists)">
+                    select list...
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-5 text-right">Show List Names</label>
+            <div class="col-7 edit-property form-check">
+                <i (click)="toggleShowListName()" class="fa" [ngClass]="{'fa-square-o':!_smartList.showListForTasks, 'fa-check-square-o':_smartList.showListForTasks}"></i>
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-5 text-right">Include Completed Tasks</label>
+            <div class="col-7 edit-property text-left">
+                {{completedTasksMessage}}
+                <button type="button" 
+                    class="modify-value-button" 
+                    aria-label="select list"
+                    (click)="show(SmartListEditScreen.CompletedTasksFilter)">
+                    change...
+                </button>
+            </div>
+        </div>
+        
+        <div class="row">
+            <label class="col-5 text-right">Sort Type</label>
+            <div class="col-7 edit-property text-left">
+                {{sortTypeMessage}}
+                <button type="button" 
+                    class="modify-value-button" 
+                    aria-label="select list"
+                    (click)="show(SmartListEditScreen.SortType)">
+                    change...
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-5 text-right">Show Subtasks</label>
+            <div class="col-7 edit-property form-check">
+                <i (click)="toggleShowSubtasks()" class="fa" [ngClass]="{'fa-square-o':!_smartList.showSubtasks, 'fa-check-square-o':_smartList.showSubtasks}"></i>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-5 text-right">Use task start dates</label>
+            <div class="col-7 edit-property form-check">
+                <i (click)="toggleUseStartDates()" class="fa" [ngClass]="{'fa-square-o':_smartList.excludeStartDates, 'fa-check-square-o':!_smartList.excludeStartDates}"></i>
+            </div>
+        </div>
+
+        <div class="editor-header d-flex">
+            <span class="align-self-end">Task Creation</span>
+        </div>
+
+        <div class="row">
+            <label class="col-5 text-right">Due date</label>
+            <div class="col-7 edit-property text-left">
+                {{defaultDueDateMessage}}
+                <button type="button" 
+                    class="modify-value-button" 
+                    aria-label="select list"
+                    (click)="show(SmartListEditScreen.DefaultDueDate)">
+                    change...
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-5 text-right">Default list</label>
+            <div class="col-7 edit-property text-left">
+                {{defaultListMessage}}
+                <button type="button" 
+                    class="modify-value-button" 
+                    aria-label="select list"
+                (click)="show(SmartListEditScreen.DefaultList)" >
+                    change...
+                </button>
+            </div>
+        </div>
+
+        <div *ngIf="!_smartList.isEverythingSmartList">
+            <div class="editor-header d-flex">
+                <span class="align-self-end">Match All These Filters</span>
+            </div>
+
+            <smart-list-edit-filter-row *ngFor="let key of filterKeys()"
+                [filterGroup]="_smartList.filter.filterGroups[0]"
+                [key]="key"
+                (showFilter)="showFilterScreen(key)"
+            ></smart-list-edit-filter-row>
+
+            <div class="row justify-content-center">
+                <button type="button" 
+                    class="stand-alone-row-button" 
+                    aria-label="Remove Due Date Filter"
+                    (click)="show(SmartListEditScreen.Filters)">
+                    Add a filter...
+                </button>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button"
+                *ngIf="showDuplicateButton"
+                class="stand-alone-row-button" 
+                aria-label="Remove Due Date Filter" 
+                (click)="duplicateSmartList()">
+                Duplicate smart list
+            </button>
+            <button type="button"
+                *ngIf="showDuplicateButton && !_smartList.isEverythingSmartList"
+                class="stand-alone-row-button btn-delete-list"
+                (click)="show(SmartListEditScreen.DeleteConfirmation)">
+                Delete smart list
+            </button>
+            <button type="button"
+                *ngIf="showRestoreEverythingButton"
+                class="stand-alone-row-button btn-restore-everything"
+                (click)="show(SmartListEditScreen.RestoreEverythingConfirmation)">
+                Restore defaults
+            </button>
+        </div>
+    </div>
+</div>
+<div class="loading-overlay" [ngClass]="{loading: savingInProgress}"><div class="preloader-wrapper"><div class="preloader-sm"></div></div></div>
+<list-edit-default-due-date *ngIf="currentScreen == SmartListEditScreen.DefaultDueDate"
+    [dueDates]="dueDates"
+    [list]="_smartList"
+    (change)="determineDueDateMessage()"
+    (done)="show(SmartListEditScreen.Main)"
+></list-edit-default-due-date>
+<list-edit-sort-type *ngIf="currentScreen == SmartListEditScreen.SortType"
+    [types]="sortTypes"
+    [list]="_smartList"
+    (change)="determineSortTypeMessage()"
+    (done)="show(SmartListEditScreen.Main)"
+></list-edit-sort-type>
+<list-change-color *ngIf="currentScreen == SmartListEditScreen.AdditionalColors"
+    [list]="_smartList"
+    (change)="determineColorMessage()"
+    (done)="show(SmartListEditScreen.Main)"
+></list-change-color>
+<smart-list-task-sources *ngIf="currentScreen == SmartListEditScreen.SourceLists"
+    [smartList]="_smartList"
+    (change)="determineIncludedListsMessage()"
+    (done)="show(SmartListEditScreen.Main)"
+></smart-list-task-sources>
+<smart-list-default-list *ngIf="currentScreen == SmartListEditScreen.DefaultList"
+    [smartList]="_smartList"
+    (change)="updateDefaultList($event)"
+    (done)="show(SmartListEditScreen.Main)"
+></smart-list-default-list>
+<smart-list-completed-tasks *ngIf="currentScreen == SmartListEditScreen.CompletedTasksFilter"
+    [smartList]="_smartList"
+    (change)="updateCompletedMessage()"
+    (done)="show(SmartListEditScreen.Main)"
+></smart-list-completed-tasks>
+<smart-list-filters *ngIf="currentScreen == SmartListEditScreen.Filters"
+    [smartList]="_smartList"
+    [showFilter]="shownFilterKey"
+    (done)="show(SmartListEditScreen.Main)"
+></smart-list-filters>
+<smart-list-create *ngIf="currentScreen == SmartListEditScreen.SmartListCreate"
+    [smartList]="_smartList"
+    (typeSelected)="createSmartListTypeSelected($event)"
+    (done)="activeModal.close()"
+></smart-list-create>
+<smart-list-delete-confirmation *ngIf="currentScreen == SmartListEditScreen.DeleteConfirmation"
+     [smartList]="_smartList"
+     (done)="show(SmartListEditScreen.Main)"
+></smart-list-delete-confirmation>
+<smart-list-restore-everything-confirmation *ngIf="currentScreen == SmartListEditScreen.RestoreEverythingConfirmation"
+    [smartList]="_smartList"
+    (restore)="restoreEverythingSmartList()"
+    (done)="show(SmartListEditScreen.Main)"
+></smart-list-restore-everything-confirmation>

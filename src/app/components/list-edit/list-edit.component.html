@@ -1,0 +1,156 @@
+<div *ngIf="!(showEditNotifications || showEditDefaultDueDate || showEditSortType || showChangeColor || showChangeIcon || showEditSharing)">
+    <div class="modal-header">
+        <div class="col-2 text-left">
+            <button type="button" class="close" aria-label="Close" (click)="cancel()">Cancel</button>
+        </div>
+        <div class="col-8 text-center">
+            <h4 class="modal-title">Edit List</h4>
+        </div>
+        <div class="col-2 text-right">
+            <button *ngIf="!saveErrorMessage" [disabled]="!saveButtonActive" type="button" class="close" aria-label="Done" (click)="done()">Done</button>
+            <button *ngIf="saveErrorMessage" type="button" class="close" aria-label="Close" (click)="done()">Close</button>
+        </div>
+    </div>
+    <div class="header-body-spacer"></div>
+    <div *ngIf="saveErrorMessage" class="modal-body">
+            <div *ngIf="saveErrorMessage" class="row error-message">{{saveErrorMessage}}</div>
+    </div>
+    <div *ngIf="!saveErrorMessage" class="modal-body">
+        <div class="row">
+            <label class="col-5 text-right" for="listName">Name</label>
+            <div class="col-7 edit-property">
+                <input *ngIf="!isMainList" class="form-control"
+                       type="text"
+                       id="listName"
+                       name="listName"
+                       [ngModel]="_list.name"
+                       (ngModelChange)="updateListName(listName.value)"
+                       (keydown.enter)="updateListName(listName.value, true)"
+                       #listName placeholder="New List"
+                       tabindex="1"
+                       autofocus 
+                />
+                <span *ngIf="isMainList">{{_list.name}}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-5 text-right">Color</label>
+            <div class="colors colors-all col-7 no-padding">
+                <ul>
+                    <li *ngFor="let color of mainColors"
+                        class="item-color"
+                        [ngClass]="{selected: color===_list.color}"
+                        [style.backgroundColor]="color"
+                        (click)="updateColor(color)"
+                    >
+                        <i *ngIf="color===_list.color" class="fa fa-check"></i>
+                    </li>
+                    <li class="item-color"
+                        [ngClass]="{selected: mainColors.indexOf(_list.color) === -1}"
+                        [style.backgroundColor]="bgColorMore" (click)="showChangeColorSettings(true)"
+                    >
+                        <i class="fa fa-ellipsis-h"></i>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div *ngIf="!isMainList" class="row">
+            <label class="col-5 text-right">Icon</label>
+            <div class="col-7 edit-property">
+                <i class="twf" [ngClass]="_list.iconName"></i>
+                <button type="button" 
+                    class="modify-value-button " 
+                    aria-label="select list"
+                    (click)="showChangeIconSettings(true)">
+                    change...
+                </button>
+            </div>
+        </div>
+
+        <div *ngIf="!isMainList" class="row">
+            <label class="col-5 text-right">Sharing options</label>
+            <div class="col-7 edit-property">
+                {{sharingMessage}}
+                <button *ngIf="_list.identifier && saveButtonActive"
+                    type="button" 
+                    class="modify-value-button " 
+                    aria-label="select list"
+                    (click)="showSharingOptions(true)">
+                    change...
+                </button>
+            </div>
+        </div>
+
+        <div *ngIf="!isMainList" class="row">
+            <label class="col-5 text-right">Email notifications</label>
+            <div class="col-7 edit-property">
+                <button type="button" 
+                    class="modify-value-button " 
+                    aria-label="select list"
+                    (click)="showNotificationSettings(true)">
+                    configure...
+                </button>
+            </div>
+        </div>
+
+        <div *ngIf="!isMainList" class="editor-header"></div>
+
+        <div *ngIf="!isMainList" class="row">
+            <label class="col-5 text-right">Default due date</label>
+            <div class="col-7 edit-property">
+                {{defaultDueDateMessage}}
+                <button type="button" 
+                    class="modify-value-button " 
+                    aria-label="select list"
+                    (click)="showDefaultDueDateSettings(true)">
+                    change...
+                </button>
+            </div>
+        </div>
+        <div *ngIf="!isMainList" class="row">
+            <label class="col-5 text-right">Sort type</label>
+            <div class="col-7 edit-property">
+                {{sortTypeMessage}}
+                <button type="button" 
+                    class="modify-value-button " 
+                    aria-label="select list"
+                    (click)="showSortTypeSettings(true)">
+                    change...
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer"></div>
+</div>
+<div class="loading-overlay" [ngClass]="{loading: savingInProgress}"><div class="preloader-wrapper"><div class="preloader-sm"></div></div></div>
+<list-edit-default-due-date *ngIf="showEditDefaultDueDate"
+    [dueDates]="dueDates"
+    [list]="_list"
+    (change)="determineDueDateMessage()"
+    (done)="showDefaultDueDateSettings(false)"
+></list-edit-default-due-date>
+<list-edit-notifications *ngIf="showEditNotifications"
+    [list]="_list"
+    (done)="showNotificationSettings(false)"
+></list-edit-notifications>
+<list-edit-sort-type *ngIf="showEditSortType"
+    [types]="sortTypes"
+    [list]="_list"
+    (change)="determineSortTypeMessage()"
+    (done)="showSortTypeSettings(false)"
+></list-edit-sort-type>
+<list-change-color *ngIf="showChangeColor"
+    [list]="_list"
+    (done)="showChangeColorSettings(false)"
+></list-change-color>
+<list-change-icon *ngIf="showChangeIcon"
+    [list]="_list"
+    (done)="showChangeIconSettings(false)"
+></list-change-icon>
+<share-list *ngIf="showEditSharing"
+    [list]="_list"
+    (done)="showSharingOptions(false)"
+    (listMembershipChanged)="getListMemberInfo()"
+></share-list>

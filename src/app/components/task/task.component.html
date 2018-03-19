@@ -1,0 +1,116 @@
+<context-menu #taskMoreOptionsMenu>
+  <div *ngIf="task.identifier != null">
+    <template contextMenuItem (execute)="editTaskSelected()">
+        Edit Task
+    </template>
+    <template *ngIf="task.isChecklist || task.isProject" contextMenuItem divider="true"></template>
+    <template *ngIf="task.isProject" contextMenuItem (execute)="showChildren()">
+        View Subtasks
+    </template>
+    <template *ngIf="task.isChecklist" contextMenuItem (execute)="showChildren()">
+        View Items
+    </template>
+    <template contextMenuItem divider="true"></template>
+    <template *ngIf="!task.isProject && !task.isSubtask" contextMenuItem (execute)="changeTaskType(TaskType.Project)">
+        Change To Project
+    </template>
+    <template *ngIf="!task.isChecklist" contextMenuItem (execute)="changeTaskType(TaskType.Checklist)">
+        Change To Checklist
+    </template>
+    <template *ngIf="task.isChecklist || task.isProject" contextMenuItem (execute)="changeTaskType(TaskType.Normal)">
+        Change To Regular Task
+    </template>
+    <template contextMenuItem divider="true"></template>
+    <template contextMenuItem (execute)="showDeleteTaskConfirmationModal()">
+        Delete Task
+    </template>
+    <template contextMenuItem *ngIf="taskIsSelected" (execute)="showDeleteSelectedConfirmationModal()">
+        Delete Selected Tasks
+    </template>
+  </div>
+</context-menu>
+
+<div class="task-item" [ngClass]="{editing: task.editing, creating:currentCompletionState == TaskCompletionState.Creating}" [contextMenu]='taskMoreOptionsMenu' [contextMenuSubject]='task'>
+    <div class="subtasks-icon fa"
+         *ngIf="task.isProject || task.isChecklist"
+         (click)="$event.stopPropagation(); showChildren()"
+    ></div>
+    <div
+            class="task-check"
+            (click)="completeTask()"
+            [ngClass]="{
+            'check-animation': currentCompletionState == TaskCompletionState.Initial,
+            'grace-animation': currentCompletionState == TaskCompletionState.GracePeriod,
+            'saving-animation': currentCompletionState == TaskCompletionState.Saving,
+            'check': currentCompletionState < TaskCompletionState.Error,
+            'error': currentCompletionState == TaskCompletionState.Error,
+            'complete' : currentCompletionState == TaskCompletionState.Complete
+            }"
+    >
+        <i class="checkmark draw"></i>
+        <svg class="progress" width="20" height="20">
+            <circle class="back"
+                    cx="10" cy="10" r="8" fill="none" 
+                    [attr.stroke]="
+                        listHasDarkColor() ? (listForTask.color | lightenDarkenColor:-40) :
+                        listForTask ? listForTask.color : 
+                        'rgba(0, 0, 0, 0.4)'"/>
+            <circle class="bar" #circleBar
+                    cx="10" cy="10" r="8" fill="none" />
+        </svg>
+    </div>
+    <div class="task-data"
+         (click)="selectTask($event.shiftKey, $event.ctrlKey || $event.metaKey)"
+         (dblclick)="editTaskSelected()"
+    >
+        <div class="first-row d-flex align-items-center">
+            <span class="task-starred" *ngIf="task.starred"><i class="fa fa-star"></i></span>
+            <span class="task-priority" *ngIf="task.priority !== TaskPriority.None && !task.starred">
+                 <span *ngIf="task.priority == TaskPriority.Low">
+                        <i class="bar"></i>
+                </span>
+                <span *ngIf="task.priority == TaskPriority.Medium">
+                        <i class="bar"></i>
+                        <i class="bar"></i>
+                </span>
+                <span *ngIf="task.priority == TaskPriority.High">
+                        <i class="bar"></i>
+                        <i class="bar"></i>
+                        <i class="bar"></i>
+                </span>
+            </span>
+            <span class="task-name">
+                {{task.name}}
+            </span>
+        </div>
+        <div *ngIf="task.shouldShowDueDate || task.note || task.hasUserAssignment || task.isCompleted" class="task-second-row">
+            <span class="start-date" *ngIf="task.shouldShowStartDate && !task.isCompleted">{{(task.shownStartDate.getFullYear() == currentDate.getFullYear()) ? (task.shownStartDate.getTime() | datex:'ddd MMM DD') : (task.shownStartDate.getTime() | datex:'ddd MMM DD YYYY')}}</span>
+            <span class="start-date-dash" *ngIf="task.shouldShowStartDate && task.shouldShowDueDate && !task.isCompleted">-</span>
+            <span class="due-date" [ngClass]="{overdue : isOverdueTask, initalic: task.isProject && task.dueDate != task.shownDueDate}" *ngIf="task.shouldShowDueDate && !task.isCompleted">{{ task.dueDateHasTime  ? ( (task.shownDueDate.getFullYear() == currentDate.getFullYear()) ? (task.shownDueDate.getTime() | datex:'ddd MMM DD, h:mm A') : (task.shownDueDate.getTime() | datex:'ddd MMM DD YYYY, h:mm A') ) : ( (task.shownDueDate.getFullYear() == currentDate.getFullYear()) ? (task.shownDueDate.getTime() | datex:'ddd MMM DD') : (task.shownDueDate.getTime() | datex:'ddd MMM DD YYYY') ) }}</span>
+            <span class="due-date" *ngIf="task.isCompleted">{{ (task.completionDate.getTime() | datex:'ddd MMM DD') }}</span>
+            <span class="task-indicator-icon" *ngIf="task.recurrenceType !== TaskRecurrenceType.None &&
+  (task.recurrenceType !== TaskRecurrenceType.WithParent || (parentTask && parentTask.recurrenceType))"><i class="fa fa-repeat"></i></span>
+            <span class="task-indicator-icon" *ngIf="task.note"><i class="fa fa-sticky-note"></i></span>
+            <span class="task-indicator-icon" *ngIf="task.hasUserAssignment"><i class="fa fa-user"></i></span>
+        </div>
+        <div *ngIf="listForTask && showListName" class="task-third-row">
+            <span>{{listForTask.name}}</span>
+        </div>
+    </div>
+    <div class="task-add-info">
+        <span class="task-indicator-icon badge" *ngIf="task.taskTypeHasActionData">
+            <span *ngIf="task.taskTypeHasContactInfo" title="{{task.taskTypeContactValue}}"><i class="fa fa-user"></i></span>
+            <span *ngIf="task.taskTypeHasLocationInfo" title="{{task.taskTypeLocationLink}}"><a href="#" (click)="handleActionLinkClick($event, task.taskTypeLocationLink)"><i class="fa fa-map-marker"></i></a></span>
+            <span *ngIf="task.taskTypeHasOnlyPhoneInfo" title="{{task.taskTypePhoneNumberLink}}"><a href="#" (click)="handleActionLinkClick($event, task.taskTypePhoneNumberLink)"><i class="fa fa-phone"></i></a></span>
+            <span *ngIf="task.taskTypeHasURLInfo" title="{{task.taskTypeURLLink}}"><a href="#" (click)="handleActionLinkClick($event, task.taskTypeURLLink)"><i class="fa fa-link"></i></a></span>
+        </span>
+        <span class="subtask-count" *ngIf="task.isProject || task.isChecklist">{{subtaskCount}}</span>
+        <div class="assigned-to" *ngIf="task.hasUserAssignment">
+            <span class="userpic" *ngIf="selectedMember && selectedMember.imageGUID" [style.background-image]="'url(' + environment.baseProfileImageUrl + '/' + selectedMember.imageGUID + ')'"></span>
+            <span class="userpic" *ngIf="selectedMember && !selectedMember.imageGUID">
+                <span class="name">{{selectedMember.firstName.charAt(0)}}{{selectedMember.lastName.charAt(0)}}</span>
+            </span>
+        </div>
+    </div>
+    <a href="#" (click)="onContextMenu($event)" class="fa fa-ellipsis-h btn-task-menu" tabindex="-1" #taskEl></a>
+</div>

@@ -1,0 +1,32 @@
+<div class="landing">
+    <div [ngClass]="active_state" class="landing-inner">
+        <div class="box">
+            <header class="row text-center">
+                <div class="col-6">
+                    <img src="./assets/img/todo-logo.png" alt="" width="125" height="21" />
+                </div>
+                <div class="col-6">
+                    <span class="clickable link" (click)="login()">Sign in</span>
+                    or
+                    <span class="clickable link" (click)="register()">Register</span>
+                </div>
+            </header>
+            <login-form #loginEl></login-form>
+            <register-form #registerEl ></register-form>
+        </div>
+
+        <footer>
+            <div class="float-left lang-select">
+                <select>
+                    <option value="en_US" selected="">English</option>
+                    <option value="zh_CN">中文(简体)</option>
+                </select>
+            </div>
+            <ul class="float-right">
+                <li><a href="http://support.appigo.com/" target="_blank">Help</a></li>
+                <li><a (click)="Utils.openLink('/#/privacy')">Privacy</a></li>
+                <li><a (click)="Utils.openLink('/#/terms')">Terms</a></li>
+            </ul>
+        </footer>
+    </div>
+</div>

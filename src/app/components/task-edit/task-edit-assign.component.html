@@ -1,0 +1,33 @@
+<div class="task-edit-item-wrapper">
+    <div class="task-edit-item blue-value" (click)="toggleMemberList()" [ngClass]="{'default-value' : !_task || !_task.hasUserAssignment}">
+        <div class="item-icon">
+            <i class="fa fa-fw fa-user-circle" *ngIf="!selectedMember"></i>
+            <span class="userpic" *ngIf="selectedMember && selectedMember.account.imageGUID" [style.background-image]="'url(' + environment.baseProfileImageUrl + '/' + selectedMember.account.imageGUID + ')'"></span>
+            <span class="userpic" *ngIf="selectedMember && !selectedMember.account.imageGUID">
+                    <span class="name">{{selectedMember.account.firstName.charAt(0)}}{{selectedMember.account.lastName.charAt(0)}}</span>
+                </span>
+        </div>
+        <div class="task-data">
+            <div  class="d-flex justify-content-between align-items-center" *ngIf="selectedMember">
+                {{selectedMember.account.displayName()}}
+                <i class="fa fa-times" (click)="removeSelectedMember(); $event.stopPropagation()"></i>
+            </div>
+            <div *ngIf="!selectedMember">Assign this to someone</div>
+        </div>
+    </div>
+    <div *ngIf="showAssign" class="edit-content" [ngClass]="{inactive: !showAssign}">
+        <div *ngIf="loading">
+            <span>Loading...</span>
+        </div>
+        <ul class="users list-unstyled" *ngIf="!loading">
+            <li *ngFor="let member of members" (click)="listMemberSelected(member)">
+                <span class="userpic" *ngIf="member.account.imageGUID" [style.background-image]="'url(' + environment.baseProfileImageUrl + '/' + member.account.imageGUID + ')'"></span>
+                <span class="userpic" *ngIf="!member.account.imageGUID">
+                    <span class="name">{{member.account.firstName.charAt(0)}}{{member.account.lastName.charAt(0)}}</span>
+                </span>
+                <div class="username">{{member.account.displayName()}}</div>
+                <i *ngIf="_task.assignedUserId == member.account.identifier"  class="fa fa-check checked-item"></i>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+.task-item .task-name input[type="text"] {
+    border: none;
+    outline: 0;
+    margin: 0;
+    height: 24px;
+    font-size: 0.95rem;
+    color: #3c3c3c;
+}
+
+.task-item .task-name input[type="text"]:focus,
+.task-item .task-name input[type="text"]:active {
+    box-shadow: none;
+}

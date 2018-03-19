@@ -1,0 +1,409 @@
+/**
+  * Task item container
+  */
+:host {
+    background-color: #fff;
+    padding: 0 15px;
+    display: block;
+    position: relative;
+}
+
+:host:hover {
+    background-color: #f9f9f9;
+}
+:host.selected  {
+    background-color: rgba(33, 150, 243, 0.2);
+}
+
+.task-item {
+    display: flex;
+    padding: 6px 0 5px 0;
+    border-top: 1px solid rgba(162, 162, 162, 0.3);
+}
+
+.task-item.creating {
+    opacity: 0.4;
+}
+
+.task-item.editing {
+    background-color: rgba(162, 162, 162, 0.3);
+}
+
+.task-check {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    align-self: center;
+    position: relative;
+    display: inline-block;
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    /*border: 2px solid rgba(0, 0, 0, 0.2);*/
+}
+
+
+.checkmark {
+    display: none;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+}
+.task-check.check .checkmark {
+    display: block;
+}
+
+.checkmark.draw:after {
+    animation-duration: 0.7s;
+    animation-timing-function: ease;
+    animation-name: checkmark;
+    transform: scaleX(-1) rotate(135deg);
+}
+.checkmark:after {
+    opacity: 1;
+    height: 8px;
+    width: 5px;
+    transform-origin: left top;
+    border-right: 2px solid #5cb85c;
+    border-top: 2px solid #5cb85c;
+    content: '';
+    left: 3px;
+    top: 8px;
+    position: absolute;
+    transition: border-top-color 0.2s, border-right-color 0.2s;
+}
+
+.complete .checkmark.draw:after {
+    z-index: 10;
+}
+
+.complete .checkmark.draw:after {
+    border-right-color: #fff;
+    border-top-color: #fff;
+}
+
+
+
+
+.task-check .progress {
+    border-radius: 20px;
+    transform: rotate(-90deg);
+    background-color: transparent;
+}
+
+.task-check .progress circle {
+    stroke-width: 2;
+    fill: none;
+}
+
+
+circle.bar {
+    stroke: #5cb85c;
+    fill: none;
+    stroke-width: 2;
+    stroke-dasharray: 50.265;
+    stroke-dashoffset: 50.265;
+    transition: stroke 0.2s;
+}
+
+
+/*Circle: Default state*/
+.task-check .progress .bar{
+    display: none;
+}
+
+.task-check:not(.check) .progress .back,
+.task-check.error .progress .back,
+.task-check.complete .progress .back {
+    transition: stroke 0.2s ease-in-out;
+}
+
+.task-check .progress:hover .back {
+    stroke: rgba(0, 0, 0, 0.4);
+}
+
+/*Circle: Check*/
+.task-check.check-animation .progress {
+    animation: pulse 0.6s;
+}
+.task-check.check-animation .progress .back {
+    stroke: rgba(0, 0, 0, 0);
+}
+.task-check.check-animation .progress .bar {
+    stroke: #5cb85c;
+    display: block;
+    animation: progress 0.4s;
+}
+/*Circle: Grace period*/
+.task-check.grace-animation .progress .back{
+    stroke: #ffffff;
+}
+.task-check.grace-animation .progress .bar{
+    stroke: #5cb85c;
+    display: block;
+    stroke-dasharray: 50.265;
+    stroke-dashoffset: 0;
+    /*animation: progress 4.8s linear;*/
+}
+/*Circle: Waiting server response*/
+.task-check.saving-animation .progress {
+    transform: rotate(-90deg);
+    animation: progress-rotate 0.9s infinite linear;
+}
+.task-check.saving-animation .progress .bar{
+    stroke-dasharray: 43.982!important;
+    stroke-dashoffset: 43.982!important;
+    stroke: #5cb85c;
+    display: block;
+}
+
+/*Circle: After Successful saving*/
+.task-check.complete .progress .back {
+    animation: none;
+    stroke: #aaaaab;
+    fill: #cdcccd;
+}
+
+.task-check.complete .progress .bar {
+    display: none;
+}
+
+/*Circle: After server Error*/
+.task-check.error .progress .back{
+    animation: none;
+    stroke: rgba(204, 0, 0, 0.7);
+}
+.task-check.error .checkmark:after{
+    border-right-color: rgba(204, 0, 0, 0.7);
+    border-top-color: rgba(204, 0, 0, 0.7);
+}
+
+.task-item, .task-item span {
+    cursor: default;
+}
+
+.task-item .task-data {
+    font-size: 0.75rem;
+    color: #a2a2a2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 2;
+    width: calc(100% - 100px);
+}
+
+.task-item .task-data .task-name {
+    font-size: 0.95rem;
+    color: #3c3c3c;
+    word-wrap: break-word;
+    max-width: 100%;
+    cursor: default;
+}
+
+.task-item .task-data .task-starred {
+    color: #fbc02d;
+    margin-right: 6px;
+    font-size: 0.7rem;
+}
+
+.task-item .task-data .task-second-row .start-date,
+.task-item .task-data .task-second-row .start-date-dash {
+    color: #5cb85c;
+}
+
+.task-item .task-data .task-second-row .due-date {
+    margin-right: 4px;
+}
+.task-item .task-data .task-second-row .due-date.overdue {
+    color: rgba(204, 0, 0, 0.7);
+}
+
+.task-item .task-data .task-second-row .task-indicator-icon {
+    color: #aaaaaa;
+    font-size: 0.7rem;
+    margin-left: 4px;
+}
+
+.task-item .task-data .first-row .task-starred,
+.task-item .task-data .first-row .task-priority {
+    margin-right: 6px;
+}
+
+.task-item .task-data .first-row .task-priority {
+    height: 10px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.task-item .task-data .task-priority .bar:first-child {
+    margin-top: 0;
+}
+
+.task-item .task-data .task-priority .bar {
+    display: block;
+    height: 2px;
+    width: 10px;
+    margin-top: 1px;
+    background-color: #aaaaaa;
+}
+
+.task-item:hover .btn-task-menu {
+    opacity: 1;
+}
+
+.task-item .btn-task-menu {
+    text-decoration: none;
+    color: #888;
+    opacity: 0;
+    transition: opacity 0.2s, color 0.2s;
+    padding: 10px 0 10px 6px;
+    display: flex;
+    align-items: center;
+}
+
+.task-item .btn-task-menu:hover {
+    color: #3c3c3c;
+}
+
+.task-item .subtasks-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.6rem;
+    color: rgba(0, 0, 0, 0.4);
+    padding:1px;
+}
+
+.task-item .subtasks-icon {
+    cursor: default;
+    left: 6px;
+}
+.task-item .subtasks-icon:before {
+    content: "\F054";
+}
+.task-item .subtasks-icon{
+    left: 4px;
+}
+
+.task-item .task-add-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.task-item .task-add-info > * {
+    margin-left: 6px;
+}
+
+.task-item .task-add-info > *:first-child {
+    margin-left: 0;
+}
+
+.task-item .task-add-info .badge {
+    background-color: #aaa;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.task-item .task-add-info .badge a i, .task-item .task-add-info .badge a:hover i {
+    color: white;
+}
+
+.task-item .task-add-info .subtask-count {
+    font-size: 0.9rem;
+}
+
+.task-item .task-add-info .assigned-to {
+    display: flex;
+    align-items: center;
+    align-content: center;
+}
+
+.task-item .task-add-info .assigned-to .userpic {
+    height: 20px;
+    width: 20px;
+    font-size: 0.6rem;
+    display: flex;
+    border-radius: 10px;
+    border: 1px solid #adadad;
+    color: #adadad;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+}
+
+.initalic {
+    font-style: italic;
+}
+
+:host.show-subtasks .task-item .subtasks-icon:before {
+    content: "\F078";
+}
+
+@keyframes loader-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+@keyframes checkmark {
+    0% {
+        height: 0;
+        width: 0;
+        opacity: 1;
+    }
+    20% {
+        height: 0;
+        width: 5px;
+        opacity: 1;
+    }
+    40% {
+        height: 8px;
+        width: 5px;
+        opacity: 1;
+    }
+    100% {
+        height: 8px;
+        width: 5px;
+        opacity: 1;
+    }
+}
+
+
+
+@keyframes progress {
+    from {
+        stroke-dashoffset: 50.265;
+    }
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes progress-rotate {
+    from {
+        transform: rotate(-90deg);
+    }
+    to {
+        transform: rotate(270deg);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(92,184,92, 0.6);
+    }
+    70% {
+        box-shadow: 0 0 0 6px rgba(92,184,92, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(92,184,92, 0);
+    }
+}

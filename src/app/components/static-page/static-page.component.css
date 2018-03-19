@@ -1,0 +1,140 @@
+html, body {
+    background-color: #2196f3;
+}
+.page {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 10;
+}
+
+.page .page-inner {
+    width: 100%;
+    max-width: 960px;
+    padding: 10px;
+    position: relative;
+    font-family: 'Proxima Nova', 'Lato', sans-serif;
+    margin: auto;
+}
+
+.page .page-inner .box {
+    padding: 27px 0;
+    background-color: #fff;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.page .page-inner header {
+    border-bottom: 1px solid #adadad;
+    margin: 0 10px 30px 10px;
+    padding-bottom: 23px;
+    font-weight: 400;
+}
+
+.page .page-inner .page-content {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.page .page-inner .page-content h1 {
+    font-size: 2rem;
+    text-align: center;
+    font-weight: 300;
+    margin-bottom: 30px;
+}
+
+.page .page-inner .page-content h2 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 15px;
+    text-indent: 1rem;
+}
+.page .page-inner .page-content p {
+    text-indent: 1rem;
+}
+.page .page-inner .page-content p.c-agent {
+    text-indent: 0;
+    padding-left: 2rem;
+}
+
+
+
+footer {
+    width: 100%;
+    max-width: 960px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    padding-bottom: 10px;
+}
+
+footer .lang-select select {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    font-weight: 400;
+    color: #fff;
+    font-size: 0.9rem;
+    margin: 0;
+    padding: 0 12px 0 0;
+    height: 21px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+footer .lang-select select::-ms-expand {
+    display: none;
+}
+
+footer .lang-select {
+    position: relative;
+}
+
+footer .lang-select:after {
+    content: '\f0d7';
+    font-family: 'FontAwesome';
+    position: absolute;
+    top: 0;
+    right: 1px;
+    color: #fff;
+    z-index: -1;
+}
+
+footer select optgroup,
+footer select option {
+    background-color: #2196f3;
+    color: #fff;
+}
+
+footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+footer ul li {
+    display: inline-block;
+    font-weight: 400;
+    margin-left: 16px;
+}
+
+footer ul li a {
+    color: rgba(255, 255, 255, 0.6);
+    transition: color 0.2s;
+}
+
+footer a:hover,
+footer a:active,
+footer a:focus {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 1);
+}
+
+@media (max-width: 767px) {
+    html, body {
+        overflow: visible;
+    }
+}

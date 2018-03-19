@@ -1,0 +1,16 @@
+<div class="modal-header">
+    <div class="col-2 text-left"></div>
+    <div class="col-8 text-center">
+        <h4 class="modal-title">List Notifications</h4>
+    </div>
+    <div class="col-2 text-right">
+        <button type="button" class="close" aria-label="Done" (click)="done.emit()">Done</button>
+    </div>
+</div>
+<div class="modal-body no-footer settings">
+    <edit-notifications 
+        [notificationModel]="_list.emailNotifications"
+        (change)="onChange($event)"
+    >
+    </edit-notifications>
+</div>

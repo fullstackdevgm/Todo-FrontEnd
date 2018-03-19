@@ -1,0 +1,33 @@
+<div class="modal-header">
+    <div class="col-2 text-left"></div>
+    <div class="col-8 text-center">
+        <h4 class="modal-title">{{searchTermModule.title}}</h4>
+    </div>
+    <div class="col-2 text-right">
+        <button type="button" class="close" aria-label="Done" (click)="done.emit()">Done</button>
+    </div>
+</div>
+<div class="modal-body no-footer settings">
+
+    <div class="editor-header">{{comparatorHeaderText}}</div>
+    <div class="setting-section">
+        <div *ngFor="let row of comparatorRows" class="row hover" (click)="searchTermModule.comparator = row.comparator">
+            <label>{{row.description}}</label>
+            <i *ngIf="searchTermModule.comparator == row.comparator"  class="fa fa-check"></i>
+        </div>
+    </div>
+
+    <div class="editor-header">{{searchTermHeaderText}}</div>
+    <div class="setting-section">
+        <div *ngFor="let index of searchTermModule.numberOfTermsIndexes" class="row" >
+            <input class="form-control"
+                    type="text"
+                    name="searchTerm"
+                    value="{{getSearchText(index)}}"
+                    (keyup)="keyUp($event, index)"
+                    placeholder="{{placeholderText}}"
+                    tabindex="index"/>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,51 @@
+<div class="modal-header">
+    <div class="col-2 text-right">
+        <button type="button" class="close" aria-label="Done" (click)="done.emit()">Cancel</button>
+    </div>
+    <div class="col-8 text-center">
+        <h4 class="modal-title">New Smart List</h4>
+    </div>
+    <div class="col-2 text-left"></div>
+</div>
+<div class="modal-body no-footer settings">
+    <div class="editor-header d-flex">
+        <span class="align-self-end">Start with one of these suggestions</span>
+    </div>
+    <div class="setting-section">
+        <div class="row hover" (click)="smartListTypeSelected(SmartListCreateType.Focus)">
+            <label>Focus</label>
+        </div>
+        <div class="row hover" (click)="smartListTypeSelected(SmartListCreateType.Important)">
+            <label>Important</label>
+        </div>
+        <div class="row hover" (click)="smartListTypeSelected(SmartListCreateType.Someday)">
+            <label>Someday</label>
+        </div>
+        <div class="row hover" (click)="smartListTypeSelected(SmartListCreateType.AssignedToYou)">
+            <label>Assigned to you</label>
+        </div>
+        <div class="row hover" (click)="smartListTypeSelected(SmartListCreateType.NextSevenDays)">
+            <label>Next seven days</label>
+        </div>
+        <div class="row hover" (click)="smartListTypeSelected(SmartListCreateType.Today)">
+            <label>Today</label>
+        </div>
+        <div class="row hover" (click)="smartListTypeSelected(SmartListCreateType.Overdue)">
+            <label>Overdue</label>
+        </div>
+        <div class="row hover" (click)="smartListTypeSelected(SmartListCreateType.Projects)">
+            <label>Projects</label>
+        </div>
+        <div class="row hover" (click)="smartListTypeSelected(SmartListCreateType.RecentlyModified)">
+            <label>Recently modified</label>
+        </div>
+    </div>
+    <div class="editor-header d-flex">
+        <span class="align-self-end">Custom</span>
+    </div>
+    <div class="setting-section">
+        <div class="row hover" (click)="smartListTypeSelected(SmartListCreateType.Custom)">
+            <label>Define your own smart list...</label>
+        </div>
+    </div>
+</div>

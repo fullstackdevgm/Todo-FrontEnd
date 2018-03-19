@@ -1,0 +1,30 @@
+<div class="page">
+    <div class="page-inner">
+        <div class="box">
+            <header class="row">
+                <div class="col-6">
+                    <img src="./assets/img/todo-logo.png" alt="" width="125" height="21" />
+                </div>
+            </header>
+
+            <div class="page-content">
+                <page-privacy *ngIf="activeState == 'privacy'"></page-privacy>
+                <page-terms *ngIf="activeState == 'terms'"></page-terms>
+            </div>
+        </div>
+
+        <footer>
+            <div class="float-left lang-select">
+                <select>
+                    <option value="en_US" selected="">English</option>
+                    <option value="zh_CN">中文(简体)</option>
+                </select>
+            </div>
+            <ul class="float-right">
+                <li><a href="http://support.appigo.com/" target="_blank">Help</a></li>
+                <li><a href="/#/privacy" target="_blank">Privacy</a></li>
+                <li><a href="/#/terms" target="_blank">Terms</a></li>
+            </ul>
+        </footer>
+    </div>
+</div>

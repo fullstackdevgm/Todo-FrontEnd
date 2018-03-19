@@ -1,0 +1,44 @@
+<div class="row">
+    <label class="col-5 text-right">{{getFilterLabel(key)}}</label>
+
+    <div class="col-7 edit-property text-left" *ngIf="!(isPriority || isStarred)" (click)="showFilter.emit({ key : key })">
+        <span>{{getFilterInformationLabel(key)}}</span>
+        <button type="button" 
+            class="modify-value-button" 
+            aria-label="Remove Due Date Filter"
+            (click)="deleteFilter(); $event.stopPropagation()">
+            <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+        </button>
+    </div>
+
+    <div class="col-7 edit-property text-left" *ngIf="isStarred">
+        <i (click)="starred = !starred" class="fa fa-fw" [ngClass]="{'fa-square-o':!starred, 'fa-check-square-o':starred}"></i>
+        <button type="button" 
+            class="modify-value-button" 
+            aria-label="Remove Due Date Filter"
+            (click)="deleteFilter(); $event.stopPropagation()">
+            <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+        </button>
+    </div>
+
+    <div class="col-7 edit-property text-left" *ngIf="isPriority">
+        <div *ngFor="let priority of priorityModule.rows"
+            class="priority-toggle-buttons"
+            [ngClass]="{selected : priorityModule.includes(priority.type)}"
+            (click)="priorityModule.select(priority, filterGroup)"
+        >
+            <div>
+                <span *ngIf="priority.type == 'none'">{{priority.label}}</span>
+                <i class="bar" *ngIf="priority.type == 'low' || priority.type == 'med' || priority.type == 'high'"></i>
+                <i class="bar" *ngIf="priority.type == 'med' || priority.type == 'high'"></i>
+                <i class="bar" *ngIf="priority.type == 'high'"></i>
+            </div>
+        </div>
+        <button type="button"
+            class="modify-value-button" 
+            aria-label="Remove Due Date Filter"
+            (click)="deleteFilter(); $event.stopPropagation()">
+            <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+        </button>
+    </div>
+</div>

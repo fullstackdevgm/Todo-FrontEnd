@@ -1,0 +1,18 @@
+<div class="modal-header">
+    <div class="col-2 text-left"></div>
+    <div class="col-8 text-center">
+        <h4 class="modal-title">Include Lists</h4>
+    </div>
+    <div class="col-2 text-right">
+        <button type="button" class="close" aria-label="Done" (click)="done.emit()">Done</button>
+    </div>
+</div>
+<div class="modal-body no-footer settings">
+    <div class="editor-header"></div>
+    <div class="setting-section">
+        <div *ngFor="let list of lists" class="row hover" (click)="toggleExcludeList(list.identifier)">
+            <label>{{list.name}}</label>
+            <i *ngIf="!this.smartList.excludedListIds.has(list.identifier)"  class="fa fa-check"></i>
+        </div>
+    </div>
+</div>

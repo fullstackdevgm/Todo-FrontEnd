@@ -1,0 +1,13 @@
+/**
+ * Styles for colors component
+ */
+
+.colors.colors-all ul {
+    max-width: 200px;
+    padding: 15px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+.colors.colors-all ul li {
+    flex-basis: 20%;
+}

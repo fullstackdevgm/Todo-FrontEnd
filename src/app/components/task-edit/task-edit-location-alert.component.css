@@ -1,0 +1,32 @@
+agm-map {
+    display: block;
+    height: 300px;
+}
+
+agm-map,
+.btn-default {
+    margin-bottom: 8px;
+}
+
+.location-alert-switch .btn {
+    border-color: rgb(33, 150, 243);
+    outline: 0 !important;
+    transition: color 0.1s ease-out, background-color 0.1s ease-out, border-color 0.1s ease-out;
+}
+
+.location-alert-switch .btn.active {
+    color: #fff !important;
+    border-color: rgb(93, 162, 227);
+    background-color: rgb(93, 162, 227);
+}
+
+.location-alert-switch:focus,
+.location-alert-switch .btn.focus,
+.location-alert-switch .btn:focus {
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+.location-error {
+    font-size: 12px;
+    color: rgba(212, 13, 18, 0.7);
+}

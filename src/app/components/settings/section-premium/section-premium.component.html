@@ -1,0 +1,123 @@
+<context-menu #paymentMoreOptionsMenu>
+    <template contextMenuItem (execute)="showPurchaseHistory()">
+        View purchase history...
+    </template>
+    <template *ngIf="subscription.type > 0 && subscription.paymentSystem == 'stripe'" 
+        contextMenuItem 
+        (execute)="downgradeShowConfirmation()"
+    >
+        Downgrade to a free account...
+    </template>
+    <template *ngIf="subscription.type > 0 && 
+                     subscription.paymentSystem == 'googleplay' || 
+                     subscription.paymentSystem == 'apple_iap'" 
+        contextMenuItem 
+        (execute)="showSubscriptionManagementHelp()"
+    >
+        Manage your subscription...
+    </template>
+</context-menu>
+
+<div *ngIf="loading">
+    <label>Loading...</label>
+</div>
+<article *ngIf="!loading && !showPaymentHistory && !showConfirmation">
+    <header>
+        <div class="title-wrapper">
+            <div>
+                <h4>{{accountStatusString}}</h4>
+                <i (click)="onContextMenu($event)" class="fa fa-ellipsis-h btn-task-menu clickable"></i>
+            </div>
+            <p><strong>{{subscription.expirationDate | datex:'ddd MMM DD, YYYY'}}</strong><span
+                >{{paymentSystemMessageSuffix}}</span></p>
+            <p>{{accountDetailsString}}</p>
+            <button *ngIf="showTeamSettingsButton" class="btn-default btn-size-sm btn-info" (click)="showTeamingSelected.emit()">Team Settings</button>
+        </div>
+    </header>
+    <div class="premium-info">
+        <perfect-scrollbar fxFlex>
+            <div class="w-100">
+                
+                <h5>Smart Lists</h5>
+                <p class="info">i.e., Power filtering. Deep control over how you view tasks.</p>
+
+                <h5>Improved Organization</h5>
+                <p class="info">For the uber-organizer. Use "Checklists" inside "Projects".</p>
+
+                <h5>Advanced Reminders</h5>
+                <p class="info">Add more than one reminder when it’s really important.</p>
+
+                <h5>Better Collaboration</h5>
+                <p class="info">Make assignments in shared lists. Go team!</p>
+
+                <h5>Email Notifications</h5>
+                <p class="info">Get emails as team projects move forward.</p>
+
+                <h5>Inbox to Task</h5>
+                <p class="info">Add tasks via email.</p>
+
+                <h5>Completed Tasks</h5>
+                <p class="info">See the full history of your completed tasks.</p>
+
+                <h5>Talk to Task</h5>
+                <p class="info">Use Siri to enter tasks. "Look ma, no hands!"</p>
+
+                <h5>Tagging</h5>
+                <p class="info">Improve your search with task tags.</p>
+                
+            </div>
+        </perfect-scrollbar>
+    </div>
+    <footer *ngIf="showUpgradeButton" class="buttons">
+        <button class="btn-default btn-size-sm btn-orange" (click)="selectPayment(PaymentType.Monthly)">{{subscription.pricing.monthly | currency:'USD':true}} per month</button>
+        <button class="btn-default btn-size-sm btn-info" (click)="selectPayment(PaymentType.Yearly)">{{subscription.pricing.yearly | currency:'USD':true}} per year</button>
+    </footer>
+</article>
+<article *ngIf="!loading && showPaymentHistory && !showConfirmation">
+    <header>
+        <div class="title-wrapper no-border">
+            <h4>Your Purchase History</h4>
+        </div>
+    </header>
+    <div *ngIf="loadingPaymentHistory">
+        Loading payment history...
+    </div>
+    <div class="purchase-history-wrapper" *ngIf="!loadingPaymentHistory">
+        <table class="table table-header">
+            <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Details</th>
+            </tr>
+        </table>
+        <span *ngIf="!payments.length">There are no purchases on this account.</span>
+        <perfect-scrollbar fxFlex>
+            <table class="table w-100">
+                <tr *ngFor="let payment of payments">
+                    <td>{{payment.history.date | datex:'ddd MMM DD, YYYY'}}</td>
+                    <td>{{payment.history.typeDescription}}</td>
+                    <td>
+                        <span class="preloader-xs" *ngIf="payment.saving"></span>
+                        <span *ngIf="payment.sent">Receipt sent</span>
+                        <span *ngIf="!payment.saving && payment.history.service == 'stripe' && !payment.sent" class="link" (click)='sendPaymentReceipt(payment)'>Send receipt...</span>
+                        <span *ngIf="!payment.saving && payment.history.service == 'apple_iap'">Apple In-app purchase</span>
+                        <span *ngIf="!payment.saving && payment.history.service == 'googleplay'">GooglePlay purchase</span>
+                    </td>
+                </tr>
+            </table>
+        </perfect-scrollbar>
+    </div>
+    <button class="btn-default btn-size-xs btn-info pull-right" (click)="hidePurchaseHistory()">Done</button>
+</article>
+<article *ngIf="showConfirmation">
+    <header>
+        <div class="title-wrapper">
+            <h4>Downgrade to a free account?</h4>
+        </div>
+    </header>
+    <p>Premium features will continue to work until <strong>{{subscription.expirationDate | datex:'ddd MMM DD, YYYY'}}</strong>.</p>
+    <footer  class="buttons">
+        <button class="btn-default btn-size-sm btn-orange" (click)="showConfirmation = false">Cancel</button>
+        <button class="btn-default btn-size-sm btn-info" (click)="downgradeToFree()">Downgrade</button>
+    </footer>
+</article>

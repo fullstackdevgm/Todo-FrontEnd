@@ -1,0 +1,17 @@
+/**
+ * smart-list-restore-everything-confirmation.component
+ */
+
+.modal-body {
+    padding: 15px;
+}
+
+.modal-body div {
+	word-break: break-word;
+}
+
+.modal-footer {
+    border-top:1px solid #eaeaea;
+    justify-content: flex-end;
+}
+

@@ -1,0 +1,26 @@
+<div class="modal-header">
+    <div class="col-2 text-left"></div>
+    <div class="col-8 text-center">
+        <h4 class="modal-title">Sort Type</h4>
+    </div>
+    <div class="col-2 text-right">
+        <button type="button" class="close" aria-label="Done" (click)="done.emit()">Done</button>
+    </div>
+</div>
+<div class="modal-body no-footer settings">
+    <div class="editor-header"></div>
+    <div class="setting-section">
+        <div class="row hover" (click)="sortTypeSelected(-1)">
+            <label>App Default</label>
+            <label>{{appDefaultSortTypeText}}</label>
+            <i *ngIf="list.sortType == appDefault"  class="fa fa-check"></i>
+        </div>
+    </div>
+    <div class="editor-header"></div>
+    <div class="setting-section">
+        <div *ngFor="let type of types; let i = index" class="row hover" (click)="sortTypeSelected(i)">
+            <label>{{types[i]}}</label>
+            <i *ngIf="list.sortType == i"  class="fa fa-check"></i>
+        </div>
+    </div>
+</div>

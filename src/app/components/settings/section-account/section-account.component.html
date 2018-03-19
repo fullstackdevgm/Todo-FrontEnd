@@ -1,0 +1,170 @@
+<div *ngIf="loading">
+    <label>Loading...</label>
+</div>
+<article *ngIf="!loading">
+    <header>
+        <h2 *ngIf="subscription.expirationDate > currentDate" class="text-center">Premium Account</h2>
+        <h2 *ngIf="subscription.expirationDate < currentDate" class="text-center">Free Account</h2>
+    </header>
+    <section *ngIf="!croppie">
+        <form class="picture-form">
+            <div class="userpic-wrapper">
+                <input type="file" id="profile-file" class="inputfile inputfile-profile" accept="image/x-png,image/gif,image/png,image/jpg,image/jpeg" (change)="profilePictureSelected($event)" />
+                <label for="profile-file">
+                    <span class="userpic" [style.background-image]="'url(' + profileImageURL + ')'">
+                        <span class="name" *ngIf="!profileImageURL">{{account.firstName.charAt(0)}}{{account.lastName.charAt(0)}}</span>
+                    </span>
+                    <span class="edit-button">Edit</span>
+                </label>
+            </div>
+        </form>
+        <form name="form">
+            <div class="form-group">
+                <label>
+                    First name:
+                    <input type="text" 
+                        class="form-control" 
+                        [ngClass]="{changed : firstName != account.firstName}"
+                        name="first_name" 
+                        [(ngModel)]="firstName" 
+                        placeholder="Your first name" 
+                        #firstNameInput
+                        required />
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    Last name:
+                    <input type="text" 
+                        class="form-control" 
+                        [ngClass]="{changed : lastName != account.lastName}"
+                        name="last_name" 
+                        [(ngModel)]="lastName" 
+                        placeholder="Your last name" 
+                        #lastNameInput
+                        required />
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    Email:
+                    <input type="email" 
+                        class="form-control" 
+                        [ngClass]="{changed : username != account.userName}"
+                        name="username" 
+                        [(ngModel)]="username" 
+                        placeholder="Your Email" 
+                        required />
+                </label>
+            </div>
+            <div class="save-names" *ngIf="(firstName != account.firstName) || (lastName != account.lastName) || (username != account.userName)">
+                <div class="save-wrapper">
+                    <div class="btn-default btn-info btn-size-sm"
+                         (click)="cancelChange()"
+                    >
+                        <span>Cancel</span>
+                    </div>
+
+                    <div class="btn-default btn-green btn-size-sm btn-preloader"
+                         [ngClass]="{loading : nameSaving}"
+                         (click)="updateNames()"
+                    >
+                        <span>Update</span>
+                        <span class="preloader-xs"></span>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="errorMessage" class="update-error has-error">{{errorMessage}}</div>
+            <div class="form-group">
+                <label>
+                    Password:
+                    <input #passwordInput
+                        type="password" 
+                        class="form-control" 
+                        name="password" 
+                        [autocomplete]="disableAutofill"
+                        placeholder="Your current password"
+                        (keyup.enter)="onPasswordEntered()"
+                        (click)="onPasswordEntered()"
+                        required />
+                </label>
+            </div>
+            <div *ngIf="showPasswordUpdate">
+                <div class="form-group">
+                    <label>
+                        New:
+                        <input #newPasswordInput
+                            type="password" 
+                            class="form-control" 
+                            name="password" 
+                            placeholder="A new password" 
+                            (keyup.enter)="onNewPasswordEntered()"
+                            required />
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        Re-enter:
+                        <input #reenterPasswordInput
+                            type="password" 
+                            class="form-control" 
+                            name="password" 
+                            placeholder="Re-type password" 
+                            (keyup.enter)="onNewPasswordEntered()"
+                            required />
+                    </label>
+                </div>
+                <div *ngIf="newPasswordErr" class="form-group save-error">
+                    {{newPasswordErr}}
+                </div>
+                <div class="save-wrapper">
+                    <div class="btn-default btn-green btn-size-sm btn-preloader"
+                         [ngClass]="{loading : passwordSaving}"
+                         (click)="onNewPasswordEntered()"
+                    >
+                        <span>Update password</span>
+                        <span class="preloader-xs"></span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+    <div class="form-group">
+        <label class="ae-label">
+            Announcement Emails:
+            <input type="checkbox" 
+                class="form-control" 
+                name="emailOptIn" 
+                [(ngModel)]="emailOptIn" 
+                (change)="updateEmailOptIn()" />
+        </label>
+    </div>
+    <div *ngIf="subscription.expirationDate > currentDate" class="task-email">
+        <span>Quickly create tasks by sending an email to <br><a [href]="'mailto:'+settings.taskCreationEmail+'@newtask.todo-cloud.com'">{{settings.taskCreationEmail}}@newtask.todo-cloud.com</a>.<br>(Requires premium account)</span>
+    </div>
+    <div class="croppie-wrapper" [hidden]="!croppie">
+        <div id="profile-crop" class="croppie-container"></div>
+        <div class="btn-block text-center">
+            <button *ngIf="croppie" class="btn-default btn-size-xs btn-warning" (click)="cancelCroppie()">Cancel</button>
+            <button *ngIf="croppie" class="btn-default btn-size-xs btn-info btn-preloader" [ngClass]="{loading : imageSaving}" (click)="saveCroppedImages()">
+                <span>Save</span>
+                <span class="preloader-xs"></span>
+            </button>
+        </div>
+    </div>
+    <footer class="text-center">
+        <div *ngIf="subscription.isActive">
+            <p>Your premium account will automatically renew on:</p>
+            <h4>{{subscription.expirationDate | datex:'ddd MMM DD, YYYY'}}</h4>
+            <p *ngIf='subscription.paymentSystem == "apple_iap"' class="hint">Manage your subscription by using the App Store App > Tap on your Apple ID > Account Settings > Manage App Subscriptions.</p>
+            <p *ngIf='subscription.paymentSystem == "googleplay"' class="hint">Manage your subscription through GooglePlay.</p>
+            <p *ngIf='subscription.paymentSystem == "stripe"' class="hint">Manage your subscription by clicking on the Premium tab.</p>
+            <p *ngIf='subscription.paymentSystem == "team"' class="hint">Speak with your team administrator to manage your subscription.</p>
+            <p *ngIf='subscription.paymentSystem == "vip"' class="hint">Thank you for being a VIP! Your premium account is free.</p>
+        </div>
+        <div *ngIf="subscription.isCanceled || subscription.isExpired">
+            <p>Upgrade to Todo Cloud Premium for powerful additional features.</p>
+            <div class="btn btn-default btn-green" (click)="showUpgrade()">Upgrade to a Premium Account</div>
+        </div>
+    </footer>
+</article>

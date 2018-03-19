@@ -1,0 +1,25 @@
+<div class="modal-header">
+    <div class="col-2 text-left"></div>
+    <div class="col-8 text-center">
+        <h4 class="modal-title">Include Completed Tasks</h4>
+    </div>
+    <div class="col-2 text-right">
+        <button type="button" class="close" aria-label="Done" (click)="done.emit()">Done</button>
+    </div>
+</div>
+<div class="modal-body no-footer settings">
+    <div class="editor-header">Tasks</div>
+    <div class="setting-section">
+        <div *ngFor="let key of keys(completedTasksType)" class="row hover" (click)="selectCompletedTasksType(key)">
+            <label>{{completedTasksType[key]}}</label>
+            <i *ngIf="_smartList.completedTaskFilter['type'] == key"  class="fa fa-check"></i>
+        </div>
+    </div>
+    <div *ngIf="showPeriodTable" class="editor-header">Completed Since</div>
+    <div *ngIf="showPeriodTable" class="setting-section">
+        <div *ngFor="let key of keys(completedTasksPeriod)" class="row hover" (click)="selectCompletedTasksPeriod(key)">
+            <label>{{completedTasksPeriod[key]}}</label>
+            <i *ngIf="_smartList.completedTaskFilter['period'] == key"  class="fa fa-check"></i>
+        </div>
+    </div>
+</div>

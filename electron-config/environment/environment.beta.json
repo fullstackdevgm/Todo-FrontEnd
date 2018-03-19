@@ -1,0 +1,7 @@
+{
+    "PORT" : 4747,
+    "DB_TYPE" : "sqlite",
+    "TC_API_URL" : "https://api.todo-cloud.com/beta-v1",
+    "SYNC_API_URL" : "https://sync.todo-cloud.com/sync2/",
+    "TC_DEPLOYMENT_TYPE": "BETA"
+}

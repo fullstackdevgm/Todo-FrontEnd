@@ -1,0 +1,27 @@
+header {
+    padding: 15px;
+    border-bottom: 1px solid #adadad;
+}
+
+header h2 {
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin: 0;
+}
+
+footer {
+    padding: 15px;
+    border-top: 1px solid #adadad;
+}
+
+footer p {
+    font-size: 0.9rem;
+    color: #939393;
+    margin: 0 0 10px 0;
+}
+
+.content {
+    display: flex;
+    padding: 15px;
+    font-size: 0.8rem;
+}

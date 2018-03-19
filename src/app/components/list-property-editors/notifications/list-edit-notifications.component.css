@@ -1,0 +1,9 @@
+/**
+ * list-edit-notifications.component
+ */
+.has-error{
+    font-size: 0.8rem;
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 1px;
+}

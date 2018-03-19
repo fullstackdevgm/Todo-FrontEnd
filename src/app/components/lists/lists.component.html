@@ -1,0 +1,128 @@
+<context-menu #mainListMenu>
+  <template contextMenuItem (execute)="editList($event.item.list)">
+    <i class="fa fa-fw fa-pencil"></i>Edit list
+  </template>
+</context-menu>
+
+<context-menu #smartListMenu>
+  <template contextMenuItem (execute)="editSmartList($event.item.smartList, 0)">
+    <i class="fa fa-fw fa-pencil"></i>Edit smart list
+  </template>
+  <template contextMenuItem divider="true"></template>
+  <template contextMenuItem (execute)="createSmartList($event.item.smartList.duplicate())">
+    <i class="fa fa-fw fa-clone"></i>Duplicate smart list
+  </template>
+  <template contextMenuItem (execute)="deleteConfirmationSmartList($event.item.smartList)" [enabled]="canDeleteSmartList">
+    <i class="fa fa-fw fa-trash"></i>Delete smart list
+  </template>
+</context-menu>
+
+<context-menu #userListMenu>
+  <template contextMenuItem (execute)="editList($event.item.list)">
+    <i class="fa fa-fw fa-pencil"></i>Edit list
+  </template>
+  <template contextMenuItem (execute)="addSpacerAboveList($event.item)" [enabled]="canAddSpacerAboveListBound">
+    <i class="fa fa-fw fa-arrows-v"></i>Insert spacer
+  </template>
+  <template contextMenuItem divider="true"></template>
+  <template contextMenuItem (execute)="shareList($event.item.list)">
+    <i class="fa fa-fw fa-users"></i>Share this list
+  </template>
+  <template contextMenuItem divider="true"></template>
+  <template contextMenuItem (execute)="showDeleteListConfirmationModal($event.item)">
+    <i class="fa fa-fw fa-trash"></i>Delete list
+  </template>
+</context-menu>
+
+<context-menu #spacerMenu>
+  <template contextMenuItem (execute)="deleteSpacer($event.item)">
+    <i class="fa fa-fw fa-trash"></i>Delete spacer
+  </template>
+</context-menu>
+
+<section class="nopadding">
+    <perfect-scrollbar>
+        <div class="lists">
+            <ul class="task-list">
+                <li class="list-item" *ngFor="let listInfo of mainLists" [contextMenu]="mainListMenu" [contextMenuSubject]="listInfo" [dragula]="'tasks'" [attr.data-id]="listInfo.list.identifier">
+                    <span class="justify-content-between" [ngClass]="{active : isSelectedList(listInfo.list)}" (click)="selectList(listInfo.list)">
+                        <span class="list-name-wrapper">
+                            <span class="list-icon-wrapper">
+                                <i class="twf twf-inbox" [ngClass]="" style.color="{{listInfo.list.color}}"></i>
+                            </span>
+                            <span class="list-name">{{listInfo.list.name}}</span>
+                        </span>
+                        <span class="count">
+                            <i *ngIf="listInfo.taskInfo.overdue && listInfo.taskInfo.overdue > 0" class="overdue">{{listInfo.taskInfo.overdue}}</i>
+                            <i *ngIf="listInfo.taskInfo.count && listInfo.taskInfo.count > 0" class="total">{{listInfo.taskInfo.count}}</i>
+                        </span>
+                    </span>
+                    <a href="#" (click)="onContextMenu($event, listInfo, 'mainListMenu')" class="fa fa-ellipsis-h btn-list-menu" tabindex="-1"></a>
+                </li>
+            </ul>
+            <div class="list-group"><span>Smart Lists</span></div>
+            <ul class="task-list" [dragula]="'smartLists'" [dragulaModel]="smartLists">
+                <li class="list-item" *ngFor="let listInfo of smartLists; let i = index;" [ngClass]="{'no-drag': i === 0}" [contextMenu]="smartListMenu" [contextMenuSubject]="listInfo">
+                    <span class="justify-content-between" [ngClass]="{active : isSelectedList(listInfo.smartList)}" (click)="selectList(listInfo.smartList)">
+                        <span class="list-name-wrapper">
+                            <span class="list-icon-wrapper">
+                                <i class="twf" [ngClass]="listInfo.smartList.iconName" style.color="{{listInfo.smartList.color}}"></i>
+                            </span>
+                            <span class="list-name">{{listInfo.smartList.name}}</span>
+                        </span>
+                        <span class="count">
+                            <i *ngIf="listInfo.taskInfo.overdue && listInfo.taskInfo.overdue > 0" class="overdue">{{listInfo.taskInfo.overdue}}</i>
+                            <i *ngIf="listInfo.taskInfo.count && listInfo.taskInfo.count > 0" class="total">{{listInfo.taskInfo.count}}</i>
+                        </span>
+                    </span>
+                    <a href="#" (click)="onContextMenu($event, listInfo, 'smartListMenu')" class="fa fa-ellipsis-h btn-list-menu" tabindex="-1"></a>
+                </li>
+                </ul>
+            <ul class="task-list">
+                <li class="list-item add-list">
+                    <span (click)="addSmartList()">
+                        <i class="fa fa-fw fa-plus"></i>
+                        <span class="list-name">Add a smart list</span>
+                    </span>
+                </li>
+            </ul>
+            <div class="list-group"><span>Lists</span></div>
+            <ul class="task-list" [dragula]="'userLists'" [dragulaModel]="userLists">
+                <li class="list-item" *ngFor="let listInfo of userLists; let i = index;" >
+                    <div class="list-item"
+                         *ngIf="!listInfo.hidden"
+                         [ngClass]="{'shared-list' : listInfo.shared}"
+                         [contextMenu]="userListMenu"
+                         [contextMenuSubject]="listInfo"
+                         [dragula]="listInfo.list ? 'tasks' : ''"
+                         [attr.data-id]="listInfo.list ? listInfo.list.identifier : 0"
+                    >
+                        <span class="justify-content-between" *ngIf="!listInfo.isSpacer" [ngClass]="{active : isSelectedList(listInfo.list)}" (click)="selectList(listInfo.list)">
+                            <span class="list-name-wrapper">
+                                <span class="list-icon-wrapper">
+                                    <i class="twf" [ngClass]='listInfo.list.iconName' style.color="{{listInfo.list.color}}"></i>
+                                </span>
+                                <span class="list-name">{{listInfo.list.name}}</span>
+                                <span class="shared-list-icon"><i class="twf twf-0895-user-group"></i></span>
+                            </span>
+                            <span class="count">
+                                <i *ngIf="listInfo.taskInfo.overdue && listInfo.taskInfo.overdue > 0" class="overdue">{{listInfo.taskInfo.overdue}}</i>
+                                <i *ngIf="listInfo.taskInfo.count && listInfo.taskInfo.count > 0" class="total">{{listInfo.taskInfo.count}}</i>
+                            </span>
+                        </span>
+                        <a *ngIf="!listInfo.isSpacer" href="#" (click)="onContextMenu($event, listInfo, 'userListMenu')" class="fa fa-ellipsis-h btn-list-menu" tabindex="-1"></a>
+                        <span *ngIf="listInfo.isSpacer" class="list-spacer" [contextMenu]="spacerMenu" [contextMenuSubject]="listInfo"></span>
+                    </div>
+                </li>
+            </ul>
+            <ul class="task-list">
+                <li class="list-item add-list">
+                    <span (click)="addList()">
+                        <i class="fa fa-fw fa-plus"></i>
+                        <span class="list-name">Add a list</span>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </perfect-scrollbar>
+</section>

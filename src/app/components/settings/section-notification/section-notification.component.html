@@ -1,0 +1,97 @@
+<table class="table table-bordered table-header">
+    <tr>
+        <th class="list-name">List name</th>
+        <th>Tasks</th>
+        <th>Comments</th>
+        <th>Members</th>
+        <th>Assigned Only</th>
+    </tr>
+</table>
+
+<perfect-scrollbar fxFlex>
+    <table class="table table-striped w-100 m-0">
+        <tr class="defaults-wrapper">
+            <td colspan="5">
+                <table *ngIf="userSettings && userSettings.emailNotificationDefaults" class="table">
+                    <tr>
+                        <td class="list-name">Defaults</td>
+
+                        <td>
+                            <div *ngIf="savingProcess.includes('task')" class="preloader-xs"></div>
+                            <i (click)="toggleTaskNotificationsDefaults(userSettings)"
+                               *ngIf="!savingProcess.includes('task')"
+                               class="fa fa-fw"
+                               [ngClass]="{'fa-square-o':!userSettings.emailNotificationDefaults.taskNotifications, 'fa-check-square-o':userSettings.emailNotificationDefaults.taskNotifications, 'has-error':savingProcess.includes('error-task')}"></i>
+                        </td>
+                        <td>  <div *ngIf="savingProcess.includes('comment')" class="preloader-xs"></div>
+                            <i (click)="toggleCommentNotificationsDefaults(userSettings)"
+                               *ngIf="!savingProcess.includes('comment')"
+                               class="fa fa-fw"
+                               [ngClass]="{'fa-square-o':!userSettings.emailNotificationDefaults.commentNotifications, 'fa-check-square-o':userSettings.emailNotificationDefaults.commentNotifications, 'has-error':savingProcess.includes('error-comment')}"></i>
+                        </td>
+                        <td>
+                            <div *ngIf="savingProcess.includes('member')" class="preloader-xs"></div>
+                            <i (click)="toggleMemberNotificationsDefaults(userSettings)"
+                               *ngIf="!savingProcess.includes('member')"
+                               class="fa fa-fw"
+                               [ngClass]="{'fa-square-o':!userSettings.emailNotificationDefaults.userNotifications, 'fa-check-square-o':userSettings.emailNotificationDefaults.userNotifications, 'has-error':savingProcess.includes('member-task')}"></i>
+                        </td>
+                        <td><div *ngIf="savingProcess.includes('assigned')" class="preloader-xs"></div>
+                            <i (click)="toggleAssignedOnlyDefaults(userSettings)"
+                               *ngIf="!savingProcess.includes('assigned')"
+                               class="fa fa-fw"
+                               [ngClass]="{'fa-square-o':!userSettings.emailNotificationDefaults.notifyAssignedOnly, 'fa-check-square-o':userSettings.emailNotificationDefaults.notifyAssignedOnly, 'has-error':savingProcess.includes('assigned-task')}"></i>
+                        </td>
+                    </tr>
+                </table>
+                <div class="defaults-info">
+                    Specify notification settings for this future lists you create or join
+                </div>
+            </td>
+        </tr>
+
+        <tr class="list-item" *ngFor="let list of lists" >
+            <td class="list-name">
+                <span class="list-icon-wrapper">
+                    <i class="twf" [ngClass]='list.iconName' style.color="{{list.color}}"></i>
+                </span>
+                <span class="list-name">{{list.name}}</span>
+            </td>
+            <td>
+                <div *ngIf="savingProcess.includes('task-' + list.identifier)" class="preloader-xs"></div>
+                <i (click)="toggleTaskNotifications(list)"
+                   *ngIf="!savingProcess.includes('task-' + list.identifier)"
+                   class="fa fa-fw"
+                   [ngClass]="{'fa-square-o':!list.emailNotifications.taskNotifications, 'fa-check-square-o':list.emailNotifications.taskNotifications, 'has-error':savingProcess.includes('error-task-' + list.identifier)}"></i>
+            </td>
+            <td>
+                <div *ngIf="savingProcess.includes('comment-' + list.identifier)" class="preloader-xs"></div>
+                <i (click)="toggleCommentNotifications(list)"
+                   *ngIf="!savingProcess.includes('comment-' + list.identifier)"
+                   class="fa fa-fw"
+                   [ngClass]="{'fa-square-o':!list.emailNotifications.commentNotifications, 'fa-check-square-o':list.emailNotifications.commentNotifications, 'has-error':savingProcess.includes('error-comment-' + list.identifier)}"></i>
+
+            </td>
+            <td>
+                <div *ngIf="savingProcess.includes('member-' + list.identifier)" class="preloader-xs"></div>
+                <i (click)="toggleMemberNotifications(list)"
+                   *ngIf="!savingProcess.includes('member-' + list.identifier)"
+                   class="fa fa-fw"
+                   [ngClass]="{'fa-square-o':!list.emailNotifications.userNotifications, 'fa-check-square-o':list.emailNotifications.userNotifications, 'has-error':savingProcess.includes('error-member-' + list.identifier)}"></i>
+
+            </td>
+            <td>
+                <div *ngIf="savingProcess.includes('assigned-' + list.identifier)" class="preloader-xs"></div>
+                <i (click)="toggleAssignedOnly(list)"
+                   *ngIf="!savingProcess.includes('assigned-' + list.identifier)"
+                   class="fa fa-fw"
+                   [ngClass]="{'fa-square-o':!list.emailNotifications.notifyAssignedOnly, 'fa-check-square-o':list.emailNotifications.notifyAssignedOnly, 'has-error':savingProcess.includes('error-assigned-' + list.identifier)}"></i>
+
+            </td>
+        </tr>
+    </table>
+</perfect-scrollbar>
+<div class="help-info"><strong>Tasks:</strong> Receive an email when someone adds, deletes, or changes a task</div>
+<div class="help-info"><strong>Comments:</strong> Receive an email when someone adds or removes a comment on a task</div>
+<div class="help-info"><strong>Members:</strong> Receive an email when someone is added removed from a list</div>
+<div class="help-info"><strong>Assigned Only:</strong> Only send email notifications for tasks that are assigned to me</div>

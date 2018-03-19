@@ -1,0 +1,39 @@
+<form name="form" (ngSubmit)="f.form.valid && register()" #f="ngForm" novalidate>
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !firstname.valid }">
+        <label>
+            First name
+            <input type="text" class="form-control" name="firstname" [(ngModel)]="model.firstname" #firstname="ngModel" #focusRegister placeholder="Your first name" required />
+        </label>
+        <div *ngIf="f.submitted && !firstname.valid" class="help-block error">First name is required</div>
+    </div>
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !lastname.valid }">
+        <label>
+            Last name
+            <input type="text" class="form-control" name="lastname" [(ngModel)]="model.lastname" #lastname="ngModel" placeholder="Your last name" required />
+        </label>
+        <div *ngIf="f.submitted && !lastname.valid" class="help-block error">Last name is required</div>
+    </div>
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
+        <label>
+            Email
+            <input type="text" class="form-control" name="username" [(ngModel)]="model.username" #username="ngModel" placeholder="Your email address" required />
+        </label>
+        <div *ngIf="f.submitted && !username.valid" class="help-block error">Email is required</div>
+    </div>
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+        <label>
+            Password
+            <input type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel" placeholder="Create a password" required />
+        </label>
+        <div class="help-block" [ngClass]="{error : f.submitted && !password.valid}">Use at least six characters.</div>
+    </div>
+    <button [disabled]="loading" class="btn-default btn-green btn-submit btn-preloader" [ngClass]="{loading : loading}">
+        <span>Register for Todo Cloud</span>
+        <span class="preloader-xs"></span>
+    </button>
+    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+    <p class="text-center terms">By clicking on “Register for Todo Cloud”, you agree to our <br/>
+        <a (click)="Utils.openLink('/#/terms')">terms of service</a> and <a (click)="Utils.openLink('/#/privacy')">privacy policy</a>. We’ll occasionally <br/>
+        send you account related emails.</p>
+</form>

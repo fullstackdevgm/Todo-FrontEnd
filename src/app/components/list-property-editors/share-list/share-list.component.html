@@ -1,0 +1,73 @@
+<div *ngIf="currentShareScreen == ShareListScreen.Main">
+    <div class="modal-header">
+        <div class="col-2 text-left"></div>
+        <div class="col-8 text-center">
+            <h4 class="modal-title">List Members</h4>
+        </div>
+        <div class="col-2 text-right">
+            <button type="button" class="close" aria-label="Done" (click)="done.emit()">Done</button>
+        </div>
+    </div>
+    <div class="modal-body no-footer settings">
+        <div class="preloader-md text-center mt-3" *ngIf="!members || !me"></div>
+        <div class="invite-wrapper" *ngIf="isOwner(me)">
+            <div class="editor-header">Invite</div>
+            <div class="setting-section">
+                <div class="row justify-content-center">
+                    <label class="link" (click)="showInvite()">Invite someone to this list</label>
+                </div>
+            </div>
+        </div>
+        <div class="editor-header d-flex justify-content-between" *ngIf="members">
+            <span>Members</span>
+            <span>Owner</span>
+        </div>
+        <div class="setting-section">
+            <div class="row" *ngFor="let member of members">
+                <div class="userpic">
+                    <span class="name">{{member.account.initials}}</span>
+                </div>
+                <div class="content">
+                    <div class="username">{{member.account.displayName()}}{{isMe(member) ? '(me)' : ''}}</div>
+                    <div class="text">{{member.account.userName}}</div>
+                </div>
+                <div class="actions" *ngIf="!isMe(member) && isOwner(me)">
+                    <span class="link" (click)="removeMember(member)">Remove member...</span>
+                </div>
+                <i  class="fa"
+                    *ngIf="!savingOwner?.includes(member.account.identifier) && !isOnlyOwner(member)"
+                    [ngClass]="{'fa-check-square-o' : isOwner(member), 'fa-square-o' : !isOwner(member)}"
+                    (click)="toggleMemberOwner(member)"></i>
+                <i  class="fa fa-check-square-o only-owner"
+                    *ngIf="isOnlyOwner(member)"></i>
+                <div *ngIf="savingOwner?.includes(member.account.identifier)" class="preloader-xs"></div>
+            </div>
+            <div class="row" *ngFor='let invitation of invitations'>
+                <div class="userpic">
+                    <span class="name">{{invitation.email.toUpperCase().charAt(0)}}</span>
+                </div>
+                <div class="content">
+                    <div class="username">{{invitation.email}}</div>
+                    <div class="text">Invited</div>
+                    <div class="actions" *ngIf="isOwner(me)">
+                        <span class="link mr-1"  *ngIf="!sendingInvitation?.includes(invitation.identifier) && !invitationSent?.includes(invitation.identifier)" (click)="resendInvitation(invitation)">Resend invitation...</span>
+                        <span class="preloader-xs mr-4" *ngIf="sendingInvitation?.includes(invitation.identifier)"></span>
+                        <span class="mr-1 text-gray-dark" *ngIf="invitationSent?.includes(invitation.identifier)">Invitation sent</span>
+                        <span class="link" (click)="removeInvitation(invitation)">Remove invitation...</span>
+                    </div>
+                </div>
+                <i  class="fa fa-square-o"
+                    *ngIf="!savingOwner?.includes(invitation.identifier)"
+                    [ngClass]="{'fa-check-square-o' : isOwnerInvitation(invitation), 'fa-square-o' : !isOwnerInvitation(invitation)}"
+                    (click)="toggleInvitationOwner(invitation)"></i>
+                <div *ngIf="savingOwner?.includes(invitation.identifier)" class="preloader-xs"></div>
+            </div>
+        </div>
+        <div class="editor-header"></div>
+    </div>
+</div>
+<add-person-list *ngIf="currentShareScreen == ShareListScreen.Invite"
+    [list]="list"
+    (done)="hideInvite()"
+    (invited)="onNewInvtation($event)"
+></add-person-list>

@@ -1,0 +1,117 @@
+<div class="modal-header">
+    <div class="col-2 text-left"></div>
+    <div class="col-8 text-center">
+        <h4 class="modal-title">{{dateFilterModule.title}}</h4>
+    </div>
+    <div class="col-2 text-right">
+        <button type="button" class="close" aria-label="Done" (click)="done.emit()">Done</button>
+    </div>
+</div>
+<div *ngIf="!dateFilterModule.shouldShowDetailScreen" class="modal-body no-footer settings">
+
+    <div class="editor-header"></div>
+    <div class="setting-section">
+        <div *ngFor="let row of basicDateFilterTypeRows" class="row hover" (click)="dateFilterModule.type = row.type">
+            <div class="left-label">
+                <div>{{row.title}}</div>
+                <label class="decorator-text">{{row.description}}</label>
+            </div>
+            <i *ngIf="dateFilterModule.type == row.type"  class="fa fa-check"></i>
+        </div>
+    </div>
+
+    <div class="editor-header"></div>
+    <div class="setting-section">
+        <div *ngFor="let row of dateFilterTypeRows" class="row hover" (click)="dateFilterModule.type = row.type">
+            <label>{{row.title}}</label>
+        </div>
+    </div>
+
+</div>
+<div *ngIf="dateFilterModule.shouldShowDetailScreen" class="modal-body no-footer settings">
+    <div class="editor-header">{{relationHeaderText}}</div>
+    <div class="setting-section">
+        <div *ngFor="let row of relationRows" class="row hover" (click)="selectRelation(row.relation)">
+            <div class="left-label">
+                <div>{{row.title}}</div>
+                <label class="decorator-text">{{row.description}}</label>
+            </div>
+            <i *ngIf="dateFilterModule.relation == row.relation"  class="fa fa-check"></i>
+        </div>
+    </div>
+
+    <div class="editor-header" *ngIf="dateFilterModule.isRegularDateType"></div>
+    <div class="setting-section" *ngIf="dateFilterModule.isRegularDateType">
+        <div class="row">
+            <div class="left-label">
+                <label>Exclusion</label>
+                <label class="decorator-text">Tasks that don't match the date</label>
+            </div>
+            <div class="edit-property">
+                <i class="fa fa-fw"
+                    [ngClass]="{'fa-square-o':!dateFilterModule.isExclusionDateType, 'fa-check-square-o':dateFilterModule.isExclusionDateType}"
+                    (click)="dateFilterModule.isExclusionDateType=!dateFilterModule.isExclusionDateType"
+                ></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="editor-header"></div>
+    <div class="setting-section">
+        <div class="row" *ngIf="dateFilterModule.isRegularDateType">
+            <div class="left-label">
+                <label>Date range</label>
+            </div>
+            <div class="edit-property">
+                <i class="fa fa-fw"
+                    [ngClass]="{'fa-square-o':!dateFilterModule.useDateRange, 'fa-check-square-o':dateFilterModule.useDateRange}"
+                    (click)="dateFilterModule.useDateRange=!dateFilterModule.useDateRange"
+                ></i>
+            </div>
+        </div>
+
+        <div *ngIf="dateFilterModule.isExact">
+            <div *ngFor="let row of filterDetailsModule.rows" class="row hover d-block" (click)="row.showPicker = !row.showPicker">
+                <div class="d-flex">
+                    <label>{{row.label}}</label>
+                    <label>{{row.model.year + '-' + row.model.month + '-' + row.model.day | datex:'ddd MMM DD, YYYY'}}</label>
+                </div>
+                <hr *ngIf="row.showPicker">
+                <ngb-datepicker #dp *ngIf="row.showPicker"
+                    [(ngModel)]="row.model"
+                    (ngModelChange)="filterDetailsModule.validateRange()"
+                    (click)="$event.stopPropagation()"
+                ></ngb-datepicker>
+            </div>
+        </div>
+
+        <div *ngIf="dateFilterModule.isRelative">
+            <div *ngFor="let row of filterDetailsModule.rows">
+                <div class="row hover" (click)="updateRow(row, psDay, psPeriod)">
+                    <label>{{row.label}}</label>
+                    <label>{{row.relativeDate.value}} {{row.relativeDate.period}}{{row.relativeDate.value == 1 ? "" : "s"}} {{row.relativeDate.value >= 0 ? "from" : "before"}} now</label>
+                </div>
+                <div [ngClass]="{'hidden-xl-down' : !row.showPicker}">
+                    <perfect-scrollbar class="picker day" #psDay [ngClass]="row.label">
+                            <div *ngFor="let value of filterDetailsModule.values"
+                                class="row hover"
+                                [ngClass]="{selected: row.relativeDate.value == value}"
+                                (click)="row.relativeDate.value = value; filterDetailsModule.validateRange()"
+                            >
+                                <label>{{value}}</label>
+                            </div>
+                    </perfect-scrollbar>
+                    <perfect-scrollbar class="picker period" #psPeriod [ngClass]="row.label">
+                        <div *ngFor="let pickerRow of filterDetailsModule.periods"
+                            class="row hover"
+                            [ngClass]="{selected: row.relativeDate.period == pickerRow.period}"
+                            (click)="row.relativeDate.period = pickerRow.period; filterDetailsModule.validateRange()"
+                        >
+                            <label>{{pickerRow.label}}</label>
+                        </div>
+                    </perfect-scrollbar>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

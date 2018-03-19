@@ -1,0 +1,21 @@
+<input  type="text"
+    name="taskName"
+    class="form-control"
+    [(ngModel)]="taskNameInput"
+    (keyup.enter)="_taskCreationModule.creationFunction(taskName.value)"
+    (focus)="taskNameSelected.emit(true)"
+    (blur)="taskNameSelected.emit(false)"
+    #taskName
+    placeholder="{{placeholder}}"
+    tabindex="1"
+    autofocus
+/>
+
+<div ngbDropdown >
+    <button class="btn btn-default btn-info btn-size-xs" ngbDropdownToggle>{{_taskCreationModule.label}}</button>
+    <div class="dropdown-menu dropdown-menu-right">
+        <div *ngFor="let m of creationModules">
+            <button *ngIf="m.shouldShow()" class="dropdown-item" (click)="taskCreationModule = m">{{m.label}}</button>
+        </div>
+    </div>
+</div>

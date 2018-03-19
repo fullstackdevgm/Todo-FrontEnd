@@ -1,0 +1,119 @@
+:host {
+    padding: 15px;
+}
+
+strong {
+    white-space: nowrap;
+}
+
+header .title-wrapper {
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #adadad;
+    position: relative;
+}
+
+header .title-wrapper.no-border {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+header .title-wrapper .btn-task-menu {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+header .title-wrapper h4 {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+
+header .title-wrapper p {
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+header .title-wrapper p {
+    font-size: 0.75rem;
+    margin-top: 15px;
+}
+
+header p strong {
+    font-weight: 500;
+}
+
+.premium-info {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #adadad;
+}
+
+.premium-info perfect-scrollbar {
+    height: 150px;
+}
+
+.premium-info h5 {
+    font-size: 0.9rem;
+    font-weight: 400;
+    margin-bottom: 2px;
+}
+
+.premium-info p.info {
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+}
+
+.premium-info p.info:last-child {
+    margin-bottom: 0;
+}
+
+.purchase-history-wrapper perfect-scrollbar {
+    height: 180px;
+}
+
+.purchase-history-wrapper .table-header {
+    margin-bottom: 6px;
+}
+
+.purchase-history-wrapper .table-header th {
+    text-align: left;
+    padding: 2px 2px 4px 2px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #515151;
+    border-bottom: 1px solid #adadad;
+    border-top: none;
+}
+
+.purchase-history-wrapper .table th:first-child,
+.purchase-history-wrapper .table td:first-child {
+    width: 140px;
+}
+
+.purchase-history-wrapper .table th:last-child,
+.purchase-history-wrapper .table td:last-child {
+    width: 135px;
+}
+
+.purchase-history-wrapper .table td {
+    font-size: 0.8rem;
+    padding: 2px;
+    border-top: none;
+    font-weight: 300;
+}
+
+footer {
+    justify-content: center;
+    display: block;
+}
+
+footer.buttons button:last-child {
+    margin-left: 10px;
+}
+
+.purchase-history-wrapper {
+    font-size: 0.8rem;
+    text-align: center;
+}

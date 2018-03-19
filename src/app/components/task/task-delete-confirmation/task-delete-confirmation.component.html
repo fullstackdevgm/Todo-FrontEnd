@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <div class="col-2 text-left"></div>
+    <div class="col-8 text-center">
+        <h4 class="modal-title">Delete this task?</h4>
+    </div>
+    <div class="col-2 text-right"></div>
+</div>
+<div class="header-body-spacer"></div>
+<div class="modal-body">
+    <div *ngIf="selectedTaskCount <= 1">Are you sure you want to delete <em><strong>{{task.name}}</strong></em>?</div>
+    <div *ngIf="selectedTaskCount > 1">Are you sure you want to delete <em><strong>{{selectedTaskCount}}</strong></em> tasks?</div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn-default btn-info btn-size-xs" (click)="cancel()">Cancel</button>
+    <button type="button" class="btn-default btn-warning btn-size-xs" (click)="delete()">Delete</button>
+</div>

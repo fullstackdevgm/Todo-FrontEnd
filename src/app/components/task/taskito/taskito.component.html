@@ -1,0 +1,39 @@
+<context-menu #taskitoMoreOptionsMenu>
+    <div >
+        <template contextMenuItem (execute)="showDeleteTaskitoConfirmationModal()">
+            Delete Item
+        </template>
+    </div>
+</context-menu>
+
+<div class="task-item" [contextMenu]='taskitoMoreOptionsMenu' [contextMenuSubject]='_taskito'>
+    <div
+            class="task-check"
+            (click)="completeTaskito()"
+            [ngClass]="{
+                'check-animation': currentCompletionState == TaskCompletionState.Initial,
+                'grace-animation': currentCompletionState == TaskCompletionState.GracePeriod,
+                'saving-animation': currentCompletionState == TaskCompletionState.Saving,
+                'check': currentCompletionState < TaskCompletionState.Error,
+                'error': currentCompletionState == TaskCompletionState.Error,
+                'complete' : currentCompletionState == TaskCompletionState.Complete
+            }"
+    >
+        <i class="checkmark draw"></i>
+        <svg class="progress" width="20" height="20">
+            <circle class="back"
+                    cx="10" cy="10" r="8" fill="none" [attr.stroke]="listHasDarkColor() ? (listForTask.color| lightenDarkenColor:-40) : listForTask.color"/>
+            <circle class="bar" #circleBar
+                    cx="10" cy="10" r="8" fill="none" />
+        </svg>
+    </div>
+    <div class="task-data">
+        <div class="task-name">
+            <input type="text"
+                [(ngModel)]="textInputModel"
+                (keyup.enter)="updateTaskitoName(taskNameInput.value)"
+                #taskNameInput />
+        </div>
+    </div>
+    <a href="#" (click)="onContextMenu($event)" class="fa fa-ellipsis-h btn-task-menu" tabindex="-1" #taskEl></a>
+</div>

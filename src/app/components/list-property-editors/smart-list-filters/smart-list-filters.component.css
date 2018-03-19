@@ -1,0 +1,9 @@
+
+
+label {
+    color: grey
+}
+
+label.active {
+    color: black
+}

@@ -1,0 +1,20 @@
+<div class="mb-2 clearfix">
+    <perfect-scrollbar class="picker">
+        <ul class="recurrence-wrapper">
+            <li class="recurrence-item" *ngFor="let value of values" (click)="selectedValue = value">
+                {{value}}
+                <i *ngIf="selectedValue == value" class="fa fa-check"></i>
+            </li>
+        </ul>
+    </perfect-scrollbar>
+    <ul class="recurrence-wrapper picker">
+        <li class="recurrence-item" *ngFor="let period of periods" (click)="selectedPeriod = period">
+            {{period}}
+            <i *ngIf="selectedPeriod == period" class="fa fa-check"></i>
+        </li>
+    </ul>
+</div>
+<div class="btn-group-right mb-2">
+    <button class="btn-default btn-info btn-size-xs" type="button" (click)="removePressed()">Remove</button>
+    <button class="btn-default btn-info btn-size-xs" type="button" (click)="savePressed()">Save</button>
+</div>

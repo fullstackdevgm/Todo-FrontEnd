@@ -1,0 +1,66 @@
+:host .row .edit-property{
+    margin: 0;
+    padding:0;
+    display: flex;
+    align-items: center;
+}
+
+:host .row > label {
+    padding: 0 10px 0 0;
+    margin: 0;
+    font-size: 0.85rem;
+    color: rgba(162, 162, 162, 0.9);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    opacity: 1;
+}
+
+.modify-value-button {
+    font-size: 0.65rem;
+    font-size: 18px;
+    padding: 0;
+}
+
+.header-body-spacer {
+    height: .5rem;
+}
+
+.priority-toggle-buttons {
+    height: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 8px;
+    border: 1px solid #2C98F2;
+}
+.priority-toggle-buttons:first-child{
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
+    padding: 0 8px;
+    line-height: 1;
+}
+.priority-toggle-buttons:first-child > div{
+    margin-bottom: 6px;
+    font-size: 0.8rem;
+}
+.priority-toggle-buttons:nth-child(4){
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.priority-toggle-buttons.selected {
+    background-color: #2C98F2;
+    color: #fff;
+}
+
+.priority-toggle-buttons .bar {
+    width: 12px;
+    height: 2px;
+    background-color: #2C98F2;
+    display: block;
+    margin-top: 2px;
+}
+
+.priority-toggle-buttons.selected .bar {
+    background-color: #fff;
+}

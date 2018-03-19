@@ -1,0 +1,105 @@
+<nav class="navbar navbar-inverse navbar-full navbar-fixed-top">
+    <div class="">
+        <div ngbDropdown class="float-left">
+            <button *ngIf="!showSyncMessage" class="btn btn-outline-primary" id="dropdownMenu1" ngbDropdownToggle>
+                <img src="./assets/img/app-icon-58.png" alt="" width="29" height="29" />
+                {{displayName}}
+            </button>
+            <div *ngIf="showSyncMessage" class="sync-overlay">
+                <img src="./assets/img/app-icon-58.png" alt="" width="29" height="29" />
+                <span class="sync-message" *ngIf="syncMessage">{{syncMessage}}</span>
+            </div>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <a *ngIf="isElectron" class="dropdown-item" (click)="syncNow()">Sync Now</a>
+                <div *ngIf="isElectron" class="dropdown-divider"></div>
+                <a class="dropdown-item" (click)="showSettings()">Settings</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="http://support.appigo.com/support/home" target="_blank">Get Support</a>
+                <a class="dropdown-item" href="http://www.appigo.com/blog/" target="_blank">Tips, Tricks, and News</a>
+                <!--
+                <a class="dropdown-item" href="#">Love Todo Cloud?</a>
+                <a class="dropdown-item" href="#">Share With Friends</a>
+                -->
+                <div class="dropdown-divider"></div>
+                <span class="dropdown-item download-header no-hover">Get Todo Cloud:</span>
+                <span class="dropdown-item download-items space-between no-hover">
+                    <span class="tooltip-wrap">
+                        <a (click)="downloadApps($event, 'https://app.appsflyer.com/id568428364?pid=webapp&c=menu')" href="#"><i class="fa fa-apple download-icon"></i></a>
+                        <div class="tooltip-content">iPhone | iPad</div>
+                    </span>
+                    <span class="tooltip-wrap">
+                        <a (click)="downloadApps($event, 'https://play.google.com/store/apps/details?id=com.appigo.todopro&hl=en')" href="#"><i class="fa fa-android download-icon"></i></a>
+                        <div class="tooltip-content">Android</div>
+                    </span>
+                    <span class="tooltip-wrap">
+                        <a href="#"><i class="fa fa-desktop download-icon"></i></a>
+                        <div class="tooltip-content">Mac (coming soon)</div>
+                    </span>
+                    <span class="tooltip-wrap">
+                        <a href="#"><i class="fa fa-windows download-icon"></i></a>
+                        <div class="tooltip-content">Windows (coming soon)</div>
+                    </span>
+                </span>
+                <div class="dropdown-divider"></div>
+                <a (click)='logout()' class="dropdown-item">Sign Out</a>
+                <div class="dropdown-divider"></div>
+                <span class="dropdown-item no-hover"><small class="text-muted">Todo Cloud v.{{appVersion}}</small></span>
+            </div>
+        </div>
+        <div class="float-right">
+            <button class="navbar-toggler hidden-sm-up" (click)="clickToggleSidebar()" type="button" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="search-wrapper hidden-xs-down">
+                <input
+                        class="form-control search"
+                        type="search"
+                        (keyup.enter)="searchTask(search.value)"
+                        placeholder="Search"
+                        #search
+                />
+            </div>
+        </div>
+        <template #confirmationResultModalContent let-c="close" let-d="dismiss">
+            <div class="modal-header">
+                <h4 class="modal-title">{{confirmationEmailResultTitle}}</h4>
+                <button type="button" class="close" aria-label="Close" (click)="d()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>{{confirmationEmailResultMessage}}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="c()">Close</button>
+            </div>
+        </template>
+        <div *ngIf="!showSyncMessage" class="nav-bar-item float-left">
+            <template #bellPopContent>
+                <i (click)="alertNotificationPopup.close()" class="fa fa-times btn-close-popover"></i>
+                <div class="legacy-information one-message">
+                        <p class="popover-content-inner">
+                            Welcome to the improved todo-cloud.com. If there's something you need that you can't find here, <a href="{{legacyUrl}}">click here to go to the legacy site</a>.
+                        </p>
+                </div>
+                <div *ngIf="confirmationEmail" class="one-message">
+                    <p class="popover-content-inner">Confirm your email address to access more features. We've sent a confirmation email to: {{confirmationEmail}}</p>
+                    <div class="emailResendPopoverButtons">
+                        <a (click)="resendEmailConfirmation(alertNotificationPopup)" class="btn-default btn-green btn-size-xs" tabindex="0">Resend</a>
+                        <!-- <a (click)="notImplemented()" class="btn-default btn-info btn-size-xs" tabindex="0">Change email</a> -->
+                    </div>
+                </div>
+                <div *ngFor="let invitedMessage of invitedMessages" class="one-message invited-message">
+                    <p class="popover-content-inner">Someone invited you to a list! <br> Sender: <b>{{invitedMessage.account.firstName}} {{invitedMessage.account.lastName}}</b>({{invitedMessage.account.userName}})<br>List name: <b>{{invitedMessage.list.name}}</b></p>
+                    <div class="emailResendPopoverButtons">
+                        <a (click)="acceptInvitation(invitedMessage)" class="btn-default btn-green btn-size-xs" tabindex="0">Accept</a>
+                        <a (click)="declineInvitation(invitedMessage)" class="btn-default btn-info btn-size-xs" tabindex="0">Decline</a>
+                    </div>
+                </div>
+            </template>
+            <span placement="bottom" [ngbPopover]="bellPopContent" #alertNotificationPopup="ngbPopover" (shown)="loadInvitations()">
+                <i class="twf twf-alert-bell"></i>
+            </span>
+        </div>
+    </div>
+</nav>

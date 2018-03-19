@@ -1,0 +1,52 @@
+<div *ngIf="showInitialSyncOverlay" class="sync-container">
+    <div class="sync-row">
+        <div class="sync-logo"><img src="./assets/img/Todo-Cloud-Sign-In.png" alt="" width="192" height="192" /></div>
+        <div class="display-name" *ngIf="displayName">Hello {{displayName}},</div>
+        We're sychronizing your<br>tasks for the first time...
+        <div *ngIf="!initialSyncError" class="loading-spinner"></div>
+        <div class="sync-message" *ngIf="syncMessage">{{syncMessage}}</div>
+        <button *ngIf="initialSyncError" type="button" class="btn-default btn-warning btn-size-xs" (click)="continuePastInitialSyncError()">Continue</button>
+    </div>
+</div>
+
+<div *ngIf="!showInitialSyncOverlay" class="main-wrapper" [ngClass]="{'open-menu' : showTaskEdit}">
+    
+    <navigation-bar
+        (toggleSidebar)="onToggleSidebar()"
+    ></navigation-bar>
+    <div *ngIf="systemMessage && systemMessage.message && !dismissSystemMessage" class="system-message">
+        {{systemMessage.message}}
+        <a *ngIf="systemMessage.learnMoreUrl"
+            style="margin-left: 5px;"
+            href="{{systemMessage.learnMoreLink}}"
+            target="_blank"
+            >
+            Learn More
+        </a>
+        <i class="fa fa-fw fa-times clickable" (click)="dismissSystemMessage = true"></i>
+    </div>
+    
+    <div class="main-container" [ngClass]="{'open-calendar-filter' : showCalendarDateFilter }" #mainContainer>
+        <aside [ngClass]="{'open' : openSidebar, 'calendar-closed' : !showMainCalendar}">
+            <lists (changeStateListsMenu)="changeStateListsMenu($event)"
+            ></lists>
+            <span class="toggle-calendar" [ngClass] = "{'open' : showMainCalendar, 'close' : !showMainCalendar}" (click)="toggleCalendar()">
+                <svg width="29px" height="12px">
+                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <polyline class="path-1" stroke="#000000" stroke-linejoin="round" points="0.5 0 3.5 11.5 25.5 11.5 28.5 7.97972799e-17"></polyline>
+                        <polygon class="path-2" fill="#000000" points="10.5 4 14.5 8 18.5 4"></polygon>
+                    </g>
+                </svg>
+            </span>
+            <main-calendar *ngIf="showMainCalendar" class="d-block"
+            (dateFilterShow)="showCalendarDateFilter = $event"
+            ></main-calendar>
+        </aside>
+        <tasks [taskEditorIsOpen]="showTaskEdit"></tasks>
+        <task-edit class="task-edit-container st-menu st-effect"
+               [taskEditorIsOpen]="showTaskEdit"
+        ></task-edit>
+    </div>
+</div>
+
+<template ngbModalContainer></template>

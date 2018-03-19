@@ -1,0 +1,216 @@
+/**
+  *  Sidebar - Lists
+  */
+:host {
+    padding: 17px 0 0 0;
+    background-color: #f5f5f5;
+}
+
+section {
+    overflow: hidden;
+}
+
+section > perfect-scrollbar {
+    transition: height 0.1s;
+    height: calc(100vh - 287px);
+}
+
+
+.list-group {
+    display: block;
+    margin: 10px auto;
+    padding: 0 15px;
+    text-align: center;
+    position: relative;
+}
+
+.list-group span {
+    position: relative;
+    z-index: 1;
+    padding: 0 15px;
+    color: #a2a2a2;
+    background-color: #f5f5f5;
+}
+
+.list-group:after {
+    content: '';
+    display: block;
+    width: calc(100% - 30px);
+    height: 1px;
+    background-color: #a2a2a2;
+    position: absolute;
+    top: 50%;
+    margin-top: -1px;
+    z-index: 0;
+}
+
+.task-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.list-item  {
+    position: relative;
+    list-style: none;
+    cursor: default;
+    -webkit-transform: translateZ(0);
+}
+.list-item.gu-mirror{
+    opacity: 0.9;
+}
+.list-item .btn-list-menu {
+    position: absolute;
+    top: 1px;
+    right: -20px;
+    text-decoration: none;
+    color: #888;
+    opacity: 0;
+    transition: opacity 0.2s, color 0.2s;
+    padding: 10px 6px;
+}
+
+.list-item > span {
+    padding: 6px 31px 6px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    text-decoration: none;
+    color: #3c3c3c;
+    transition: all 0.2s;
+}
+
+.list-item .list-name-wrapper {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    max-width: calc(100% - 60px);
+}
+
+.list-item.shared-list .list-name-wrapper .list-name {
+    max-width: calc(100% - 42px);
+}
+
+.list-item.shared-list .list-name-wrapper .shared-list-icon {
+    display: inherit;
+}
+
+.list-item .list-name-wrapper .shared-list-icon {
+    display: none;
+    color: #a2a2a2;
+    margin: 0 4px;
+}
+
+.list-item .list-name {
+    max-width: calc(100% - 21px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.list-item.gu-mirror > span,
+.list-item:hover > span,
+.list-item:active > span,
+.list-item > span:hover,
+.list-item > span.active,
+.list-item > span.active:active,
+.list-item > span:active {
+    background-color: #fff;
+}
+.list-item.gu-mirror span.list-spacer{
+    background-color: transparent;
+}
+.list-item:hover .btn-list-menu {
+    opacity: 1;
+    right: 5px;
+}
+.list-item .btn-list-menu:hover {
+    color: #3c3c3c;
+}
+.list-item span.list-spacer {
+    margin: 0 15px;
+    padding: 4px 0 0 0;
+    display: block;
+    cursor: hand;
+}
+
+.list-item span.list-spacer:after {
+    content: '';
+    display: block;
+    width: 100%;
+    padding: 0 0 4px 0;
+    border-top: 1px solid rgba(162, 162, 162, 0.3);
+}
+
+.list-item span.list-spacer:hover,
+.list-item span.list-spacer:active {
+    background-color: transparent;
+}
+
+.list-item > span .fa {
+    font-size: 0.8rem;
+    width: 18px;
+    color: #007bf2;
+    text-align: left;
+}
+
+.list-item > span .list-icon-wrapper {
+    height: 16px;
+    flex-basis: 18px;
+    overflow: hidden;
+    position: relative;
+}
+
+.list-item > span .list-icon-wrapper .twf {
+    left: -2px;
+    top: 0;
+    position: absolute;
+    transition: left 0.1s ease-in-out;
+}
+
+
+.list-item > span .list-icon-wrapper .preloader-xs {
+    transition: left 0.1s ease-in-out;
+    position: absolute;
+    left: 20px;
+}
+
+.list-item > span.saving .list-icon-wrapper .preloader-xs {
+    left: 0;
+}
+
+.list-item > span.saving .list-icon-wrapper .twf {
+    left: -20px;
+}
+
+.list-item > span .count {
+    /*padding-left: 8px;*/
+    font-size: 0.8rem;
+    text-align: right;
+    min-width: 60px;
+}
+
+.list-item > span .count .overdue {
+    padding: 1px 8px 0 8px;
+    border: 1px solid rgba(255, 0, 0, .9);
+    color: rgba(255, 0, 0, .9);
+    border-radius: 10px;
+    display: inline-block;
+    font-style: normal;
+    line-height: 1;
+
+}
+
+.list-item > span .count .total {
+    font-style: normal;
+    margin-left: 8px;
+}
+
+.list-item.add-list > span {
+    color: #007bf2;
+    background-color: transparent;
+}
+
+.ta-list {
+    background-color: rgba(33, 150, 243, 0.3) !important;
+}

@@ -1,0 +1,280 @@
+/**
+ * Default button color
+ */
+.btn-default {
+    display: inline-block;
+    cursor: default;
+    width: auto;
+    min-width: 120px;
+    padding: 10px 30px;
+    background-color: transparent;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    color: #fff!important;
+    /*box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.08);*/
+    border: 1px solid #fff;
+    -webkit-transition: color 0.1s ease-out 0.3s, background-color 0.1s ease-out 0.3s, border-color 0.1s ease-out 0.3s, visibility 0s;
+    -moz-transition: color 0.1s ease-out 0.3s, background-color 0.1s ease-out 0.3s, border-color 0.1s ease-out 0.3s, visibility 0s;
+    -o-transition: color 0.1s ease-out 0.3s, background-color 0.1s ease-out 0.3s, border-color 0.1s ease-out 0.3s, visibility 0s;
+    transition: color 0.1s ease-out 0.3s, background-color 0.1s ease-out 0.3s, border-color 0.1s ease-out 0.3s, visibility 0s;
+    font-weight: 400;
+    font-size: 10pt;
+    font-family: 'Lato', sans-serif;
+    line-height: 1;
+    text-align: center;
+}
+
+.btn-default:hover {
+    /*box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.1);*/
+    color: rgb(33, 150, 243) !important;
+    background-color: rgba(255, 255, 255, 1);
+    text-decoration: none !important;
+}
+
+.btn-default:active,
+.btn-default:focus {
+    color: rgb(33, 150, 243)!important;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: inset 1px 1px 0 0 rgba(0, 0, 0, 0.1);
+    text-decoration: none !important;
+}
+
+.btn-default:focus {
+    outline: 0;
+}
+
+/**
+ * Primary action button color
+ */
+.btn-orange {
+    color: #fff!important;
+    background-color: #f7a913;
+    border: 1px solid #f7a913;
+}
+
+.btn-orange:hover {
+    color: rgba(255, 255, 255, 1)!important;
+    background-color: #eda112;
+    border: 1px solid #eda112;
+
+}
+
+.btn-orange:active,
+.btn-orange:focus {
+    color: rgba(255, 255, 255, 1)!important;
+    background-color: #f8a813;
+    border: 1px solid #f8a813;
+}
+
+/**
+ * Default solid button color
+ */
+.btn-white {
+    color: rgb(33, 150, 243)!important;
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.btn-white:hover {
+    color: rgba(255, 255, 255, 1)!important;
+    background-color: rgba(33, 150, 243, 0.9);
+    border-color: rgba(33, 150, 243, 0.9);
+}
+
+.btn-white:active,
+.btn-white:focus {
+    color: rgba(255, 255, 255, 1)!important;
+    border-color: rgba(33, 150, 243, 1);
+    background-color: rgba(33, 150, 243, 1);
+}
+
+/**
+ * Success Button color
+ */
+.btn-green {
+    color: #fff!important;
+    border-color: rgb(76, 175, 80);
+    background-color: rgb(76, 175, 80);
+}
+
+.btn-green:hover {
+    color: #fff!important;
+    border-color: rgb(32, 155, 66);
+    background-color: rgb(32, 155, 66);
+}
+
+.btn-green:active,
+.btn-green:focus {
+    color: #fff!important;
+    border-color: rgb(22, 116, 49);
+    background-color: rgb(22, 116, 49);
+}
+
+/**
+ * Information Button color
+ */
+.btn-info {
+    color: #fff!important;
+    border-color: rgb(93, 162, 227);
+    background-color: rgb(93, 162, 227);
+}
+
+.btn-info:hover {
+    color: #fff!important;
+    border-color: rgb(92, 150, 215);
+    background-color: rgb(92, 150, 215);
+}
+
+.btn-info:active,
+.btn-info:focus {
+    color: #fff!important;
+    border-color: rgb(90, 141, 205);
+    background-color: rgb(90, 141, 205);
+}
+
+/**
+ * Warning Button color
+ */
+.btn-warning {
+    color: #fff!important;
+    border-color: rgb(212, 13, 18);
+    background-color: rgb(212, 13, 18);
+}
+
+.btn-warning:hover {
+    color: #fff!important;
+    border-color: rgb(180, 13, 18);
+    background-color: rgb(180, 13, 18);
+}
+
+.btn-warning:active,
+.btn-warning:focus {
+    color: #fff!important;
+    border-color: rgb(140, 10, 13);
+    background-color: rgb(140, 10, 13);
+}
+
+.btn-default.disabled,
+.btn-default.disabled:hover,
+.btn-default.disabled:active,
+.btn-default.disabled:focus,
+.btn-info.disabled,
+.btn-info.disabled:hover,
+.btn-info.disabled:active,
+.btn-info.disabled:focus,
+.btn-white.disabled,
+.btn-white.disabled:hover,
+.btn-white.disabled:active,
+.btn-white.disabled:focus,
+.btn-orange.disabled,
+.btn-orange.disabled:hover,
+.btn-orange.disabled:active,
+.btn-orange.disabled:focus,
+.btn-warning.disabled,
+.btn-warning.disabled:hover,
+.btn-warning.disabled:active,
+.btn-warning.disabled:focus,
+.btn-green.disabled,
+.btn-green.disabled:hover,
+.btn-green.disabled:active,
+.btn-green.disabled:focus {
+    cursor: default;
+    color: #888!important;
+    background-color: rgb(224, 224, 224);
+    box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.08);
+}
+
+.btn-green.btn-preloader .preloader-xs:before,
+.btn-green.btn-preloader .preloader-sm:before,
+.btn-green.btn-preloader .preloader-md:before,
+.btn-info.btn-preloader .preloader-xs:before,
+.btn-info.btn-preloader .preloader-sm:before,
+.btn-info.btn-preloader .preloader-md:before,
+.btn-warning.btn-preloader .preloader-xs:before,
+.btn-warning.btn-preloader .preloader-sm:before,
+.btn-warning.btn-preloader .preloader-md:before {
+    border-top-color: #fff;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+}
+
+/**
+ * Buttons size
+ */
+.btn-default.btn-size-sm {
+    width: auto;
+    min-width: 80px;
+    padding: 12px 20px;
+    font-weight: 400;
+    font-size: 9pt;
+}
+
+.btn-default.btn-size-xs {
+    width: auto;
+    min-width: 80px;
+    padding: 8px 18px;
+    font-weight: 400;
+    font-size: 8pt;
+}
+
+.btn-default.btn-size-xs.btn-preloader {
+    height: 28px;
+}
+
+.btn.active.focus,
+.btn.focus,
+.btn:active.focus {
+    outline: none;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.btn-block .btn-preloader {
+    margin: inherit;
+}
+.btn-block .btn-default:first-child {
+    margin-right: 2px;
+}
+
+.btn-block .btn-default:last-child {
+    margin-left: 2px;
+}
+
+.btn-group-right {
+    text-align: right;
+}
+
+.btn-preloader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    height: 35px;
+}
+
+.btn-preloader span {
+    position: absolute;
+    opacity: 1;
+    transition: transform 0.2s, opacity 0.1s;
+}
+
+.btn-preloader.loading span:first-child {
+    transform: scale(2);
+    opacity: 0;
+}
+
+.btn-preloader span:last-child {
+    transform: scale(0);
+    opacity: 0;
+}
+
+.btn-preloader.loading span:last-child {
+    transform: scale(1);
+    opacity: 1;
+}
+

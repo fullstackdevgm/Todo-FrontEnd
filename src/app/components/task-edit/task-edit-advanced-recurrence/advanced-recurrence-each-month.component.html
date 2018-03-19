@@ -1,0 +1,18 @@
+<div class="mb-2 clearfix">
+    <ul class="recurrence-wrapper one-half">
+        <li class="recurrence-item hover" *ngFor="let value of values" (click)="selectedValue = value">
+            {{value}}
+            <i *ngIf="selectedValue == value" class="fa fa-check"></i>
+        </li>
+    </ul>
+    <ul class="recurrence-wrapper one-half">
+        <li class="recurrence-item hover" *ngFor="let day of days" (click)="selectedDay = day">
+            {{day}}
+            <i *ngIf="selectedDay == day" class="fa fa-check"></i>
+        </li>
+    </ul>
+</div>
+<div class="btn-group-right mb-2">
+    <button class="btn-default btn-info btn-size-xs" type="button" (click)="removePressed()">Remove</button>
+    <button class="btn-default btn-info btn-size-xs" type="button" (click)="savePressed()">Save</button>
+</div>

@@ -1,0 +1,550 @@
+<ng-template
+        #customDueDay
+        let-date="date"
+        let-currentMonth="currentMonth">
+    <div class="btn-secondary text-center calendar-day"
+         [ngClass]="{'bg-primary text-white' : dateStructsAreEqual(date, dueDateModel)}"
+         [class.is-current-day]="dateStructsAreEqual(date, chooseDate(0))"
+         [class.text-muted]="date.month !== currentMonth"
+    >{{ date.day }}</div>
+</ng-template>
+<ng-template
+        #customStartDay
+        let-date="date"
+        let-currentMonth="currentMonth">
+    <div class="btn-secondary text-center calendar-day"
+         [ngClass]="{'bg-primary text-white' : dateStructsAreEqual(date, startDateModel)}"
+         [class.is-current-day]="dateStructsAreEqual(date, chooseDate(0))"
+         [class.text-muted]="date.month !== currentMonth || isInvalidStartDate(date)"
+    >{{ date.day }}</div>
+</ng-template>
+
+<div class="editor-header">
+    <span>Edit Task</span>
+    <span><i class="fa fa-times clickable" (click)="finishEditTask()"></i></span>
+</div>
+<div class="editor-wrapper">
+    <perfect-scrollbar>
+        <section class="edit-group">
+            <div class="edit-group-overlay" *ngIf="activeGroupOverlay"></div>
+            <div class="task-edit-item">
+                <div class="task-check"
+                    (click)="_task.isCompleted ? uncompleteTask() : completeTask()"
+                    [ngClass]="{
+                        'check-animation': currentCompletionState == TaskCompletionState.Initial,
+                        'grace-animation': currentCompletionState == TaskCompletionState.GracePeriod,
+                        'saving-animation': currentCompletionState == TaskCompletionState.Saving,
+                        'check': currentCompletionState < TaskCompletionState.Error,
+                        'error': currentCompletionState == TaskCompletionState.Error,
+                        'complete' : _task.isCompleted
+                    }"
+                    [class.complete]="_task.isCompleted && currentCompletionState != TaskCompletionState.Saving"
+                >
+                    <i class="checkmark draw"></i>
+                    <svg class="progress" width="20" height="20">
+                        <circle class="back"
+                                cx="10" cy="10" r="8" fill="none" />
+                        <circle class="bar" #circleBar
+                                cx="10" cy="10" r="8" fill="none" />
+                    </svg>
+                </div>
+                <div class="task-data">
+                    <div class="task-name">
+                        <input type="text"
+                            [ngModel]="taskName"
+                            [ngClass]="{changed : taskName !== taskOriginName}"
+                            (ngModelChange)="updateTaskName(taskNameInput.value)"
+                            (focus)="selectTaskName()"
+                            (blur)="onTaskNameBlur(taskNameInput.value)"
+                            (change)="checkEmptyTaskName(taskNameInput.value)"
+                            (keyup.enter)="saveTaskName(taskNameInput.value)"
+                            #taskNameInput />
+                    </div>
+                </div>
+                <div class="item-action">
+                    <i class="fa fa-fw" [ngClass]="{'fa-star': _task.starred,'fa-star-o': !_task.starred}" (click)="starredTask()"></i>
+                </div>
+            </div>
+            <div class="task-edit-item-wrapper blue-value" [ngClass]="{'default-value' : !_task.note, active: openNoteEditor}">
+                <div class="task-edit-item">
+                    <div class="item-icon" (click)="toggleNoteEditor()"><i class="fa fa-fw fa-sticky-note"></i></div>
+                    <div class="task-data" (click)="toggleNoteEditor()">
+                        <div class="note-content" *ngIf="_task.note" innerHTML="{{_task.note | linky }}"></div>
+                        <div *ngIf="!_task.note">Add note</div>
+                    </div>
+                    <div class="item-icon note-icon" (click)="showNoteEditPopupModal()"><i class="fa fa-fw fa-pencil-square-o"></i></div>
+                </div>
+                <div class="edit-content" [ngClass]="{inactive: !openNoteEditor}">
+                    <textarea name="note" #noteTextarea></textarea>
+                    <div class="btn-group-right">
+                        <button type="button" class="btn-default btn-info btn-size-xs" (click)="toggleNoteEditor(false)">Close</button>
+                        <button type="button" class="btn-default btn-info btn-size-xs" (click)="updateNote(noteTextarea.value)">OK</button>
+                    </div>
+                </div>
+            </div>
+            <div class="task-edit-item-wrapper task-actions-wrapper blue-value" [ngClass]="{'default-value' : !_task.taskTypeHasActionData}">
+                <div class="task-edit-item">
+                    <div class="item-icon">
+                        <i class="fa fa-fw"
+                            [ngClass]="{
+                                    'fa-arrow-circle-right': !_task.taskTypeHasActionData,
+                                    'fa-user': _task.taskTypeHasContactInfo,
+                                    'fa-phone': _task.taskTypeHasOnlyPhoneInfo,
+                                    'fa-map-marker': _task.taskTypeHasLocationInfo,
+                                    'fa-link': _task.taskTypeHasURLInfo
+                                }"></i>
+                    </div>
+                    <div class="task-data" >
+                        <span *ngIf="!_task.taskTypeHasActionData">Action</span>
+                        <span *ngIf="_task.taskTypeHasContactInfo">{{_task.taskTypeContactValue}}</span>
+                        <span *ngIf="_task.taskTypeHasLocationInfo"><a (click)="handleActionLinkClick($event, _task.taskTypeLocationLink)" href="#">{{_task.taskTypeLocation}}</a></span>
+                        <span *ngIf="_task.taskTypeHasOnlyPhoneInfo"><a (click)="handleActionLinkClick($event, _task.taskTypePhoneNumberLink)" href="#">{{_task.taskTypePhoneNumber}}</a></span>
+                        <span *ngIf="_task.taskTypeHasURLInfo"><a (click)="handleActionLinkClick($event, _task.taskTypeURLLink)" href="#">{{_task.taskTypeURL}}</a></span>
+                    </div>
+                    <div *ngIf="!_task.taskTypeHasActionData" class="item-action">
+                        <!--<i class="fa fa-fw fa-user"  (click)="currentActionInput = actionInputModels.contact"></i>-->
+                        <i class="fa fa-fw fa-phone" (click)="updateAction(actionInputModels.phone)"></i>
+                        <i class="fa fa-fw fa-map-marker" (click)="updateAction(actionInputModels.location)"></i>
+                        <i class="fa fa-fw fa-link" (click)="updateAction(actionInputModels.url)"></i>
+                    </div>
+                    <div *ngIf="_task.taskTypeHasActionData" class="item-action">
+                        <i class="fa fa-fw fa-times" (click)="removeActionData()"></i>
+                    </div>
+                </div>
+                <div class="edit-content" [ngClass]="{inactive: currentActionInput.input != ActionInputType.TextField}">
+                    <input type="text"
+                           class="form-control"
+                           [ngModel]="actionTextInput"
+                           [ngClass]="{ 'has-error' : isLinkInvalid }"
+                           (ngModelChange)="currentActionInput.update(actionInput.value)"
+                           placeholder="{{currentActionInput.placeholder}}"
+                           (keyup.enter)="currentActionInput.completion(actionInput.value)"
+                           #actionInput />
+                    <div class="btn-group-right">
+                        <button type="button" class="btn-default btn-info btn-size-xs" (click)="currentActionInput = actionInputModels.none">Close</button>
+                        <button type="button" class="btn-default btn-info btn-size-xs" (click)="currentActionInput.completion(actionInput.value)">OK</button>
+                    </div>
+                </div>
+                <div class="edit-content" [ngClass]="{inactive: currentActionInput.input != ActionInputType.PhoneNumber}">
+                    <input type="text"
+                           class="form-control"
+                           [ngModel]="actionTextInput"
+                           (ngModelChange)="currentActionInput.update(actionPhoneInput.value)"
+                           (keypress)="currentActionInput.keypress($event)"
+                           placeholder="{{currentActionInput.placeholder}}"
+                           (keyup.enter)="currentActionInput.completion(actionPhoneInput.value)"
+                           #actionPhoneInput />
+                    <div class="btn-group-right">
+                        <button type="button" class="btn-default btn-info btn-size-xs" (click)="currentActionInput = actionInputModels.none">Close</button>
+                        <button type="button" class="btn-default btn-info btn-size-xs" (click)="currentActionInput.completion(actionPhoneInput.value)">OK</button>
+                    </div>
+                </div>
+                <div class="edit-content" *ngIf="currentActionInput.input == ActionInputType.LocationSelect">
+                    <input type="text"
+                            class="form-control"
+                            autocorrect="off"
+                            autocapitalize="off"
+                            spellcheck="off"
+                            [(ngModel)]="currentAddress"
+                            placeholder="{{currentActionInput.placeholder}}"
+                            #locationSearchInput />
+                    <agm-map
+                        [latitude]='latitude'
+                        [longitude]='longitude'
+                        [zoom]='mapZoomLevel'
+                        [scrollwheel]="false"
+                        (mapClick)='mapClick($event)' >
+                        <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+                    </agm-map>
+                    <div class="location-error" *ngIf="hasCurrentPositionError">Unable to determine current position. <br>Please, allow the browser to know your location.</div>
+                    <div class="btn-group-right">
+                        <button type="button" class="btn-default btn-info btn-size-xs" (click)="currentActionInput = actionInputModels.none">Close</button>
+                        <button type="button" class="btn-default btn-info btn-size-xs" (click)="mapOKClicked()">OK</button>
+                    </div>
+                </div>
+            </div>
+            <task-edit-assign-task
+                [task]="_task"
+            ></task-edit-assign-task>
+            <div class="task-edit-item-wrapper blue-value" [ngClass]="{'default-value' : commentRows.length === 0}">
+                <div class="task-edit-item" (click)="openComments()">
+                    <div class="item-icon"><i class="fa fa-fw fa-comments"></i></div>
+                    <div class="task-data">
+                        <div class="">Comments</div>
+                    </div>
+                    <div class="item-action">
+                        <span>{{commentRows.length}}</span>
+                    </div>
+                </div>
+                <div class="edit-content" [ngClass]="{inactive: !showComments}">
+                    <div class="comments-wrapper">
+                        <div *ngFor="let commentRow of commentRows" class="item-action comment-item">
+                            <div class="userpic"><span class="name">{{commentRow.commentWithUser.user.firstName.charAt(0)}}{{commentRow.commentWithUser.user.lastName.charAt(0)}}</span></div>
+                            <div class="content">
+                                <div class="username">{{commentRow.commentWithUser.user.firstName}} {{commentRow.commentWithUser.user.lastName}}</div>
+                                <div class="text" innerHTML="{{commentRow.commentWithUser.comment.text | linky }}"></div>
+                                <div *ngIf="commentRow.commentWithUser.comment.creationDate != null" class="time">
+                                    {{commentRow.commentWithUser.comment.creationDate | timeAgo}}
+                                </div>
+                            </div>
+                            <i *ngIf="account.userId == commentRow.commentWithUser.user.userId && !commentRow.updating"
+                                class="fa fa-fw fa-times clickable btn-remove-comment"
+                                (click)="removeComment(commentRow); $event.stopPropagation()"></i>
+                            <span *ngIf="commentRow.updating" class="btn-remove-comment">Updating...</span>
+                        </div>
+                    </div>
+
+                    <div class="add-comment">
+                        <input type="text"
+                            class="form-control"
+                            [(ngModel)]='commentInputModel'
+                            placeholder="Add a comment"
+                            (keyup.enter)="addComment(taskCommentInput.value);"
+                            (click)="$event.stopPropagation()"
+                            #taskCommentInput />
+                    </div>
+                </div>
+            </div>
+
+        </section>
+        <section class="edit-group">
+            <div class="task-edit-item-wrapper blue-value" [ngClass]="{'default-value' : _task.isCompleted}" *ngIf="_task.isCompleted">
+                <div class="task-edit-item blue-value" [ngClass]="{'default-value' : _task.isCompleted}">
+                    <div class="item-icon"><i class="fa fa-fw fa-check-square"></i></div>
+                    <div class="task-data">
+                        <div>Completed</div>
+                    </div>
+                    <div class="item-action">
+                        <span>{{_task.isCompleted ? ( (_task.completionDate.getFullYear() == currentDate.getFullYear()) ? (_task.completionDate.getTime() | datex:'ddd MMM DD') : (_task.completionDate.getTime() | datex:'ddd MMM DD YYYY') ) : 'No date'}}</span>
+                        <i class="fa fa-fw fa-times" *ngIf="_task.isCompleted" (click)="uncompleteTask()"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="task-edit-item-wrapper blue-value" [ngClass]="{'default-value' : !_task.hasDueDate}">
+                <div ngbDropdown class="d-inline-block drop-for-datepicker" #dueDateDatePickerDrop="ngbDropdown" [autoClose]="'outside'">
+                    <div ngbDropdownMenu >
+                        <span class="select-current-month" (click)="dueDateDatePicker.navigateTo()"><i class="fa fa-dot-circle-o"></i></span>
+                        <span class="form-control duedate date-field">
+                            <input class="month"
+                                   type="text"
+                                   #dueDateFieldMonth
+                                   [ngClass]="{ 'has-error' : dueDateInputInvalid }"
+                                   [ngModel]="(dueDateInput | datex:'M')"
+                                   (ngModelChange)="changedDueDateInput(dueDateFieldMonth.value, 1)"
+                                   (keypress)="validateDateInput($event, dueDateFieldMonth.value)"
+                                   (keyup.enter)="updateDueDateViaField(dueDateInput)"
+                                   (keydown.ArrowRight)="moveCursor(dueDateFieldMonth, dueDateFieldDay, 0)"
+                            >
+                            <span class="divider">/</span>
+                            <input class="day" 
+                                   type="text"
+                                   #dueDateFieldDay
+                                   [ngClass]="{ 'has-error' : dueDateInputInvalid }"
+                                   [ngModel]="(dueDateInput | datex:'D')"
+                                   (ngModelChange)="changedDueDateInput(dueDateFieldDay.value, 0)"
+                                   (keypress)="validateDateInput($event, dueDateFieldDay.value)"
+                                   (keyup.enter)="updateDueDateViaField(dueDateInput)"
+                                   (keydown.ArrowRight)="moveCursor(dueDateFieldDay, dueDateFieldYear, 0)"
+                                   (keydown.ArrowLeft)="moveCursor(dueDateFieldDay, dueDateFieldMonth, 1)"
+                            >
+                            <span class="divider">/</span>
+                            <input class="year" 
+                                   type="text"
+                                   [ngClass]="{ 'has-error' : dueDateInputInvalid }"
+                                   [ngModel]="(dueDateInput | datex:'Y')"
+                                   (ngModelChange)="changedDueDateInput(dueDateFieldYear.value, 2)"
+                                   (keypress)="validateDateInput($event, dueDateFieldYear.value)"
+                                   (keyup.enter)="updateDueDateViaField(dueDateInput)"
+                                   #dueDateFieldYear
+                                   (keydown.ArrowLeft)="moveCursor(dueDateFieldYear, dueDateFieldDay, 1)"
+                            >
+                        </span>
+                        <ngb-datepicker
+                                ngbDatepicker
+                                [dayTemplate]="customDueDay"
+                                [ngModel]="dueDateModel"
+                                [startDate]="dueDateModel"
+                                [firstDayOfWeek]="firstDayOfWeek"
+                                (ngModelChange)="updateDueDate($event)"
+                                (click)="dueDatePickerClicked($event, dueDateDatePickerDrop)"
+                                #dueDateDatePicker="ngbDatepicker"
+                        ></ngb-datepicker>
+                        <div class="calendar-footer">
+                            <span class="link" (click)="updateDueDate(chooseDate(0))">Today</span>
+                            <span class="link" (click)="updateDueDate(chooseDate(1))">Tomorrow</span>
+                            <span class="link" (click)="updateDueDate(chooseDate(7))">Next Week</span>
+                            <span class="link" (click)="$event.stopPropagation(); dueDateDatePickerDrop.close(); removeDueDate()">None</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-edit-item blue-value" [ngClass]="{'default-value' : !_task.hasDueDate}" (click)="toggleDueDateCalendar($event)">
+                    <div class="item-icon"><i class="fa fa-fw fa-calendar-check-o"></i></div>
+                    <div class="task-data">
+                        <div>Due</div>
+                    </div>
+                    <div class="item-action">
+                        <span>{{_task.hasDueDate ? ( (_task.dueDate.getFullYear() == currentDate.getFullYear()) ? (_task.dueDate.getTime() | datex:'ddd MMM DD') : (_task.dueDate.getTime() | datex:'ddd MMM DD YYYY') ) : 'No date'}}</span>
+                        <i class="fa fa-fw fa-times" *ngIf="_task.hasDueDate" (click)="$event.stopPropagation(); removeDueDate()"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="task-edit-item-wrapper green-value" [ngClass]="{'default-value' : !_task.hasStartDate}" *ngIf="_task.hasDueDate">
+                <div ngbDropdown class="d-inline-block drop-for-datepicker" #startDateDatePickerDrop="ngbDropdown" [autoClose]="'outside'">
+                    <div ngbDropdownMenu >
+                        <span class="select-current-month" (click)="$event.stopPropagation(); startDateDatePicker.navigateTo()"><i class="fa fa-dot-circle-o"></i></span>
+                        <span class="form-control startdate date-field">
+                            <input class="month"
+                                   type="text"
+                                   #startDateFieldMonth
+                                   [ngClass]="{ 'has-error' : startDateInputInvalid }"
+                                   [ngModel]="(startDateInput | datex:'M')"
+                                   (ngModelChange)="changedStartDateInput(startDateFieldMonth.value, 1)"
+                                   (keypress)="validateDateInput($event, startDateFieldMonth.value)"
+                                   (keyup.enter)="updateStartDateViaField(startDateInput)"
+                                   (keydown.ArrowRight)="moveCursor(startDateFieldMonth, startDateFieldDay, 0)"
+                            >
+                            <span class="divider">/</span>
+                            <input class="day" 
+                                   type="text"
+                                   #startDateFieldDay
+                                   [ngClass]="{ 'has-error' : startDateInputInvalid }"
+                                   [ngModel]="(startDateInput | datex:'D')"
+                                   (ngModelChange)="changedStartDateInput(startDateFieldDay.value, 0)"
+                                   (keypress)="validateDateInput($event, startDateFieldDay.value)"
+                                   (keyup.enter)="updateStartDateViaField(startDateInput)"
+                                   (keydown.ArrowRight)="moveCursor(startDateFieldDay, startDateFieldYear, 0)"
+                                   (keydown.ArrowLeft)="moveCursor(startDateFieldDay, startDateFieldMonth, 1)"
+                            >
+                            <span class="divider">/</span>
+                            <input class="year" 
+                                   type="text"
+                                   [ngClass]="{ 'has-error' : startDateInputInvalid }"
+                                   [ngModel]="(startDateInput | datex:'Y')"
+                                   (ngModelChange)="changedStartDateInput(startDateFieldYear.value, 2)"
+                                   (keypress)="validateDateInput($event, startDateFieldYear.value)"
+                                   (keyup.enter)="updateStartDateViaField(startDateInput)"
+                                   #startDateFieldYear
+                                   (keydown.ArrowLeft)="moveCursor(startDateFieldYear, startDateFieldDay, 1)"
+                            >
+                        </span>
+                        <ngb-datepicker
+                                ngbDatepicker
+                                [dayTemplate]="customStartDay"
+                                [ngModel]="startDateModel"
+                                [startDate]="startDateModel"
+                                [firstDayOfWeek]="firstDayOfWeek"
+                                (ngModelChange)="updateStartDate($event)"
+                                (click)="dueDatePickerClicked($event, startDateDatePickerDrop)"
+                                #startDateDatePicker="ngbDatepicker"
+                        ></ngb-datepicker>
+                        <div class="calendar-footer">
+                            <span class="link" (click)="updateStartDate(chooseDate(0))">Today</span>
+                            <span class="link" (click)="updateStartDate(chooseDate(1))">Tomorrow</span>
+                            <span class="link" (click)="updateStartDate(chooseDate(7))">Next Week</span>
+                            <span class="link" (click)="$event.stopPropagation(); startDateDatePickerDrop ? startDateDatePickerDrop.close() : false; removeStartDate()">None</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-edit-item green-value" [ngClass]="{'default-value' : !_task.hasStartDate}" (click)="toggleStartDateCalendar($event)">
+                    <div class="item-icon"><i class="fa fa-fw fa-calendar-plus-o"></i></div>
+                    <div class="task-data">
+                        <div>Start</div>
+                    </div>
+                    <div class="item-action">
+                        <span>{{_task.hasStartDate ? ( (_task.startDate.getFullYear() == currentDate.getFullYear()) ? (_task.startDate.getTime() | datex:'ddd MMM DD') : (_task.startDate.getTime() | datex:'ddd MMM DD YYYY') ) : 'No date'}}</span>
+                        <i class="fa fa-fw fa-times" *ngIf="_task.hasStartDate" (click)="removeStartDate(); $event.stopPropagation()"></i>
+                    </div>
+                </div>
+            </div>
+            <div *ngFor="let row of notificationRows" class="task-edit-item remind-me-item red-value">
+                <div class="item-icon"><i class="fa fa-fw fa-bell"></i></div>
+                <div class="task-data" (click)="openNotificationEditor(row.notification.identifier)">
+                    <div class="">Remind me</div>
+                </div>
+                <div class="item-action time-picker" (click)="openNotificationEditor(row.notification.identifier)">
+
+                    <div class="d-flex" *ngIf="row.notification.triggerOffset == 0">
+                        <!-- If the offset is 0, it's a "custom notification" and the trigger date is shown. -->
+                        <span>{{row.notification.triggerDate | datex:'ddd DD MMM, h:mm A'}}</span>
+                    </div>
+                    <div class="d-flex" *ngIf="row.notification.triggerOffset == 1">
+                        <!-- If the offset is 1, this is the "base/main" notification -->
+                        <div class="timepicker-wrapper">
+                            <input type="text"
+                                #notificationHoursElement
+                                [ngModel]="row.notification.triggerDate | datex:'hh'"
+                                (keyup)="changeNotificationHours($event, row.notification)"
+                                (keyup.enter)="setNotificationhours($event, row.notification, notificationHoursElement.value)"
+                                (blur)="setNotificationhours($event, row.notification, notificationHoursElement.value)"
+                                (keydown.ArrowRight)="moveCursor(notificationHoursElement, notificationMinutesElement, 0)"
+                                maxlength="2"
+                            >
+                            <span>:</span>
+                            <input type="text"
+                                #notificationMinutesElement
+                                [ngModel]="row.notification.triggerDate | datex:'mm'"
+                                (keyup)="changeNotificationMinutes($event, row.notification)"
+                                (keyup.enter)="setNotificationMinutes($event, row.notification, notificationMinutesElement.value)"
+                                (blur)="setNotificationMinutes($event, row.notification, notificationMinutesElement.value)"
+                                (keydown.ArrowLeft)="moveCursor(notificationMinutesElement, notificationHoursElement, 1)"
+                                maxlength="2"
+                            >
+                        </div>
+                        <div class="meredian-wrapper">
+                            <select name="meredian" #notificationMeridiem (change)="notificationUpdateMeridiem(notificationMeridiem.value, row.notification)">
+                                <option value="AM" [selected]="row.notification.triggerDate.getHours() < 12">AM</option>
+                                <option value="PM" [selected]="row.notification.triggerDate.getHours() >= 12">PM</option>
+                            </select>
+                        </div>
+                    </div>
+                    <task-edit-notification-offset-picker *ngIf="row.notification.triggerOffset > 1"
+                        [notification]="row.notification"
+                        [openEditor]="row.notification.identifier === notificationEditorID"
+                        [notificationRows]="notificationRows"
+                        (offsetPicked)="onOffsetPicked($event)"
+                    ></task-edit-notification-offset-picker>
+                </div>
+                <i *ngIf="!row.updating" class="ml-1 fa fa-times" (click)="removeNotification(row.notification)"></i>
+            </div>
+            <div *ngIf="nextAvailableNotificationOffset() >= 0" class="task-edit-item default-value" (click)="addNotification()">
+                <div class="item-icon"><i class="fa fa-fw fa-bell"></i></div>
+
+                <div class="task-data">
+                    <div *ngIf="notificationRows.length == 0">Add a reminder...</div>
+                    <div *ngIf="notificationRows.length  > 0">Add another reminder...</div>
+                </div>
+                <div class="item-action">
+                    <span *ngIf="creatingNotification" class="">Adding reminder...</span>
+                </div>
+            </div>
+            <div class="task-edit-item-wrapper red-value" [ngClass]="{'default-value' : !_task.hasLocationAlert}">
+                <div class="task-edit-item clickable" (click)="toggleLocationAlert()">
+                    <div class="item-icon"><i class="fa fa-fw fa-location-arrow"></i></div>
+                    <div class="task-data">
+                        <div class="">{{_task.hasLocationAlert ?  _task.locationAlertAdditionalInfoString : 'Remind me at a location'}}</div>
+                    </div>
+                    <div class="item-action">
+                        <i *ngIf="_task.hasLocationAlert" class="fa fa-fw fa-times" (click)="removeLocationAlertInformation(); $event.stopPropagation()"></i>
+                    </div>
+                </div>
+                <task-edit-location-alert *ngIf="showLocationAlertSelect"
+                    [task]='_task'
+                    (done)="showLocationAlertSelect = false"
+                    ></task-edit-location-alert>
+            </div>
+            <div class="task-edit-item-wrapper blue-value" [ngClass]="{'default-value' : !_task.recurrenceType}" *ngIf="_task.hasDueDate">
+                <div class="task-edit-item clickable" (click)="showRecurrenceSelect = !showRecurrenceSelect">
+                    <div class="item-icon"><i class="fa fa-fw fa-repeat"></i></div>
+                    <div class="task-data" >
+                        <div class="" *ngIf="_task.recurrenceType == 0">Repeat</div>
+                        <div class="" *ngIf="_task.recurrenceType > 0">{{determineRecurrenceRowMessage()}}</div>
+                    </div>
+                </div>
+                <div class="edit-content" *ngIf="showRecurrenceSelect">
+                    <div class="repeat-from-toggle">
+                        <span style="margin-right: 5px">Repeat from:</span>
+                        <div class="btn-group" [ngModel]="repeatFrom" ngbRadioGroup (ngModelChange)="selectRepeatFromType($event)">
+                            <label ngbButtonLabel class="btn mb-0"><input ngbButton type="radio" [value]="RepeatFromType.DueDate"> <span>Due Date</span></label>
+                            <label ngbButtonLabel class="btn mb-0"><input ngbButton type="radio" [value]="RepeatFromType.CompletionDate"> <span>Completion Date</span></label>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="recurrence-wrapper" *ngIf="showAdvancedRecurrence == AdvancedRecurrenceType.Unknown">
+                        <li *ngFor="let recurrenceRow of recurranceRowsForEditedTasks()"
+                            class="recurrence-item clickable"
+                            [ngClass]="{active:(_task.getBaseRecurrenceType() == recurrenceRow.type &&
+                                       _task.getBaseRecurrenceType() != TaskRecurrenceType.Advanced) ||
+                                       (_task.getBaseRecurrenceType() == TaskRecurrenceType.Advanced && 
+                                       _task.getAdvancedRecurrenceTypeValue() == recurrenceRow.advancedType)}"
+                            (click)="recurrenceRowSelected(recurrenceRow)">
+                            {{recurrenceRow.label}}
+                            <i *ngIf="(_task.getBaseRecurrenceType() == recurrenceRow.type &&
+                                       _task.getBaseRecurrenceType() != TaskRecurrenceType.Advanced) ||
+                                      (_task.getBaseRecurrenceType() == TaskRecurrenceType.Advanced && 
+                                      _task.getAdvancedRecurrenceTypeValue() == recurrenceRow.advancedType)"
+                                class="fa fa-check checked-item"></i>
+                        </li>
+                    </ul>
+                    <advanced-recurrence-day-of-the-week
+                        *ngIf="showAdvancedRecurrence == AdvancedRecurrenceType.EveryMonTueEtc"
+                        [currentRecurrence]="_task.advancedRecurrenceType"
+                        (done)="onAdvancedRecurrenceStringReceived($event)"
+                    ></advanced-recurrence-day-of-the-week>
+                    <advanced-recurrence-every-x-period
+                        *ngIf="showAdvancedRecurrence == AdvancedRecurrenceType.EveryXDaysWeeksMonths"
+                        [currentRecurrence]="_task.advancedRecurrenceType"
+                        (done)="onAdvancedRecurrenceStringReceived($event)"
+                    ></advanced-recurrence-every-x-period>
+                    <advanced-recurrence-each-month
+                        *ngIf="showAdvancedRecurrence == AdvancedRecurrenceType.TheXOfEachMonth"
+                        [currentRecurrence]="_task.advancedRecurrenceType"
+                        (done)="onAdvancedRecurrenceStringReceived($event)"
+                    ></advanced-recurrence-each-month>
+                </div>
+            </div>
+            <div class="task-edit-item blue-value" [ngClass]="{'default-value' : _task.priority >= TaskPriority.None || _task.priority == 0}" >
+                <div class="item-icon"><i class="fa fa-fw fa-exclamation-triangle"></i></div>
+                <div class="task-data">
+                    <div class="" *ngIf="_task.priority >= TaskPriority.None || _task.priority == 0">Priority</div>
+                    <div class="" *ngIf="_task.priority === TaskPriority.High">High</div>
+                    <div class="" *ngIf="_task.priority === TaskPriority.Medium">Medium</div>
+                    <div class="" *ngIf="_task.priority === TaskPriority.Low">Low</div>
+                </div>
+                <div class="item-action d-flex align-items-center">
+                    <div class="priority-toggle-buttons" [ngModel]="_task.priority" ngbRadioGroup (ngModelChange)="updatePriority($event)">
+                        <label class="btn m-0" [class.btn-primary]="_task.priority==TaskPriority.Low">
+                            <input type="radio" [value]="TaskPriority.Low" name="priority"   (click)="updatePriority(TaskPriority.Low)">
+                                <i class="bar"></i>
+                        </label>
+                        <label class="btn m-0" [class.btn-primary]="_task.priority==TaskPriority.Medium">
+                            <input type="radio" [value]="TaskPriority.Medium" name="priority"  (click)="updatePriority(TaskPriority.Medium)">
+                                <i class="bar"></i>
+                                <i class="bar"></i>
+                        </label>
+                        <label class="btn m-0" [class.btn-primary]="_task.priority==TaskPriority.High">
+                            <input type="radio" [value]="TaskPriority.High" name="priority"  (click)="updatePriority(TaskPriority.High)">
+                                <i class="bar"></i>
+                                <i class="bar"></i>
+                                <i class="bar"></i>
+                        </label>
+                    </div>
+                    <i class="fa fa-fw fa-times" (click)="updatePriority(TaskPriority.None)"></i>
+                </div>
+            </div>
+        </section>
+        <section class="edit-group last">
+            <div class="task-edit-item-wrapper blue-value" (click)="showListSelect = !showListSelect">
+                <div class="task-edit-item">
+                    <div class="item-icon"><i class="fa fa-fw fa-list"></i></div>
+                    <div class="task-data">
+                        <div class="">{{listForTask.name}}</div>
+                    </div>
+                </div>
+                <div *ngIf="showListSelect && !_task.isSubtask" class="edit-content" [ngClass]="{inactive: !showListSelect}">
+                    <task-edit-list-select #listSelect
+                        [task]="_task"
+                        (selectedList)="taskListMembershipChange($event)"
+                        >
+                    </task-edit-list-select>
+                </div>
+            </div>
+            <div class="task-edit-item-wrapper blue-value" [ngClass]="{'default-value' : taskTags.length == 0}">
+                <div class="task-edit-item" (click)="showTagEditor = !showTagEditor">
+                    <div class="item-icon"><i class="fa fa-fw fa-tag"></i></div>
+                    <div class="task-data">
+                        <div *ngIf="taskTags.length == 0">Add tags...</div>
+                        <ul *ngIf="taskTags.length > 0" class="list-unstyled tags-list">
+                            <li *ngFor="let tag of taskTags">{{tag.name}}</li>
+                        </ul>
+                    </div>
+                </div>
+                <tag-editor *ngIf="showTagEditor"
+                    [task]="_task"
+                    (selectedTag)="onTagSelected($event)"
+                    (deselectedTag)="onTagDeselected($event)"
+                    (deletedTag)="onTagDeselected($event)">
+                </tag-editor>
+            </div>
+        </section>
+    </perfect-scrollbar>
+</div>

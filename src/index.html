@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <script>document.write('<base href="' + document.location + '" />');</script>
+        <title>Todo Cloud</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <link rel="icon" type="image/png" href="favicon.png"/>
+        <link rel="apple-touch-icon" href="assets/img/favicon-60.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="assets/img/favicon-76.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="assets/img/favicon-120.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="assets/img/favicon-152.png">
+
+        <!-- 1. Load Libraries -->
+
+        <!-- Stripe library for payments -->
+        <script src="https://checkout.stripe.com/checkout.js"></script>
+        <script>  
+          var electron = require('electron')
+        </script>  
+
+
+        <!--
+    <script src="node_modules/zone.js/dist/zone.js"></script>
+    <script src="node_modules/reflect-metadata/Reflect.js"></script>
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    -->
+
+    <!-- 2. Configure SystemJS -->
+    <!--<script src="systemjs.config.js"></script>-->
+    <!--
+    <script>
+      System.import('app').catch(function(err){ console.error(err); });
+    </script>
+    -->
+  </head>
+
+  <!-- 3. Display the application -->
+  <body>
+    <todo-cloud-app>
+<!--        <style type="text/css">@-webkit-keyframes uil-default-anim{0%{opacity:1}100%{opacity:0}}@keyframes uil-default-anim{0%{opacity:1}100%{opacity:0}}.uil-default-css>div{top:80px;left:93px;width:14px;height:40px;background:#3c3c3c;border-radius:10px;position:absolute}.uil-default-css>div:nth-of-type(1){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:-.5s;animation-delay:-.5s;-webkit-transform:rotate(0deg) translate(0,-60px);transform:rotate(0deg) translate(0,-60px)}.uil-default-css>div:nth-of-type(2){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:-.4166666666666667s;animation-delay:-.4166666666666667s;-webkit-transform:rotate(30deg) translate(0,-60px);transform:rotate(30deg) translate(0,-60px)}.uil-default-css>div:nth-of-type(3){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:-.33333333333333337s;animation-delay:-.33333333333333337s;-webkit-transform:rotate(60deg) translate(0,-60px);transform:rotate(60deg) translate(0,-60px)}.uil-default-css>div:nth-of-type(4){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:-.25s;animation-delay:-.25s;-webkit-transform:rotate(90deg) translate(0,-60px);transform:rotate(90deg) translate(0,-60px)}.uil-default-css>div:nth-of-type(5){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:-.16666666666666669s;animation-delay:-.16666666666666669s;-webkit-transform:rotate(120deg) translate(0,-60px);transform:rotate(120deg) translate(0,-60px)}.uil-default-css>div:nth-of-type(6){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:-83.33333333333331ms;animation-delay:-83.33333333333331ms;-webkit-transform:rotate(150deg) translate(0,-60px);transform:rotate(150deg) translate(0,-60px)}.uil-default-css>div:nth-of-type(7){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:0s;animation-delay:0s;-webkit-transform:rotate(180deg) translate(0,-60px);transform:rotate(180deg) translate(0,-60px)}.uil-default-css>div:nth-of-type(8){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:83.33333333333337ms;animation-delay:83.33333333333337ms;-webkit-transform:rotate(210deg) translate(0,-60px);transform:rotate(210deg) translate(0,-60px)}.uil-default-css>div:nth-of-type(9){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:.16666666666666663s;animation-delay:.16666666666666663s;-webkit-transform:rotate(240deg) translate(0,-60px);transform:rotate(240deg) translate(0,-60px)}.uil-default-css>div:nth-of-type(10){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:.25s;animation-delay:.25s;-webkit-transform:rotate(270deg) translate(0,-60px);transform:rotate(270deg) translate(0,-60px)}.uil-default-css>div:nth-of-type(11){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:.33333333333333337s;animation-delay:.33333333333333337s;-webkit-transform:rotate(300deg) translate(0,-60px);transform:rotate(300deg) translate(0,-60px)}.uil-default-css>div:nth-of-type(12){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:.41666666666666663s;animation-delay:.41666666666666663s;-webkit-transform:rotate(330deg) translate(0,-60px);transform:rotate(330deg) translate(0,-60px)}.uil-default-css{position:absolute;background:0 0;width:0;height:0;left:50%;margin-left:-16px}</style>-->
+        <div class="loading-spinner"></div>
+    </todo-cloud-app>
+  </body>
+</html>

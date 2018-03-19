@@ -1,0 +1,17 @@
+<div class="landing">
+    <div class="landing-inner">
+        <div class="box">
+            <header class="row text-center">
+                <div class="col-6">
+                    <img src="./assets/img/todo-logo.png" alt="" width="125" height="21" />
+                </div>
+            </header>
+            <div class="content" *ngIf="resultMessage">
+                <p class="text-center">{{resultMessage}}</p>
+                <div class="text-center">
+                    <a class="btn-default btn-green" (click)="navigateHome()">Ok</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

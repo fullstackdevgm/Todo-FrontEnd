@@ -1,0 +1,91 @@
+ul {
+    margin: 0 0 10px 0;
+    padding: 0;
+}
+
+.list-item {
+    position: relative;
+    list-style: none;
+}
+
+.list-item.gu-mirror {
+    opacity: 0.9;
+}
+
+.list-item > span {
+    padding: 4px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    color: #3c3c3c;
+    transition: all 0.2s;
+    border-bottom: 1px solid rgba(162, 162, 162, 0.3);
+}
+
+.list-item:last-child > span {
+    border-bottom: none;
+}
+
+.list-item .list-name {
+    flex-grow: 2;
+    width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.list-item:hover > span,
+.list-item:active > span,
+.list-item > span:hover,
+.list-item > span.active,
+.list-item > span.active:active,
+.list-item > span:active {
+    background-color: #fff;
+}
+
+.list-item > span.active .checked-item {
+    text-align: right;
+    color: #3c3c3c;
+    font-size: 0.8rem;
+    margin-left: 10px;
+}
+
+.list-item > span .list-icon-wrapper {
+    height: 16px;
+    flex-basis: 18px;
+    overflow: hidden;
+    position: relative;
+}
+
+.list-item > span .list-icon-wrapper .twf {
+    left: -2px;
+    top: 0;
+    position: absolute;
+    transition: left 0.1s ease-in-out;
+}
+
+.list-item > span .count {
+    font-size: 0.8rem;
+    display: flex;
+    align-content: space-between;
+    text-align: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.list-item > span .count .overdue {
+    padding: 1px 8px 0 8px;
+    border: 1px solid rgba(255, 0, 0, .9);
+    color: rgba(255, 0, 0, .9);
+    border-radius: 10px;
+    display: inline-block;
+    font-style: normal;
+    line-height: 1;
+
+}
+
+.list-item > span .count .total {
+    font-style: normal;
+    margin-left: 8px;
+}

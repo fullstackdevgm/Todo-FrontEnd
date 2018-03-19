@@ -1,0 +1,26 @@
+<input class="form-control"
+        type="text"
+        autocorrect="off" 
+        autocapitalize="off" 
+        spellcheck="off"
+        [(ngModel)]="currentAddress"
+        placeholder="Search for address"
+        #locationSearchInput />
+
+<div class="btn-group location-alert-switch" [ngModel]="direction" ngbRadioGroup (ngModelChange)="selectAlertType($event)">
+    <label ngbButtonLabel class="btn btn-default btn-white btn-size-xs"><input ngbButton type="radio" [value]="TaskLocationAlertType.Arriving"> <span>Arriving</span></label>
+    <label ngbButtonLabel class="btn btn-default btn-white btn-size-xs"><input ngbButton type="radio" [value]="TaskLocationAlertType.Leaving"> <span>Departing</span></label>
+</div>
+<agm-map
+        [latitude]='latitude'
+        [longitude]='longitude'
+        [zoom]='mapZoomLevel'
+        [scrollwheel]="false"
+        (mapClick)='mapClick($event)'>
+    <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+</agm-map>
+<div *ngIf="hasCurrentPositionError" class="location-error">Unable to determine current position. <br>Please, allow the browser to know your location.</div>
+<div class="btn-group-right">
+    <button type="button" class="btn btn-default btn-info btn-size-xs" (click)="cancel()">Close</button>
+    <button type="button" class="btn btn-default btn-info btn-size-xs" (click)="save()">OK</button>
+</div>

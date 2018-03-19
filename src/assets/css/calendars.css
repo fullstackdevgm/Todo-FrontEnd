@@ -1,0 +1,229 @@
+.main-calendar,
+task-edit ngb-datepicker {
+    border-radius: 0;
+    border: none !important;
+    background: transparent;
+    padding-top: 10px;
+}
+
+task-edit ngb-datepicker {
+    padding-top: 4px;
+}
+
+task-edit .drop-for-datepicker .dropdown-menu {
+    margin-top: 30px;
+    padding: 0;
+    min-width: 230px;
+    background-color: #f5f5f5;
+    box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.1);
+}
+task-edit .drop-for-datepicker .date-field {
+    max-width: 100px;
+    text-align: center;
+    margin: 10px auto 0;
+    padding: 2px;
+    color: #5f5f5f;
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+task-edit .drop-for-datepicker .date-field.has-error {
+    border-color: rgba(212, 13, 18, 0.7) !important;
+    color: #5f5f5f !important;
+}
+
+.main-calendar task-item {
+    display: none !important;
+}
+
+.main-wrapper.open-menu tasks .tasks-sections-wrapper task-item .dropdown-menu {
+    margin-left: -168px;
+}
+
+.main-calendar,
+.main-calendar .ngb-datepicker-month-view,
+.main-calendar .ngb-dp-month,
+task-edit ngb-datepicker,
+task-edit ngb-datepicker .ngb-datepicker-month-view,
+task-edit ngb-datepicker .ngb-dp-month {
+    width: 100%;
+}
+
+.main-calendar .ngb-dp-months,
+task-edit ngb-datepicker .ngb-dp-months {
+    padding: 0 !important;
+}
+
+.main-calendar .ngb-dp-week,
+task-edit ngb-datepicker .ngb-dp-week {
+    background-color: #fff !important;
+    padding: 0 3px;
+}
+
+.main-calendar .ngb-dp-week:first-child,
+task-edit ngb-datepicker .ngb-dp-week:first-child {
+    background-color: transparent !important;
+    border-bottom: 1px solid rgba(162, 162, 162, 0.3);
+}
+.main-calendar .ngb-dp-week:nth-child(2),
+task-edit ngb-datepicker .ngb-dp-week:nth-child(2){
+    padding-top: 3px;
+}
+
+.main-calendar .ngb-dp-week:last-child,
+task-edit ngb-datepicker .ngb-dp-week:last-child {
+    padding-bottom: 3px;
+}
+
+.main-calendar .ngb-dp-week,
+task-edit ngb-datepicker .ngb-dp-week {
+    justify-content: space-between;
+}
+
+.main-calendar .ngb-dp-day,
+.main-calendar .ngb-dp-weekday,
+.main-calendar .ngb-dp-week-number,
+task-edit ngb-datepicker .ngb-dp-day,
+task-edit ngb-datepicker .ngb-dp-weekday,
+task-edit ngb-datepicker .ngb-dp-week-number {
+    width: 1.7rem !important;
+    height: 1.7rem !important;
+    line-height: 1.7rem !important;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default !important;
+}
+
+.main-calendar .ngb-dp-weekday,
+task-edit ngb-datepicker .ngb-dp-weekday {
+    font-style: normal !important;
+    color: #a2a2a2 !important;
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+
+.main-calendar .ngb-dp-day .btn-secondary,
+task-edit ngb-datepicker .ngb-dp-day > div {
+    background-color: transparent;
+    font-size: 0.8rem;
+    width: 27px;
+    height: 27px;
+    line-height: 26px;
+    color: #808080;
+}
+
+task-edit ngb-datepicker .ngb-dp-day > div {
+}
+
+task-edit ngb-datepicker .ngb-dp-day .is-current-day {
+    background-color: #a2a2a2 !important;
+    border-radius: 20px;
+    color: #fff !important;
+    cursor: default;
+}
+
+.main-calendar .ngb-dp-day .btn-secondary.hover,
+.main-calendar .ngb-dp-day:hover .btn-secondary,
+.main-calendar .ngb-dp-day .bg-primary,
+task-edit ngb-datepicker .ngb-dp-day > div.hover,
+task-edit ngb-datepicker .ngb-dp-day:hover > div,
+task-edit ngb-datepicker .ngb-dp-day .bg-primary {
+    background-color: #ff0304 !important;
+    border-radius: 20px;
+    color: #fff !important;
+    cursor: default;
+}
+
+.main-calendar .ngb-dp-header,
+task-edit ngb-datepicker .ngb-dp-header {
+    background-color: transparent;
+    height: 28px !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    border-bottom: none !important;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.main-calendar .ngb-dp-month-name,
+task-edit ngb-datepicker .ngb-dp-month-name {
+    height: 28px !important;
+    font-size: 0.8rem !important;
+    text-align: left !important;
+    width: 70%;
+    padding-left: 5px;
+    display: flex;
+    align-items: center;
+    margin-top: -28px;
+    color: #a2a2a2;
+    font-weight: 500;
+}
+
+.main-calendar ngb-datepicker-navigation,
+task-edit ngb-datepicker ngb-datepicker-navigation {
+    height: 28px!important;
+    font-size: 0.65rem;
+    margin: 0 !important;
+    width: 60px;
+}
+
+.main-calendar ngb-datepicker-navigation .btn-link,
+task-edit ngb-datepicker ngb-datepicker-navigation .btn-link {
+    padding: 0;
+    color: #a2a2a2;
+    cursor: default;
+}
+
+main-calendar .select-current-month,
+task-edit .drop-for-datepicker .select-current-month {
+    position: absolute;
+    right: 24px;
+    top: 18px;
+    font-size: 0.8rem;
+    color: #a2a2a2;
+}
+
+.main-calendar ngb-datepicker-navigation .btn-link:hover,
+task-edit ngb-datepicker ngb-datepicker-navigation .btn-link:hover,
+main-calendar .select-current-month:hover,
+task-edit .drop-for-datepicker .select-current-month:hover {
+    color: #2196f3;
+    cursor: default;
+}
+
+task-edit .drop-for-datepicker .select-current-month {
+    top: 46px;
+}
+
+.main-calendar .ngb-dp-day .text-muted,
+task-edit ngb-datepicker .ngb-dp-day .text-muted {
+    color: #d3d3d3 !important;
+}
+
+.main-calendar .ngb-dp-day .calendar-day.is-current-day{
+    color: #2196f3;
+}
+
+.main-calendar .ngb-dp-day .has-task,
+task-edit ngb-datepicker .ngb-dp-day .has-task {
+    font-weight: 900;
+    color: #000000;
+}
+
+task-edit .drop-for-datepicker .calendar-footer {
+    border-top: 1px solid rgba(162, 162, 162, 0.3);
+    font-size: 0.7rem;
+    font-weight: 400;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 38px;
+    background-color: #f5f5f5;
+}
+
+task-edit .drop-for-datepicker .calendar-footer .link {
+    text-decoration: none !important;
+}
+

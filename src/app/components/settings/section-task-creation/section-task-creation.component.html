@@ -1,0 +1,53 @@
+<div class="setting-property-wrapper">
+    <div class="setting-property">
+        <div class="name">Task Creation Defaults</div>
+    </div>
+    <div *ngFor="let row of rows">
+        <div class="property-option-wrapper">
+            <span class="col-4 text-right">{{row.title}}:</span>
+
+            <div ngbDropdown>
+                <span ngbDropdownToggle *ngIf="row.setting == TaskCreationSetting.DueDate" class="btn btn-default btn-size-xs">{{row.text()}}</span>
+
+                <span ngbDropdownToggle *ngIf="currentList && currentList.list.name && row.setting == TaskCreationSetting.List" class="btn btn-default btn-size-xs btn-dropdown-list-label">
+                    <span class="list-icon-wrapper">
+                        <i class="twf" [ngClass]='currentList.list.iconName' style.color="{{currentList.list.color}}"></i>
+                    </span>
+                    <span class="list-name">{{currentList.list.name}}</span>
+                </span>
+
+                <div class="dropdown-menu dropdown-menu-right dropdown-lists" *ngIf="row.setting == TaskCreationSetting.List">
+                    <perfect-scrollbar fxFlex>
+                        <div class="w-100">
+                            <button class="dropdown-item w-100"
+                                    *ngFor="let listInfo of lists"
+                                    [ngClass]="{active: listInfo.list.identifier == userSettingsService.defaultListID}"
+                                    (click)="setDefaultListID(listInfo.list.identifier)"
+                            >
+                                <span class="list-icon-wrapper">
+                                    <i class="twf" [ngClass]='listInfo.list.iconName' style.color="{{listInfo.list.color}}"></i>
+                                </span>
+                                <span class="list-name">{{listInfo.list.name}}</span>
+                                <span *ngIf="listInfo.taskInfo.count && listInfo.taskInfo.count > 0" class="count">
+                                    <i class="total">{{listInfo.taskInfo.count}}</i>
+                                </span>
+                            </button>
+                        </div>
+                    </perfect-scrollbar>
+                </div>
+                <div class="dropdown-menu dropdown-menu-right" *ngIf="row.setting == TaskCreationSetting.DueDate">
+                    <perfect-scrollbar fxFlex>
+                        <div class="w-100">
+                            <button class="dropdown-item w-100"
+                                    *ngFor="let dueDateInfo of dueDates"
+                                    [ngClass]="{active: userSettings.defaultDueDate == dueDateInfo.dueDate}"
+                                    (click)="setDueDate(dueDateInfo.dueDate)"
+                            >{{dueDateInfo.title}}</button>
+                        </div>
+                    </perfect-scrollbar>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

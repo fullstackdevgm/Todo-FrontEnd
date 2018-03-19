@@ -1,0 +1,14 @@
+<ul>
+    <li class="list-item" *ngFor="let listInfo of lists">
+        <span (click)="selectList(listInfo.list)" *ngIf="!listInfo.hidden" [ngClass]="{active: task.listId == listInfo.list.identifier}">
+            <span class="list-icon-wrapper">
+                <i class="twf" [ngClass]='listInfo.list.iconName' style.color="{{listInfo.list.color}}"></i>
+            </span>
+            <span class="list-name">{{listInfo.list.name}}</span>
+            <span *ngIf="listInfo.taskInfo.count && listInfo.taskInfo.count > 0" class="count">
+                <i class="total">{{listInfo.taskInfo.count}}</i>
+            </span>
+            <i *ngIf="task.listId == listInfo.list.identifier"  class="fa fa-check checked-item"></i>
+        </span>
+    </li>
+</ul>

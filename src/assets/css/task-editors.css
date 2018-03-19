@@ -1,0 +1,64 @@
+.task-edit-item > div {
+    cursor: default;
+}
+
+.edit-content .username {
+    cursor: default;
+}
+
+ul.recurrence-wrapper {
+    margin: 0 0 10px 0;
+    padding: 0;
+}
+
+.recurrence-item {
+    position: relative;
+    list-style: none;
+    border-bottom: 1px solid rgba(162, 162, 162, 0.3);
+}
+
+.recurrence-item:last-child {
+    border-bottom: none;
+}
+
+
+.recurrence-item {
+    padding: 4px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    color: #3c3c3c;
+    transition: all 0.2s;
+}
+
+
+.recurrence-item:hover,
+.recurrence-item:active,
+.recurrence-item.active{
+    background-color: #f9f9f9;
+}
+
+.recurrence-item.active .fa-check,
+.recurrence-item .fa-check {
+    text-align: right;
+    color: #3c3c3c;
+    font-size: 0.8rem;
+    margin-left: 10px;
+}
+
+.picker {
+    height : 135px;
+    width: 50%;
+    float: left;
+}
+
+.picker .row.selected {
+    font-weight: 400;
+    background-color: rgba(240, 240, 240, 0.1) !important;
+}
+
+.recurrence-wrapper.one-half {
+    width: 50%;
+    float: left;
+}

@@ -1,0 +1,25 @@
+{
+  "name": "todo",
+  "version": "10.3.0-beta.64",
+  "productName": "Todo Cloud",
+  "appid": "com.appigo.${name}",
+  "author": "Appigo, Inc.",
+  "copyright": "Copyright © 2017 Appigo, Inc.",
+  "description": "Todo for the desktop.",
+  "main": "main.js",
+  "scripts": {
+    "postinstall": "cd ./node_modules/todo-api/functions && npm install && electron-rebuild",
+    "update-api": "npm install todo-api && npm run postinstall"
+  },
+  "dependencies": {
+    "electron-config": "1.0.0",
+    "electron-updater": "^2.18.2",
+    "log4js": "2.4.1",
+    "socket.io-client": "2.0.4",
+    "todo-api": "file:../../todo-cloud-web/api"
+  },
+  "devDependencies": {
+    "electron-rebuild": "1.6.0",
+    "standard": "9.0.2"
+  }
+}

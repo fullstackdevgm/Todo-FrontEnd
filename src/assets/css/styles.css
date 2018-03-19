@@ -1,0 +1,421 @@
+@import "fonts.css";
+@import "buttons.css";
+@import "form.css";
+@import "calendars.css";
+
+html {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    font-size: 12pt;
+    background-color: #f5f5f5;
+}
+
+select {
+    cursor: default;
+}
+
+ngb-carousel {
+    outline: 0;
+}
+
+.nopadding {
+    padding: 0 !important;
+}
+ngb-datepicker:focus{
+    outline: none;
+}
+ngb-datepicker ngb-datepicker-navigation .w-100 td{
+    vertical-align: top;
+}
+ngb-datepicker ngb-datepicker-navigation .custom-select{
+    background-position: 90% 50%;
+}
+.task-edit-item .item-action .d-inline-block.dropdown-menu{
+    left: -140px !important;
+    top: 5px!important;
+}
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
+.modal-content {
+    border-width: 0;
+}
+.has-error {
+    color: rgba(212, 13, 18, 0.7) !important;
+}
+
+.modal-content {
+    border-width: 0;
+}
+
+.popover {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    max-width: 360px;
+}
+
+.popover.bs-tether-element-attached-top::after, .popover.popover-bottom::after {
+    border-bottom-color: #fff;
+}
+
+.popover .popover-body {
+    padding: 9px 14px;
+}
+
+.navbar .popover {
+    transform: translate(calc(50% - 30px), 15px);
+}
+
+.navbar .popover .arrow {
+    position: absolute;
+    display: block;
+    width: 10px;
+    height: 5px;
+    left: 25px !important;
+}
+
+.navbar .popover .arrow:before,
+.navbar .popover .arrow:after {
+    position: absolute;
+    display: block;
+    border-color: transparent;
+    border-style: solid;
+}
+
+.navbar .popover .arrow:before {
+    margin-left: -7px;
+    top: -11px;
+    content: "";
+    border-width: 11px;
+    border-top-width: 0;
+    border-bottom-color: rgba(0, 0, 0, .25)
+}
+
+.navbar .popover .arrow:after {
+    content: "";
+    border-width: 11px;
+    margin-left: -7px;
+    border-top-width: 0;
+    top: -10px;
+    border-bottom-color: #fff;
+}
+
+.clickable {
+    cursor: pointer !important;
+}
+.preloader-xs:before{
+    content: '';
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin:0 auto;
+    border-radius: 50%;
+    border: 1px solid #aaa;
+    border-top-color: #333;
+    animation: loading-spinner .6s linear infinite;
+}
+.preloader-sm:before{
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin:0 auto;
+    border-radius: 50%;
+    border: 1px solid #aaa;
+    border-top-color: #333;
+    animation: loading-spinner .6s linear infinite;
+}
+.preloader-md:before{
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin:0 auto;
+    border-radius: 50%;
+    border: 1px solid #aaa;
+    border-top-color: #333;
+    animation: loading-spinner .6s linear infinite;
+}
+
+@keyframes loading-spinner {
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(359deg);}
+}
+
+.loading-spinner:before {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 35px;
+  height: 35px;
+  margin-top: -10px;
+  margin-left: -10px;
+  border-radius: 50%;
+  border: 1px solid #aaa;
+  border-top-color: #333;
+  animation: loading-spinner .6s linear infinite;
+}
+
+.dropdown-menu {
+    box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
+}
+
+.ngx-contextmenu .dropdown-menu {
+    padding: 4px 0;
+    z-index: 99999;
+}
+
+.ngx-contextmenu .dropdown-menu .divider.dropdown-divider {
+    margin: 4px 0;
+}
+
+.ngx-contextmenu a {
+    font-size: .8rem;
+    padding: 5px 6px;
+}
+
+.ngx-contextmenu a .fa {
+    margin-right: 6px;
+    font-size: 0.7rem;
+    color: #888;
+}
+
+.pos-static {
+    position: static;
+}
+.ps-scrollbar-y{
+    min-height: 8px!important;
+    /*margin-top: -8px;*/
+}
+
+.time-picker .form-control,
+.time-picker .btn-outline-primary {
+    padding: 0;
+    font-size: 0.9rem;
+    height: 30px;
+    width: 40px;
+    margin: 0;
+    box-shadow: none;
+
+}
+
+.time-picker table tr td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.time-picker table tr:first-child td {
+    vertical-align: bottom;
+    padding-bottom: 2px;
+    font-size: 0;
+}
+
+.time-picker table tr:last-child td {
+    vertical-align: top;
+    padding-top: 5px;
+    font-size: 0;
+}
+
+.time-picker {
+    display: flex;
+    align-items: center;
+}
+
+.time-picker .fa.fa-times {
+    margin-bottom: 3px;
+}
+
+.time-picker .form-control:focus {
+    border-color: #2C98F2;
+}
+
+.time-picker .btn-outline-primary {
+    box-shadow: none;
+    color: #2C98F2;
+    border-color: #2C98F2;
+}
+
+.time-picker .btn-outline-primary:hover {
+    background-color: #2C98F2;
+    color: #fff;
+}
+
+.time-picker .btn-link {
+    color: rgba(162, 162, 162, 0.8);
+    font-size: 0.8rem;
+    padding: 0;
+    margin: 0;
+    border: none;
+    width: 40px;
+}
+
+.time-picker .btn-link:hover {
+    color: #2C98F2;
+}
+
+.modal-content {
+    word-break: break-all;
+}
+
+.link {
+    cursor: pointer;
+    color: #2196f3;
+    transition: color 0.1s;
+}
+
+.link:hover {
+    color: #136db6;
+    text-decoration: underline;
+}
+
+section .task-section .task-wrapper:first-child task-item .task-item,
+section .task-section task-item.selected .task-item,
+section .task-section .task-wrapper.selected  + .task-wrapper task-item .task-item,
+/* section .task-section .task-wrapper .subtasks-wrapper taskito:first-child .task-item, */
+/* section .task-section .task-wrapper .subtasks-wrapper div:first-child task-item .task-item  */
+{
+    border-top-color: transparent !important;
+}
+.task-item {
+    display: flex;
+    padding: 6px 0 5px 0;
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+    background-color: #f5f5f5;
+    cursor: default;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+    background-color: #2196f3;
+}
+
+.modal.settings-tab-wide .modal-dialog{
+    max-width: 720px;
+}
+.settings-container .ps-container .ps-content {
+    min-height: inherit;
+}
+
+.modal-content .settings-container .section article,
+.modal-content .settings-container .section p {
+    word-break: normal;
+}
+
+.row.hover {
+    transition: background-color 0.1s;
+}
+
+.row.hover:hover {
+    background-color: #f9f9f9 !important;
+}
+
+aside.calendar-closed section > perfect-scrollbar {
+    height: calc(100vh - 55px) !important;
+}
+
+.modal-body p {
+    word-break: break-word;
+}
+
+@media (max-width: 767px) {
+    html, body {
+        height: 100%;
+        min-height: 100%;
+        max-height: 100%;
+        overflow: hidden;
+    }
+}
+section-premium .ngx-contextmenu {
+    position: static;
+}
+
+.moving * {
+    display: none !important;
+}
+
+.open-calendar-filter aside lists section > perfect-scrollbar {
+    height: calc(100vh - 290px - 38px)!important;
+}
+
+@media print {
+    html, body,
+    .main-container,
+    tasks,
+    .st-container,
+    perfect-scrollbar,
+    perfect-scrollbar>.ps {
+        overflow: visible !important;
+        position: static !important;
+        height: 100% !important;
+    }
+
+    body {
+        background-color: #fff;
+    }
+
+    navigation-bar,
+    .main-container aside,
+    task-create,
+    task-edit,
+    .no-completed-tasks,
+    .load-completed,
+    .ps__scrollbar-x-rail,
+    .ps__scrollbar-y-rail {
+        display: none !important;
+    }
+
+    tasks {
+        width: 100% !important;
+    }
+
+    tasks .list-title {
+        padding-bottom: 15px !important;
+    }
+
+    tasks .tasks-sections-wrapper {
+        height: 100% !important;
+    }
+
+    task-item.selected {
+        background-color: #ffffff!important;
+    }
+
+    section .task-section task-item.selected .task-item,
+    section .task-section .task-wrapper.selected + .task-wrapper task-item .task-item {
+        border-top: 1px solid rgba(162, 162, 162, 0.3) !important;
+    }
+
+    .task-indicator-icon {
+        border: none;
+    }
+
+    .task-wrapper {
+        page-break-inside: avoid;
+    }
+}

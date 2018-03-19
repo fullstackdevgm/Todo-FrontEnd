@@ -1,0 +1,220 @@
+<div id="st-container" class="st-container st-effect">
+    <div class="st-pusher">
+        <div class="list-title" *ngIf="sourceModule" >
+            <span class="list-icon-wrapper">
+                <i class="twf" [ngClass]="sourceModule.source.iconName" style.color="{{sourceModule.source.color}}"></i>
+            </span>
+            <span class="list-name">{{sourceModule.source.name}}</span>
+        </div>
+        <div class="clear"></div>
+        <task-create
+            [creationInfo]="taskCreationInformation"
+            (taskCreated)="onNewTaskCreated($event)"
+            (taskitoCreated)="onNewTaskitoCreated($event)"
+            (taskNameSelected)="keyTracking = !$event"
+        ></task-create>
+        <div class="tasks-sections-wrapper">
+            <perfect-scrollbar (ps-y-reach-end)="scrollReachedEnd()">
+                <section *ngIf="sourceModule" class="task-list-container">
+                    <div *ngFor="let section of currentSections; let i = index;" class="task-section-wrapper container">
+                        <div *ngIf="getSectionFilteredBySelectedDates(section).taskCells.length > 0">
+                            <div 
+                                class="task-section-title task-section-header"
+                                [dragula]="'tasks'"
+                                [attr.data-section-index]="i"
+                            >
+                                {{section.label}}
+                            </div>
+                            <div class="task-section">
+                                <div *ngFor="let cell of getSectionFilteredBySelectedDates(section).taskCells; let taskIndex = index"
+                                    class="task-wrapper"
+                                    [ngClass]="{
+                                        selected : primarySelectedTask && primarySelectedTask.cell.task.identifier == cell.task.identifier,
+                                        'task-regular' : !(cell.task.isProject || cell.task.isChecklist),
+                                        'task-project' : cell.task.isProject,
+                                        'task-checklist' : cell.task.isChecklist
+                                    }"
+                                >
+                                    <div class="task"
+                                        [ngClass]="{
+                                            selected : primarySelectedTask && primarySelectedTask.cell.task.identifier == cell.task.identifier,
+                                            'task-regular' : !(cell.task.isProject || cell.task.isChecklist),
+                                            'task-project' : cell.task.isProject,
+                                            'task-checklist' : cell.task.isChecklist
+                                        }"
+                                        [dragula]="'tasks'"
+                                        [attr.data-id]="cell.task.identifier"
+                                        [attr.data-section-index]="i"
+                                    >
+                                        <task-item
+                                            [ngClass]="{
+                                                selected : isTaskSelected(cell.task),
+                                                'show-subtasks' : cell.showSubtasks,
+                                                'no-subtasks' : !cell.subtasks.length && !cell.taskitos.length,
+                                                'task-regular' : !(cell.task.isProject || cell.task.isChecklist),
+                                                'task-project' : cell.task.isProject,
+                                                'task-checklist' : cell.task.isChecklist
+                                            }"
+                                            [task]="cell.task"
+                                            [selectedTaskCount]="selectedTasks.length"
+                                            [taskIsSelected]="isTaskSelected(cell.task)"
+                                            [subtaskCount]="cell.subtaskCount"
+                                            [showListName]="sourceModule.source.showListForTasks"
+                                            (taskSelected)="onTaskSelect({ cell : cell, section : section}, $event, i, taskIndex)"
+                                            (taskUncompleted)="onTaskUncompleted($event)"
+                                            (showEditorSelected)="didSelectShowEditor({ cell : cell, section : section})"
+                                            (showChildrenSelected)="showChildren(cell)"
+                                            (taskDeleted)="onTaskDeleted($event)"
+                                            (taskTypeChanged)="onTaskTypeChanged($event, cell, section)"
+                                            (taskPriorityChanged)="onTaskPriorityChanged($event)"
+                                            (taskDueDateRemoved)="onTaskDueDateRemoved($event)"
+                                            (deleteSelected)="onDeleteSelected()"
+                                            [attr.data-id]="cell.task.identifier"
+                                            [attr.data-section-index]="i"
+                                        ></task-item>
+                                    </div>
+                                    <div *ngIf="cell.showSubtasks" class="subtasks-wrapper" >
+                                        <div *ngIf="cell.pager.hasNextPage && !cell.pager.loadingCompletedTasks" class="loading-spinner subtask-spinner" ></div>
+                                        <div *ngFor="let subtaskCell of cell.subtasks; let subtaskIndex = index"
+                                            class="task-wrapper is-subtask"
+                                            [ngClass]="{
+                                                selected : primarySelectedTask && primarySelectedTask.cell.task.identifier == subtaskCell.task.identifier,
+                                                'task-regular' : !(subtaskCell.task.isProject || subtaskCell.task.isChecklist),
+                                                'task-checklist' : subtaskCell.task.isChecklist
+                                            }"
+                                            [dragula]="'tasks'"
+                                            [attr.data-id]="cell.task.identifier"
+                                            [attr.data-sub-id]="subtaskCell.task.identifier"
+                                            [attr.data-section-index]="i"
+                                        >
+                                            <task-item
+                                                class="is-subtask"
+                                                [ngClass]="{
+                                                    selected : isTaskSelected(subtaskCell.task),
+                                                    'show-subtasks' : subtaskCell.showSubtasks,
+                                                    'no-subtasks' : !subtaskCell.taskitos.length,
+                                                    'task-regular' : !(subtaskCell.task.isProject || subtaskCell.task.isChecklist),
+                                                    'task-checklist' : subtaskCell.task.isChecklist
+                                                }"
+                                                [task]="subtaskCell.task"
+                                                [selectedTaskCount]="selectedTasks.length"
+                                                [taskIsSelected]="isTaskSelected(subtaskCell.task)"
+                                                [parentTask]="cell.task"
+                                                [subtaskCount]="subtaskCell.subtaskCount"
+                                                (taskSelected)="onTaskSelect({ cell : subtaskCell, section : section, parent: cell}, $event, i, subtaskIndex)"
+                                                (taskUncompleted)="onTaskUncompleted($event, cell)"
+                                                (showEditorSelected)="didSelectShowEditor({ cell : subtaskCell, section : section, parent: cell})"
+                                                (showChildrenSelected)="showChildren(subtaskCell)"
+                                                (taskDeleted)="onTaskDeleted($event, cell)"
+                                                (taskTypeChanged)="onTaskTypeChanged($event, subtaskCell, section, cell)"
+                                                (taskPriorityChanged)="onTaskPriorityChanged($event)"
+                                                (taskDueDateRemoved)="onTaskDueDateRemoved($event)"
+                                                (deleteSelected)="onDeleteSelected()"
+                                                [attr.data-id]="cell.task.identifier"
+                                                [attr.data-sub-id]="subtaskCell.task.identifier"
+                                                [attr.data-section-index]="i"
+                                            ></task-item>
+                                            <div *ngIf="subtaskCell.showSubtasks"
+                                                class="subtasks-wrapper subtask-taskito">
+                                                <div *ngIf="subtaskCell.pager.hasNextPage && !cell.pager.loadingCompletedTasks" class="loading-spinner subtask-spinner" ></div>
+                                                <div class="subtask-taskito"
+                                                     *ngFor="let taskito of subtaskCell.taskitos"
+                                                     [dragula]="'tasks'"
+                                                     [attr.data-id]="cell.task.identifier"
+                                                     [attr.data-parent-id]="subtaskCell.task.identifier"
+                                                     [attr.data-sub-id]="taskito.identifier"
+                                                     [attr.data-section-index]="i"
+                                                >
+                                                    <taskito
+                                                        class="subtask-taskito"
+                                                        [taskito]="taskito"
+                                                        [parentListId]="subtaskCell.task.listId"
+                                                        (taskitoDeleted)="onTaskitoDeleted($event, subtaskCell)"
+                                                        (taskitoCompleted)="onTaskitoCompleted($event, subtaskCell)"
+                                                        (taskitoUncompleted)="onTaskitoUncompleted($event, subtaskCell)"
+                                                        [attr.data-id]="cell.task.identifier"
+                                                        [attr.data-parent-id]="subtaskCell.task.identifier"
+                                                        [attr.data-sub-id]="taskito.identifier"
+                                                        [attr.data-section-index]="i"></taskito>
+                                                </div>
+                                                <div class="no-subtask-text"
+                                                     *ngIf="subtaskCell.task.isChecklist && !subtaskCell.pager.hasNextPage && numberOfSubTasks(subtaskCell) <= 0">
+                                                    <span>No Items</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="task-taskito"
+                                             *ngFor="let taskito of cell.taskitos"
+                                             [dragula]="'tasks'"
+                                             [attr.data-id]="cell.task.identifier"
+                                             [attr.data-sub-id]="taskito.identifier"
+                                             [attr.data-section-index]="i"
+                                        >
+                                            <taskito
+                                                class="task-taskito"
+                                                [taskito]="taskito"
+                                                [parentListId]="cell.task.listId"
+                                                (taskitoDeleted)="onTaskitoDeleted($event, cell)"
+                                                (taskitoCompleted)="onTaskitoCompleted($event, cell)"
+                                                (taskitoUncompleted)="onTaskitoUncompleted($event, cell)"
+                                                [attr.data-id]="cell.task.identifier"
+                                                [attr.data-sub-id]="taskito.identifier"
+                                                [attr.data-section-index]="i"></taskito>
+                                        </div>
+                                        <div *ngIf="cell.task.isParent && cell.pager.hasNextPage && cell.pager.loadingCompletedTasks"
+                                            class="link load-completed" 
+                                            (click)="cell.loadCompletedSubtasks()"
+                                        >
+                                            Load More Completed Tasks
+                                        </div>
+                                        <div class="no-subtask-text"
+                                             *ngIf="cell.task.isProject && !cell.pager.hasNextPage && numberOfSubTasks(cell) <= 0">
+                                            <span>No subtasks</span>
+                                        </div>
+                                        <div class="no-subtask-text"
+                                             *ngIf="cell.task.isChecklist && !cell.pager.hasNextPage && numberOfSubTasks(cell) <= 0">
+                                            <span>No Items</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="loading-spinner" *ngIf="shouldShowSpinner"></div>
+                <div class="no-tasks"
+                     *ngIf="!shouldShowSpinner && numberOfTasks <= 0">
+                    <i class="twf twf-todo-checkmark"></i>
+                    <span>No Tasks</span>
+                    <div *ngIf="
+                            sourceModule && 
+                            sourceModule.pager.hasNextPage" 
+                        class="link load-completed" 
+                        (click)="loadCompletedTasks()"
+                    >
+                        <span *ngIf="!loadingCompletedTasks">Load completed tasks</span>
+                        <span class="preloader-xs" *ngIf="loadingCompletedTasks"></span>
+                    </div>
+                    <div *ngIf="
+                            sourceModule && 
+                            !sourceModule.pager.hasNextPage && 
+                            sourceModule.pager.loadingCompletedTasks" 
+                        class="no-completed-tasks"
+                    >
+                        No {{sectionDefinitions.completed.taskCells.length > 0 ? 'More ' : ''}}Completed Tasks
+                    </div>
+                </div>
+                <div class="load-more-completed"
+                     *ngIf="!shouldShowSpinner && sourceModule && sourceModule.pager.hasNextPage && sourceModule.pager.loadingCompletedTasks && numberOfTasks > 0"
+                    (click)="loadCompletedTasks()">
+                    <span class="link" *ngIf="!loadingCompletedTasks">Show {{sectionDefinitions.completed.taskCells.length > 0 ? 'More ' : ''}}Completed Tasks</span>
+                    <span class="preloader-xs" *ngIf="loadingCompletedTasks"></span>
+                </div>
+                <div class="no-completed-tasks"
+                     *ngIf="!shouldShowSpinner && sourceModule && !sourceModule.pager.hasNextPage && sourceModule.pager.loadingCompletedTasks && numberOfTasks > 0">
+                    <span>No {{sectionDefinitions.completed.taskCells.length > 0 ? 'More ' : ''}}Completed Tasks</span>
+                </div>
+            </perfect-scrollbar>
+        </div>
+    </div>
+</div>

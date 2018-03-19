@@ -1,0 +1,42 @@
+<div class="modal-header">
+    <div class="col-2 text-left">
+        <button type="button" class="close" aria-label="Done" (click)="done.emit()">Cancel</button>
+    </div>
+    <div class="col-8 text-center">
+        <h4 class="modal-title">Add Person</h4>
+    </div>
+    <div class="col-2 text-right">
+        <button 
+            type="button" 
+            class="close" 
+            aria-label="Invite" 
+            (click)="invite()"
+        >Invite</button>
+    </div>
+</div>
+<div class="modal-body no-footer settings">
+    <div class="setting-section">
+        <div class="row input">
+            <input type="text" 
+                placeholder="Type an email address" 
+                #inviteText
+                autofocus
+                (keyup.enter)="invite()">
+        </div>
+        <p class="has-error small" *ngIf="errorMessage">{{errorMessage}}</p>
+    </div>
+    <div class="editor-header" *ngIf="sharedUsers?.length > 0">People from your shared lists</div>
+    <div class="setting-section" *ngIf="sharedUsers?.length > 0">
+        <div class="row hover" *ngFor="let user of sharedUsers" (click)="selectUser(user)">
+            <div class="userpic">
+                <span class="name">{{user.initials}}</span>
+            </div>
+            <div class="content">
+                <div class="username">{{user.displayName()}}{{isMe(user) ? '(me)' : ''}}</div>
+                <div class="text">{{user.userName}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="editor-header"></div>
+</div>
+<div class="loading-overlay" [ngClass]="{loading: inviteInProgress}"><div class="preloader-wrapper"><div class="preloader-sm"></div></div></div>

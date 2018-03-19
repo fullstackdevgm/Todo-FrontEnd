@@ -1,0 +1,27 @@
+<div class="modal-header">
+    <div class="col-2 text-left"></div>
+    <div class="col-8 text-center">
+        <h4 class="modal-title">Due Date</h4>
+    </div>
+    <div class="col-2 text-right">
+        <button type="button" class="close" aria-label="Done" (click)="done.emit()">Done</button>
+    </div>
+</div>
+<div class="modal-body no-footer settings">
+    <div class="editor-header"></div>
+    <div class="setting-section">
+        <div class="row hover" (click)="defaultDueDateSelected(-1)">
+            <label>App Default</label>
+            <label>{{appDefaultDueDateText}}</label>
+            <i *ngIf="list.defaultDueDate == DefaultDueDate.AppDefault"  class="fa fa-check"></i>
+        </div>
+    </div>
+    <div class="editor-header"></div>
+
+    <div class="setting-section">
+        <div *ngFor="let dueDate of dueDates; let i = index" class="row hover" (click)="defaultDueDateSelected(i)">
+            <label>{{dueDates[i]}}</label>
+            <i *ngIf="list.defaultDueDate == i"  class="fa fa-check"></i>
+        </div>
+    </div>
+</div>

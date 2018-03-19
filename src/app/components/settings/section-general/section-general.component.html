@@ -1,0 +1,76 @@
+<div class="setting-property-wrapper">
+    <div *ngFor="let row of rows">
+        <div class="setting-property">
+            <div class="name">{{row.title}}</div>
+            <div *ngIf="row.setting == GeneralSetting.ActiveLists" class="data">
+                <span>{{row.text()}}</span>
+            </div>
+        </div>
+        <div *ngIf="row.setting == GeneralSetting.ActiveLists">
+            <perfect-scrollbar fxFlex>
+                <ul class="list-unstyled w-100 m-0">
+                    <li class="list-item" *ngFor="let listInfo of lists" >
+                        <span (click)="updateListFilter(listInfo.list)" [ngClass]="{active: isUsingList(listInfo.list)}">
+                            <span class="list-icon-wrapper">
+                                <i class="twf" [ngClass]='listInfo.list.iconName' style.color="{{listInfo.list.color}}"></i>
+                            </span>
+                            <span class="list-name">{{listInfo.list.name}}</span>
+                            <span *ngIf="listInfo.taskInfo.count && listInfo.taskInfo.count > 0" class="count">
+                                <i class="total">{{listInfo.taskInfo.count}}</i>
+                            </span>
+                            <i *ngIf="isUsingList(listInfo.list)"  class="fa fa-check checked-item"></i>
+                        </span>
+                    </li>
+                </ul>
+            </perfect-scrollbar>
+            <p class="help-block">Selected lists will be visible in the app.</p>
+        </div>
+        <div *ngIf="row.setting == GeneralSetting.TaskSortOrder"  class="property-option-wrapper">
+            <span class="col-4 text-right">Sort Order:</span>
+            <div ngbDropdown>
+                <span ngbDropdownToggle class="btn btn-default btn-size-xs">{{row.text()}}</span>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <button class="dropdown-item"
+                            *ngFor="let type of sortTypeLabels; let i = index"
+                            [ngClass]="{active: isCurrentSortOrder(i)}"
+                            (click)="selectSortOrder(i)"
+                    >{{type}}</button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="row.setting == GeneralSetting.TimeZone" class="property-option-wrapper">
+            <span class="col-4 text-right">Zone:</span>
+            <div ngbDropdown>
+                <span ngbDropdownToggle class="btn btn-default btn-size-xs">{{row.text() | fixUnderscores}}</span>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <perfect-scrollbar fxFlex>
+                        <div class="w-100">
+                            <button class="dropdown-item"
+                                    *ngFor="let zoneName of availableTimeZones; let i = index"
+                                    [ngClass]="{active: isCurrentTimeZone(zoneName)}"
+                                    (click)="selectTimeZone(zoneName)"
+                            >{{zoneName | fixUnderscores}}</button>
+                        </div>
+                    </perfect-scrollbar>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="row.setting == GeneralSetting.StartWeekDay" class="property-option-wrapper">
+                <span class="col-4 text-right">Day:</span>
+                <div ngbDropdown>
+                    <span ngbDropdownToggle class="btn btn-default btn-size-xs">{{days[row.text()]}}</span>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <perfect-scrollbar fxFlex>
+                        	<div class="w-100">
+	                            <button class="dropdown-item"
+	                                    *ngFor="let day of days; let i = index"
+	                                    [ngClass]="{active: false}"
+	                                    (click)="setDefaultStartWeekDay(i)"
+	                            >{{day}}</button>
+	                        </div>
+                        </perfect-scrollbar>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>

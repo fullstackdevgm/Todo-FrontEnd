@@ -1,0 +1,18 @@
+<div class="modal-header">
+    <div class="col-2 text-left"></div>
+    <div class="col-8 text-center">
+        <h4 *ngIf="!deleteError" class="modal-title">Delete this tag?</h4>
+        <h4 *ngIf="deleteError" class="modal-title">Error deleting the tag</h4>
+    </div>
+    <div class="col-2 text-right"></div>
+</div>
+<div class="header-body-spacer"></div>
+<div class="modal-body">
+    <div *ngIf="!deleteError">Are you sure you want to delete <strong>{{tag.name}}</strong> from <strong>all</strong> tasks?</div>
+    <div *ngIf="deleteError" class="error-message">{{deleteError}}</div>
+</div>
+<div class="modal-footer">
+    <button *ngIf="!deleteError" type="button" class="btn-default btn-info btn-size-xs" (click)="cancel()">Cancel</button>
+    <button *ngIf="!deleteError" type="button" class="btn-default btn-warning btn-size-xs" (click)="delete()">Delete</button>
+    <button *ngIf="deleteError" type="button" class="btn-default btn-info btn-size-xs" (click)="cancel()">Close</button>
+</div>

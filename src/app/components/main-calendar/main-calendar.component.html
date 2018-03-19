@@ -1,0 +1,31 @@
+<span class="select-current-month" (click)="mc.navigateTo()"><i class="fa fa-dot-circle-o"></i></span>
+
+<ngb-datepicker
+    class="main-calendar"
+    #mc
+    [(ngModel)]="calendar"
+    [dayTemplate]="customDay"
+    [firstDayOfWeek]="firstDayOfWeek"
+    (navigate)="navigatedToMonth($event)"
+></ngb-datepicker>
+
+<ng-template
+        #customDay
+        let-date="date"
+        let-currentMonth="currentMonth">
+  <div class="btn-secondary text-center calendar-day"
+       [ngClass]="{'bg-primary text-white' : isSelected(date)}"
+       (click)="selectDate($event, date)"
+       [attr.data-date]="date.day"
+       [attr.data-month]="date.month"
+       [attr.data-year]="date.year"
+       [class.has-task]="hasTask(date)"
+       [class.is-current-day]="isCurrentDay(date)"
+       [class.text-muted]="date.month !== currentMonth"
+       [dragula]="'tasks'"
+  >{{ date.day }}</div>
+</ng-template>
+<div class="dates-filter">
+    <span>Your tasks are filtered by date</span>
+    <span class="btn-default btn-size-xs" (click)="showClearFilter = false">Clear</span>
+</div>

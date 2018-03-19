@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <div class="col-2 text-left"></div>
+    <div class="col-8 text-center">
+        <h4 class="modal-title">Tags Filter</h4>
+    </div>
+    <div class="col-2 text-right">
+        <button type="button" class="close" aria-label="Done" (click)="done.emit()">Done</button>
+    </div>
+</div>
+<div class="modal-body no-footer settings">
+    <div *ngFor="let section of sections" class="setting-section">
+        <div class="editor-header"></div>
+        <div *ngFor="let row of section.rows" class="row hover" (click)="section.select(row)">
+            <div class="left-label">
+                <label *ngIf="row.tag">{{row.tag}}</label>
+                <label *ngIf="row.title">{{row.title}}</label>
+                <span *ngIf="row.description" class="decorator-text">{{row.description}}</span>
+            </div>
+            <i *ngIf="section.isSelected(row)"  class="fa fa-check"></i>
+        </div>
+    </div>
+</div>

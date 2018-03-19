@@ -1,0 +1,18 @@
+<div class="modal-header">
+    <div class="col-2 text-left"></div>
+    <div class="col-8 text-center">
+        <h4 *ngIf="!errorMessage" class="modal-title">Really Sign Out?</h4>
+        <h4 *ngIf="errorMessage" class="modal-title">Error Signing out</h4>
+    </div>
+    <div class="col-2 text-right"></div>
+</div>
+<div class="header-body-spacer"></div>
+<div class="modal-body">
+    <div *ngIf="!errorMessage">Are you sure you want to sign out and clear all locally stored information?</div>
+    <div *ngIf="errorMessage" class="error-message">{{errorMessage}}</div>
+</div>
+<div class="modal-footer">
+    <button *ngIf="!errorMessage" type="button" class="btn-default btn-info btn-size-xs" (click)="cancel()">Cancel</button>
+    <button *ngIf="!errorMessage" type="button" class="btn-default btn-warning btn-size-xs" (click)="signOut()">Sign Out</button>
+    <button *ngIf="errorMessage" type="button" class="btn-default btn-info btn-size-xs" (click)="cancel()">Close</button>
+</div>
